@@ -1,0 +1,18 @@
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local logs and temp files
+*.log
+*.tmp
+*.temp
+
+# Local email debug output
+email_log.txt

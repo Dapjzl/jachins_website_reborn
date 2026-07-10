@@ -1,0 +1,286 @@
+/* =============================================================
+   PAGE 3 — contact.html  |  Responsive CSS
+   Breakpoints:
+     Desktop   : > 1024px  (base)
+     Tablet     : 769px – 1024px
+     Mobile-L   : 481px – 768px
+     Mobile-S   : ≤ 480px
+   ============================================================= */
+
+/* ── BASE / RESET ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+img  { max-width: 100%; height: auto; display: block; }
+body { overflow-x: hidden; }
+
+.container { width: 100%; padding-left: 16px; padding-right: 16px; }
+
+/* ── PAGE TITLE ──────────────────────────────────────────── */
+.page-title-contact {
+  background-size: cover;
+  background-position: center;
+}
+
+.page-title-contact h2 {
+  font-size: clamp(24px, 5vw, 48px);
+}
+
+/* ── CONTACT PAGE SECTION ────────────────────────────────── */
+.contact-pg-section { padding: 70px 0; }
+
+.contact-pg-section .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+/* Section title */
+.contact-pg-section .section-title h2 {
+  font-size: clamp(22px, 3vw, 36px);
+  line-height: 1.2;
+}
+
+/* ── CONTACT FORM ────────────────────────────────────────── */
+.contact-pg-section form {
+  width: 100%;
+}
+
+.contact-pg-section form > div {
+  margin-bottom: 16px;
+}
+
+.contact-pg-section .form-control {
+  width: 100%;
+  font-size: 14px;
+}
+
+.contact-pg-section textarea.form-control {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.contact-pg-section .submit-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.contact-pg-section .submit-area button {
+  max-width: 100%;
+}
+
+/* ── OFFICE INFO ─────────────────────────────────────────── */
+.office-info {
+  padding: 0 0 0 20px;
+}
+
+.office-info h3 {
+  font-size: clamp(16px, 2vw, 20px);
+  margin-bottom: 14px;
+}
+
+.office-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.office-info ul li {
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.6;
+}
+
+.office-info ul li i {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* ── CONTACT MAP ─────────────────────────────────────────── */
+.contact-map-section { overflow: hidden; }
+
+.contact-map iframe {
+  width: 100% !important;
+  height: 400px;
+  border: 0;
+  display: block;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-footer .row { flex-wrap: wrap; }
+
+.lower-footer .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── PREVIEW CONTAINER ───────────────────────────────────── */
+.preview-container {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.preview-container img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* =============================================================
+   TABLET  769px – 1024px
+   ============================================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+
+  .contact-pg-section { padding: 50px 0; }
+
+  /* Form + office side by side but adjusted */
+  .col.col-md-7 { width: 58%; }
+  .col.col-md-5 { width: 42%; }
+
+  .office-info { padding-left: 16px; }
+
+  .contact-map iframe { height: 360px; }
+
+  /* Submit button */
+  .contact-pg-section .submit-area button { width: 60% !important; }
+}
+
+/* =============================================================
+   MOBILE-L  481px – 768px
+   ============================================================= */
+@media (max-width: 768px) {
+
+  /* Page title */
+  .page-title-contact { padding: 40px 0; }
+  .page-title-contact h2 { font-size: clamp(20px, 6vw, 32px); }
+
+  /* Contact section */
+  .contact-pg-section { padding: 40px 0; }
+
+  /* Stack the intro title row */
+  .contact-pg-section .row > .col.col-lg-5 {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  /* Stack form + office info */
+  .contact-pg-section .row > .col.col-md-7,
+  .contact-pg-section .row > .col.col-md-5 {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  /* Office info loses left padding when stacked */
+  .office-info {
+    padding: 24px 0 0;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 8px;
+  }
+
+  /* Submit button full width */
+  .contact-pg-section .submit-area button {
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  /* Form */
+  .contact-pg-section .form-control { font-size: 15px; }
+  .contact-pg-section textarea.form-control { min-height: 120px; }
+
+  /* Map */
+  .contact-map iframe { height: 280px; }
+
+  /* Footer columns */
+  .col.col-lg-4,
+  .col.col-lg-3,
+  .col.col-lg-5 {
+    width: 100% !important;
+    margin-bottom: 24px;
+  }
+
+  /* Section title */
+  .contact-pg-section .section-title h2 { font-size: clamp(20px, 5vw, 28px); }
+  .contact-pg-section .section-title span { font-size: 13px; }
+
+  /* Permits grid */
+  .permits-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .permit-item {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .permit-image {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
+}
+
+/* =============================================================
+   MOBILE-S  ≤ 480px
+   ============================================================= */
+@media (max-width: 480px) {
+
+  .container { padding-left: 12px; padding-right: 12px; }
+
+  .page-title-contact h2 { font-size: 20px; }
+
+  .contact-pg-section { padding: 30px 0; }
+
+  .contact-pg-section .section-title h2 { font-size: 18px; line-height: 1.3; }
+
+  /* Stack submit area */
+  .contact-pg-section .submit-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .contact-pg-section .submit-area button {
+    width: 100% !important;
+  }
+
+  /* Map shorter on very small screens */
+  .contact-map iframe { height: 220px; }
+
+  /* Office info */
+  .office-info h3 { font-size: 15px; }
+  .office-info ul li { font-size: 13px; }
+
+  /* Footer */
+  .col.col-sm-6 { width: 100% !important; float: none !important; }
+
+  /* Breadcrumb wraps */
+  .breadcrumb { flex-wrap: wrap; }
+}
+
+/* ── OVERFLOW GUARD ──────────────────────────────────────── */
+.contact-pg-section,
+.contact-map-section,
+.site-footer {
+  overflow-x: hidden;
+}
+
+/* ── SMOOTH TRANSITIONS ──────────────────────────────────── */
+.contact-pg-section .form-control {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.office-info ul li a {
+  transition: color 0.2s ease;
+}

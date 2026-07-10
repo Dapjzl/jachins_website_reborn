@@ -1,0 +1,12 @@
+{
+    "name": "jachins/website",
+    "description": "Jachins Website",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "disable-tls": true,
+        "secure-http": false
+    }
+}

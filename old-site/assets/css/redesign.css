@@ -1,0 +1,483 @@
+/* =====================================================
+   JACHINS ASSETS PAGE REDESIGN
+   Premium Oil & Gas Layout
+   ===================================================== */
+
+/* GLOBAL */
+
+.service-single-section {
+    padding: 100px 0;
+}
+
+.service-single-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-single-content > p {
+    font-size: 17px;
+    line-height: 1.9;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* =====================================================
+   HERO SECTION
+   ===================================================== */
+
+.project-hero-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    margin-bottom: 80px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.12);
+}
+
+.project-hero-media img {
+    width: 100%;
+    height: 650px;
+    object-fit: cover;
+    display: block;
+}
+
+.project-hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 60px;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,.85),
+        rgba(0,0,0,.15)
+    );
+}
+
+.project-hero-overlay .eyebrow {
+    color: #f4b400;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.project-hero-overlay h1 {
+    color: #fff !important;
+    font-size: 52px;
+    line-height: 1.2;
+    margin: 15px 0;
+    max-width: 850px;
+    font-weight: 700;
+}
+
+.project-hero-overlay p {
+    color: #fff;
+    max-width: 700px;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* =====================================================
+   FLOATING IMAGE SECTION
+   ===================================================== */
+
+.service-single-content > div[style*="30%"] {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin: 60px 0;
+}
+
+.service-single-content > div[style*="30%"] img {
+    width: auto;
+    max-width: 320px;
+}
+
+/* =====================================================
+   PROJECT DELIVERY GRID
+   ===================================================== */
+
+.project-delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 35px;
+    margin: 90px 0;
+}
+
+.project-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,.08);
+    transition: all .35s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+}
+
+.project-card-media img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.project-card-copy {
+    padding: 30px;
+}
+
+.project-card-copy .tag {
+    color: #d89c00;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.project-card-copy h4 {
+    margin: 15px 0;
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+.project-card-copy p:last-child {
+    color: #666;
+    line-height: 1.8;
+}
+
+/* =====================================================
+   DELIVERY BLUEPRINT
+   ===================================================== */
+
+.project-strategy {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 50px;
+    margin: 100px 0;
+    align-items: start;
+}
+
+.strategy-copy {
+    background: #fff;
+}
+
+.strategy-copy h3 {
+    font-size: 38px;
+    margin-bottom: 25px;
+}
+
+.strategy-copy p {
+    color: #666;
+    line-height: 1.9;
+}
+
+.strategy-copy ul {
+    margin-top: 35px;
+}
+
+.strategy-copy ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.strategy-copy ul li span {
+    width: 45px;
+    height: 45px;
+    background: #0a2342;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: 700;
+}
+
+.strategy-panel {
+    background: #0a2342;
+    color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.strategy-panel h4 {
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.accelerator {
+    padding: 25px 0;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+}
+
+.accelerator:last-child {
+    border-bottom: none;
+}
+
+.accelerator strong {
+    display: block;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.accelerator p {
+    color: rgba(255,255,255,.8);
+}
+
+/* =====================================================
+   EXECUTED PROJECTS
+   ===================================================== */
+
+.executed-projects-section {
+    margin-top: 100px;
+}
+
+.executed-projects-section h2 {
+    text-align: center;
+    font-size: 44px;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 50px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 35px;
+}
+
+.project-showcase-card {
+    overflow: hidden;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(0,0,0,.08);
+    transition: all .35s ease;
+}
+
+.project-showcase-card:hover {
+    transform: translateY(-10px);
+}
+
+.project-image-wrapper {
+    position: relative;
+}
+
+.project-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.project-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.project-tag,
+.project-year {
+    display: inline-block;
+    background: rgba(0,0,0,.75);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 40px;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.project-content {
+    padding: 30px;
+}
+
+.project-content h4 {
+    margin-bottom: 15px;
+}
+
+.project-client {
+    color: #777;
+}
+
+.project-outcomes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.outcome-item strong {
+    display: block;
+    font-size: 28px;
+    color: #0a2342;
+}
+
+/* =====================================================
+   BUTTON
+   ===================================================== */
+
+.theme-btn {
+    margin-top: 60px;
+    padding: 18px 35px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.site-footer {
+    background: #07121f;
+}
+
+.upper-footer {
+    padding: 90px 0;
+}
+
+.widget-title h3 {
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+.site-footer p,
+.site-footer li,
+.site-footer a {
+    color: rgba(255,255,255,.8);
+}
+
+/* =====================================================
+   IMAGE PREVIEW
+   ===================================================== */
+
+.preview-container {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.92);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.preview-container img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media (max-width: 991px) {
+
+    .project-delivery-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .project-strategy {
+        grid-template-columns: 1fr;
+    }
+
+    .project-hero-overlay {
+        padding: 40px;
+    }
+
+    .project-hero-overlay h1 {
+        font-size: 38px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 767px) {
+
+    .service-single-section {
+        padding: 70px 0;
+    }
+
+    .project-delivery-grid,
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-hero-media img {
+        height: 380px;
+    }
+
+    .project-hero-overlay {
+        position: relative;
+        background: #fff;
+        padding: 30px;
+    }
+
+    .project-hero-overlay h1 {
+        color: #07121f !important;
+        font-size: 30px;
+    }
+
+    .project-hero-overlay p {
+        color: #555;
+    }
+
+    .project-card-copy,
+    .project-content {
+        padding: 25px;
+    }
+
+    .executed-projects-section h2 {
+        font-size: 32px;
+    }
+
+    .strategy-copy h3 {
+        font-size: 28px;
+    }
+
+    .strategy-panel {
+        padding: 25px;
+    }
+
+    .theme-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .project-outcomes {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+
+    .project-hero-overlay {
+        padding: 20px;
+    }
+
+    .project-hero-overlay h1 {
+        font-size: 26px;
+    }
+
+    .project-card-media img,
+    .project-image {
+        height: 220px;
+    }
+
+    .project-card-copy h4,
+    .project-content h4 {
+        font-size: 20px;
+    }
+}
