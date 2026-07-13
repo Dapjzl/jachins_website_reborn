@@ -683,13 +683,17 @@ i::before {
 }
 
 .sisf-e-colored {
-	color: var(--primary-color) !important;
+	color: #fff !important;
 	background: #c70205;
 	border-radius: 4px;
 	padding: 0 12px;
 }
 
 .sisf-e-main-color {
+	color: #F4C430 !important;
+}
+
+.sisf-ceo-main-color {
 	color: #c70205 !important;
 }
 
@@ -702,7 +706,6 @@ i::before {
 }
 
 .sis-comman-background {
-	background-color: var(--secondary-color) !important;
 	background-image: url("../images/graphic-bg-light.png");
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -791,7 +794,6 @@ i::before {
 	font-size: 48px;
 	line-height: 58px;
 	font-weight: 700;
-	color: var(--primary-color);
 }
 
 .sis-counter-content span {
@@ -3316,7 +3318,7 @@ i::before {
 
 .sisf-faq-accordian .accordion-button:not(.collapsed) span,
 .sisf-page-accordian .accordion-button:not(.collapsed) span {
-	color: var(--primary-color) !important;
+	color: #fff !important;
 	transition: 0.4s ease-in-out;
 }
 
@@ -3404,7 +3406,7 @@ i::before {
 
 .sisf-sis-faq-accordian .accordion-item .sisf-e-content-inner p,
 .sisf-sis-page-accordian .accordion-item .sisf-e-content-inner p {
-	color: var(--primary-color);
+	color: #fff;
 }
 
 .sisf-sis-faq-accordian .accordion-body,
