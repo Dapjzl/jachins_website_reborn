@@ -1,6 +1,6 @@
 # JACHINS Development Limited Website
 
-![JACHINS](assets/images/jachins_logo.png)
+![JACHINS](images/jachins_logo.png)
 
 ## Overview
 
