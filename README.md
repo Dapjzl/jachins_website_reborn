@@ -2,7 +2,7 @@
 
 ![JACHINS]
 <p align="center">
-  <img src="assets/images/jachins_logo.png" alt="JACHINS Logo" width="120">
+  <img src="images/jachins_logo.png" alt="JACHINS Logo" width="120">
 </p>
 
 ## Overview
