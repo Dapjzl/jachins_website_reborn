@@ -56,8 +56,8 @@ The website was redesigned with a modern, responsive interface focused on perfor
 ├── about.html
 ├── services.html
 ├── projects.html
-├── licenses.html
-├── careers.html
+├── HSE.html
+├── CSR.html
 ├── contact.html
 │
 ├── assets/
@@ -68,7 +68,7 @@ The website was redesigned with a modern, responsive interface focused on perfor
 │   └── vendor/
 │
 ├── forms/
-│   └── contact.php
+│   └── contact-handler.php
 │
 └── README.md
 ```
