@@ -1,0 +1,38 @@
+--- Enquiry logged at 2026-07-14 15:26:50 ---
+To: info@jachinsgroup.com
+Subject: New Contact Us Message from test test
+From: test test <info@jachinsgroup.com>
+Reply-To: test test <test@test.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: PHP/8.2.12
+
+You have received a new enquiry from your website contact form.
+
+Name: test test
+Email: test@test.com
+Phone: 09076432213
+
+Message:
+this is a test
+
+
+--- Enquiry logged at 2026-07-14 15:33:27 ---
+To: emmanueladedapo2019@gmail.com
+Subject: New Contact Message from test test
+From: test test <info@jachinsgroup.com>
+Reply-To: test test <test@test.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: PHP/8.2.12
+
+You have received a new enquiry from your website contact form.
+
+Name: test test
+Email: test@test.com
+Phone: 09083687438
+
+Message:
+test
+
+

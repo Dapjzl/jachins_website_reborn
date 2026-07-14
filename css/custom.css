@@ -1821,7 +1821,7 @@ i::before {
 	align-items: center;
 	justify-content: center;
 	border-radius: 50px;
-	background-color: #c70205;
+	background-color: #F4C430;
 	transition: 0.4s ease-in-out;
 }
 
@@ -7456,7 +7456,7 @@ input[type="text"]:focus,
 	}
 
 	.sisf-header-logo-link.navbar-brand img {
-		width: 150px;
+		width: 100px;
 		height: auto;
 	}
 
