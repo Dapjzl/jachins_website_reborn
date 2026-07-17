@@ -294,3 +294,48 @@
         });
     }
 })(jQuery);
+
+(function () {
+   var wheel = document.querySelector('.sis-lifecycle-wheel');
+   if (!wheel) return;
+
+   var pointer = wheel.querySelector('#sisPointer');
+   var items = wheel.querySelectorAll('.sis-wheel-item');
+   var stageAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+   var stageCount = stageAngles.length;
+   var currentStage = 0;
+   var currentRotation = 0;
+   var pauseMs = 1000;
+   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+   function setActiveItem(stageIndex) {
+      items.forEach(function (item) {
+         var isActive = parseInt(item.getAttribute('data-stage'), 10) === stageIndex;
+         item.classList.toggle('active', isActive);
+      });
+   }
+
+   function goToStage(stageIndex) {
+      var targetAngle = stageAngles[stageIndex];
+      var delta = targetAngle - (currentRotation % 360);
+
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+
+      currentRotation += delta;
+
+      if (reducedMotion) {
+         pointer.style.transition = 'none';
+      }
+      pointer.style.transform = 'rotate(' + currentRotation + 'deg)';
+      setActiveItem(stageIndex);
+   }
+
+   function advance() {
+      currentStage = (currentStage + 1) % stageCount;
+      goToStage(currentStage);
+   }
+
+   goToStage(currentStage);
+   setInterval(advance, pauseMs + (reducedMotion ? 0 : 1100));
+})();
