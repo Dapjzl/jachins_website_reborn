@@ -2125,6 +2125,8 @@ i::before {
    align-items: flex-start;
    gap: 10px;
    width: 100%;
+   margin-top: 24px;
+   grid-template-columns: repeat(4, 1fr);
 }
 
 .val-item {
@@ -2435,7 +2437,7 @@ i::before {
 
 .sis-benefits-section .sisf-e-page-hover-contents:hover .sis-counter-icon-with-title .sis-counter-title h2,
 .sis-benefits-section .sisf-e-page-hover-contents:hover .sis-counter-icon-with-title .sisf-content {
-	color: var(--primary-color);
+	color: #ffff;
 	transition: 0.4s ease-in-out;
 }
 

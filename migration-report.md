@@ -109,15 +109,16 @@ We will map the existing JACHINS content directly to the corresponding sections 
 | **Home Process/Capabilities Grid** | Services Layout | Populate the 6-step process (`Field Development Strategy` to `General Industry`) using the styled features grids in `index.html`. |
 | **Home "100% Local Expertise"** | "Why Choose Us" / Text Reveal Block | Map the "100% Local Expertise, Global Standards" content to the premium side-by-side text block with GSAP scroll triggers. |
 | **Home Partner Marquee** | Swiper Brand Carousel | Replace template logos with JACHINS partner logos (`ce.png`, `em.png`, etc.) using the Swiper brands loop. |
-| **Home Testimonials** | Swiper Testimonial Slider | Populate JACHINS' real client testimonials. |
-| **About Us: Who We Are** | About Page: Profile & Narrative Block | Migrate JACHINS' background narrative into the template’s custom side-by-side card layouts on `about-us.html`. |
-| **About Us: Vision, Mission & Values**| About Page: Mission/Vision Accordion | Place in the custom accordion or three-column layout cards to highlight values (Safety, Integrity, Excellence). |
-| **About Us: FAQ List** | Template Accordion Component | Populate JACHINS' FAQs inside the Bootstrap accordion element. |
-| **Services Pages** | `service.html` & custom service files | Create three separate service files using the template's layout framework: `consultancy-services.html` (People), `project-services.html` (Assets), and `management-services.html` (Infrastructure). Keep URL structures intact for SEO. |
-| **HSE Policy & Scope** | New Page: `hse.html` | Build a dedicated HSE page using the about template structure to house JACHINS' Safety Management policies, guidelines, and compliance structures. |
-| **Careers & Vacancies** | New Page: `careers.html` | Build a clean, styled Careers page using the template’s layouts to provide application guidance and highlight talent development. |
-| **Contact Page & Mailer** | `contact.html` & `contact.php` | Integrate the standard JACHINS contact details, Google Map frame, and rewire the front-end form validation to route submissions to `contact.php`. |
-| **Footer (Certificates & Links)** | Footer Section (`footer-imag`) | Populate JACHINS' legal copy, site hierarchy, address, and place compliance labels. |
+| **Home Testimonials** | Swiper Testimonial Slider | [x] Populate JACHINS' real client testimonials. |
+| **About Us: Who We Are** | About Page: Profile & Narrative Block | [x] Migrate JACHINS' background narrative into the template’s custom side-by-side card layouts on `about-us.html`. |
+| **About Us: Vision, Mission & Values**| About Page: Mission/Vision Accordion | [x] Place in the custom accordion or three-column layout cards to highlight values (Safety, Integrity, Excellence). |
+| **About Us: FAQ List** | Template Accordion Component | [x] Populate JACHINS' FAQs inside the Bootstrap accordion element. |
+| **Services Pages** | `service.html` & custom service files | [x] Create three separate service files using the template's layout framework: `consultancy-services.html` (People), `project-services.html` (Assets), and `management-services.html` (Infrastructure). Keep URL structures intact for SEO. |
+| **HSE Policy & Scope** | New Page: `hse.html` | [x] Build a dedicated HSE page using the about template structure to house JACHINS' Safety Management policies, guidelines, and compliance structures. |
+| **Careers & Vacancies** | New Page: `careers.html` | [x] Build a clean, styled Careers page using the template’s layouts to provide application guidance and highlight talent development. |
+| **Contact Page & Mailer** | `contact.html` & `contact.php` | [x] Integrate the standard JACHINS contact details, Google Map frame, and rewire the front-end form validation to route submissions to `contact.php`. |
+| **CSR** | `csr.html` | [x] Initialize `new-template/csr.html` with metadata, Open Graph, preloader, and header structures; [x] Migrate top navigation and topbar; [x] Implement Commitment section; [x] Implement key initiatives; [x] Implement Counter stats; [x] Create gallery; [x] Add CTA; [x] Implement footer; [x] Verify layout. |
+| **Footer (Certificates & Links)** | Footer Section (`footer-imag`) | [x] Populate JACHINS' legal copy, site hierarchy, address, and place compliance labels. |
 
 ---
 
@@ -157,8 +158,12 @@ Migration will be executed sequentially. After completing each page, work will h
    Create the Careers page outlining employee capabilities, internships, and JETS academy pathways.
 7. **Contact Page & API (`contact.html`, `contact.php`)**  
    Set up Google Maps, physical address widgets, and hook up the email transmission script.
-8. **Remaining Pages (`csr.html`, `error.html`)**  
-   Migrate the CSR sustainability timeline and set up the custom 404 page.
+8. **Blog Page (`blogs.html`)** ✅ COMPLETED — July 20, 2026  
+   Migrated with JACHINS branding, 5 oil & gas blog posts, full sidebar (search, categories, recent posts, topic tags, social, CTA widget), SEO meta, JSON-LD Blog schema, ARIA roles, and canonical footer/header.
+9. **Error Page (`error.html`)** ✅ COMPLETED — July 20, 2026  
+   Migrated with styled gradient "404" code, quick-navigation shortcut links, JACHINS header/footer, `noindex` robots directive, AOS animations, and unique element IDs for browser testing.
+10. **CSR Page (`csr.html`)** ✅ COMPLETED (see previous session)  
+    Migrated with initiative cards, odometer stats, lightbox gallery, and partners swiper.
 
 ---
 
