@@ -144,25 +144,25 @@ We will map the existing JACHINS content directly to the corresponding sections 
 
 Migration will be executed sequentially. After completing each page, work will halt to present a report and await approval:
 
-1. **Home Page (`index.html`)**  
-   Migrate metadata, title tags, Hero Swiper slides, Stats Counter, Services preview, Local Expertise segment, Brand slider, Testimonials, and footer certification badges.
-2. **About Us Page (`about-us.html`)**  
-   Migrate general profile, Mission/Vision, Operational Process blocks, FAQs, and licenses.
-3. **Services Pages (`service.html`, `consultancy-services.html`, `project-services.html`, `management-services.html`)**  
-   Migrate People, Assets, and Infrastructure detail structures, ensuring smooth transitions and GSAP animation triggers.
-4. **Projects Grid & Detail Pages (`project.html` / `project-grid.html`)**  
-   Populate actual portfolio items (e.g., EFE EPF Facility, Export Terminal Expansion, BlueSpark Well Stimulation) using the template's project showcase pages.
-5. **HSE Page (`hse.html`)**  
-   Create the dedicated HSE page mapping policies, safety records, and certifications.
-6. **Careers Page (`careers.html`)**  
-   Create the Careers page outlining employee capabilities, internships, and JETS academy pathways.
-7. **Contact Page & API (`contact.html`, `contact.php`)**  
-   Set up Google Maps, physical address widgets, and hook up the email transmission script.
-8. **Blog Page (`blogs.html`)** ✅ COMPLETED — July 20, 2026  
-   Migrated with JACHINS branding, 5 oil & gas blog posts, full sidebar (search, categories, recent posts, topic tags, social, CTA widget), SEO meta, JSON-LD Blog schema, ARIA roles, and canonical footer/header.
-9. **Error Page (`error.html`)** ✅ COMPLETED — July 20, 2026  
-   Migrated with styled gradient "404" code, quick-navigation shortcut links, JACHINS header/footer, `noindex` robots directive, AOS animations, and unique element IDs for browser testing.
-10. **CSR Page (`csr.html`)** ✅ COMPLETED (see previous session)  
+1. **Home Page (`index.html`)** ✅ COMPLETED  
+   Migrated metadata, title tags, Hero Swiper slides, Stats Counter, Services preview, Local Expertise segment, Brand slider, Testimonials, and footer certification badges.
+2. **About Us Page (`about.html`)** ✅ COMPLETED  
+   Migrated general profile, Mission/Vision, Operational Process blocks, FAQs, and licenses.
+3. **Services Pages (`service.html`, `consultancy-services.html`, `project-services.html`, `management-services.html`)** ✅ COMPLETED  
+   Migrated People, Assets, and Infrastructure detail structures with responsive layouts and GSAP animation triggers.
+4. **Projects Grid & 4 Dedicated Detail Pages (`project.html`, `project-grid.html`, `project-detail.html`, `project-detail-bluespark.html`, `project-detail-gas-pipeline.html`, `project-detail-export-terminal.html`, `project-detail-scada-control.html`)** ✅ COMPLETED  
+   Populated real JACHINS portfolio items (BlueSpark Well Stimulation, 65km Gas Pipeline EPC, Export Terminal EPCM Expansion, and Control Room SCADA Deployment) across dedicated showcase pages.
+5. **HSE Page (`hse.html`)** ✅ COMPLETED  
+   Created dedicated HSE page mapping Target Zero policies, ISO 14001/45001 standards, safety metrics (1.5M+ LTI-Free hours), and compliance structures.
+6. **Careers Page (`careers.html`)** ✅ COMPLETED  
+   Created Careers page highlighting JETS Academy capability pathways, featured open roles, graduate program info, and job application submission handler.
+7. **Contact Page & Mailer (`contact.html`, `contact-handler.php`)** ✅ COMPLETED  
+   Configured Google Maps frame, physical address widgets, and PHP mail delivery script with local logging fallbacks.
+8. **Blog Page (`blogs.html`)** ✅ COMPLETED  
+   Migrated with JACHINS branding, 5 oil & gas blog posts, full sidebar (search, categories, recent posts, topic tags, social, CTA widget), SEO meta, and JSON-LD Blog schema.
+9. **Error Page (`error.html`)** ✅ COMPLETED  
+   Migrated with styled gradient "404" code, quick-navigation shortcut links, JACHINS header/footer, `noindex` robots directive, and AOS animations.
+10. **CSR Page (`csr.html`)** ✅ COMPLETED  
     Migrated with initiative cards, odometer stats, lightbox gallery, and partners swiper.
 
 ---

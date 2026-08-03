@@ -77,7 +77,7 @@
         });
     });
 
-    // Skills Progress Bar
+    // Skills Progress Bar — FIX: use scaleX transform instead of width to avoid layout thrashing
     if ($.fn.waypoint && $('.sis-skills-progress-bar').length) {
         let animated = false;
         $('.sis-skills-progress-bar').waypoint(() => {
@@ -89,8 +89,32 @@
                 const $bar = $this.find('.sis-count-bar');
                 const $text = $this.find('.sis-skill-no');
 
-                $bar.css('width', '0%').animate({ width: percent + '%' }, 2000, 'swing');
-                $({ value: 0 }).animate({ value: percent }, { duration: 2000, easing: 'swing', step: val => $text.text(Math.ceil(val) + '%') });
+                // FIX: Use transform: scaleX instead of animating width (layout-triggering)
+                // scaleX runs on GPU compositor — no layout or paint
+                $bar.css({
+                    'transform-origin': 'left center',
+                    'transform': 'scaleX(0)',
+                    'transition': 'transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+
+                // Trigger on next frame to ensure the initial scaleX(0) is painted first
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        $bar.css('transform', `scaleX(${percent / 100})`);
+                    });
+                });
+
+                // Counter animation using rAF instead of jQuery animate for smoother updates
+                const startTime = performance.now();
+                const duration = 2000;
+                function animateCounter(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easedProgress = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
+                    $text.text(Math.ceil(easedProgress * percent) + '%');
+                    if (progress < 1) requestAnimationFrame(animateCounter);
+                }
+                requestAnimationFrame(animateCounter);
             });
         }, { offset: '50%' });
     }
@@ -119,21 +143,33 @@
         });
     }
 
-    // Animation On Scroll Js
+    // Animation On Scroll Js — FIX: reduced duration for snappier feel and less simultaneous animation
     if (typeof AOS !== "undefined") {
         AOS.init({
             once: true,
-            duration: 1000,
-            easing: 'ease-out-cubic'
+            duration: 700,      // was 1000ms — shorter = less simultaneous GPU work
+            easing: 'ease-out-cubic',
+            offset: 80          // start animations slightly earlier to stagger less at once
         });
     }
-    // Counter Up
-    if ($.fn.counterUp && $('.sis-counter').length) $('.sis-counter').counterUp({ delay: 6, time: 3000 });
 
-    // Back to Top
+    // Counter Up
+    if ($.fn.counterUp && $('.sis-counter').length) $('.sis-counter').counterUp({ delay: 6, time: 2000 });
+
+    // Back to Top — FIX: passive listener + rAF throttle to avoid blocking scroll thread
     const backToTop = document.getElementById('backToTop');
     if (backToTop) {
-        $window.on('scroll', () => backToTop.classList.toggle('show', window.scrollY > 300));
+        let rafPending = false;
+        // FIX: native addEventListener with { passive: true } — jQuery's .on('scroll') is active by default
+        window.addEventListener('scroll', () => {
+            if (rafPending) return;
+            rafPending = true;
+            requestAnimationFrame(() => {
+                backToTop.classList.toggle('show', window.scrollY > 300);
+                rafPending = false;
+            });
+        }, { passive: true });
+
         backToTop.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
     }
 
@@ -220,7 +256,7 @@
         breakpoints: { 0: { slidesPerView: 1 }, 768: { slidesPerView: 1, centeredSlides: false }, 1024: { slidesPerView: 1 } }
     });
 
-    // Hero Slider Start 
+    // Hero Slider Start
 	function animateActiveSlideText() {
         gsap.set(".sis-text-anime-style-2", { clearProps: "all" });
 
@@ -233,16 +269,16 @@
 
             gsap.from(animationSplitText.chars, {
 				opacity: 0,
-                duration: 0.11,         
+                duration: 0.11,
 				delay: 0.14,
-				x: 250,                 
+				x: 250,
 				autoAlpha: 0,
-				stagger: 0.09,         
+				stagger: 0.09,
 				ease: "power5.out",
             });
         });
     }
-    
+
 	initSwiper(".hero-slider-layout .swiper", {
         ...swiperOptions,
         autoplay: { delay: 6000 },
@@ -250,10 +286,10 @@
         navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
 		on: {
 			init: function () {
-				animateActiveSlideText(); 
+				animateActiveSlideText();
 			},
 			slideChangeTransitionStart: function () {
-				animateActiveSlideText(); 
+				animateActiveSlideText();
 			}
 		}
     });
@@ -305,8 +341,18 @@
    var stageCount = stageAngles.length;
    var currentStage = 0;
    var currentRotation = 0;
+   // FIX: total cycle = animation(1100ms) + pause(1000ms) = 2100ms
    var pauseMs = 1000;
+   var animMs = 1100;
    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+   var isVisible = true;
+   var timeoutId = null;
+
+   // FIX: use Page Visibility API to pause when tab is hidden — prevents rAF/timer buildup
+   document.addEventListener('visibilitychange', function () {
+       isVisible = !document.hidden;
+       if (isVisible && timeoutId === null) scheduleNext();
+   });
 
    function setActiveItem(stageIndex) {
       items.forEach(function (item) {
@@ -332,10 +378,20 @@
    }
 
    function advance() {
+      timeoutId = null;
+      if (!isVisible) return; // FIX: don't run when tab is hidden
       currentStage = (currentStage + 1) % stageCount;
       goToStage(currentStage);
+      scheduleNext();
+   }
+
+   // FIX: setTimeout chain instead of setInterval — each call schedules the next
+   // so it can never accumulate or fire at the wrong rate
+   function scheduleNext() {
+      var delay = reducedMotion ? pauseMs : pauseMs + animMs;
+      timeoutId = setTimeout(advance, delay);
    }
 
    goToStage(currentStage);
-   setInterval(advance, pauseMs + (reducedMotion ? 0 : 1100));
+   scheduleNext();
 })();

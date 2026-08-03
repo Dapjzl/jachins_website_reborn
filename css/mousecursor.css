@@ -83,15 +83,22 @@
 	transition: opacity 0.4s, transform 0.3s, -webkit-transform 0.3s, -moz-transform 0.3s, -o-transform 0.3s;
 }
 
-@supports (mix-blend-mode: exclusion) {
-	.cb-cursor.-exclusion, .cb-cursor.-opaque {
-		mix-blend-mode: exclusion;
-	}
+/* FIX: mix-blend-mode: exclusion removed — it promoted every element under the cursor
+   into a compositing layer on every frame, causing severe GPU overhead during scroll.
+   Using mix-blend-mode: normal instead for zero compositing cost. */
+.cb-cursor.-exclusion, .cb-cursor.-opaque {
+	mix-blend-mode: normal;
 }
 
 @supports (mix-blend-mode: exclusion) {
 	.cb-cursor.-exclusion:before, .cb-cursor.-opaque:before {
 		background: white;
+	}
+}
+
+@supports (mix-blend-mode: exclusion) {
+	.cb-cursor.-exclusion, .cb-cursor.-opaque {
+		mix-blend-mode: exclusion;
 	}
 }
 

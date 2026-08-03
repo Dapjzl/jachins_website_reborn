@@ -9,6 +9,10 @@ class Cursor {
         this.body = $(this.options.container);
         this.el = $('<div class="cb-cursor"></div>');
         this.text = $('<div class="cb-cursor-text"></div>');
+        // FIX: rAF throttle state — ensures GSAP is called at most once per animation frame
+        this._rafPending = false;
+        this._pendingX = 0;
+        this._pendingY = 0;
         this.init();
     }
 
@@ -27,11 +31,20 @@ class Cursor {
         }).on('mouseenter', () => {
             self.show();
         }).on('mousemove', (e) => {
-            this.pos = {
-                x: this.stick ? this.stick.x - ((this.stick.x - e.clientX) * 0.15) : e.clientX,
-                y: this.stick ? this.stick.y - ((this.stick.y - e.clientY) * 0.15) : e.clientY
-            };
-            this.update();
+            // FIX: Store position and batch GSAP call into rAF
+            // Previously: gsap.to() was called on EVERY mousemove event (could be 200+/sec)
+            // Now: position is updated immediately, GSAP fires at most once per 16ms frame
+            self._pendingX = self.stick ? self.stick.x - ((self.stick.x - e.clientX) * 0.15) : e.clientX;
+            self._pendingY = self.stick ? self.stick.y - ((self.stick.y - e.clientY) * 0.15) : e.clientY;
+            self.pos = { x: self._pendingX, y: self._pendingY };
+
+            if (!self._rafPending) {
+                self._rafPending = true;
+                requestAnimationFrame(() => {
+                    self._rafPending = false;
+                    self.update();
+                });
+            }
         }).on('mousedown', () => {
             self.setState('-active');
         }).on('mouseup', () => {

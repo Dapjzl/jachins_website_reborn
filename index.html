@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -53,13 +53,19 @@
    <link href="css/slicknav.min.css" rel="stylesheet">
    <!-- Animation On Scroll CSS -->
    <link href="css/aos.css" rel="stylesheet">
-   <!-- Google Fonts -->
+   <!-- Google Fonts — preconnect must come before font stylesheet links -->
    <link rel="preconnect" href="https://fonts.googleapis.com/">
    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet">
+   <!-- FIX: font-display=swap already in URL — confirmed. Preload the primary body font
+        to eliminate FOUT (Flash Of Unstyled Text) which causes layout shifts on first paint. -->
+   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap">
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
       rel="stylesheet">
+   <!-- FIX: preconnect to hero video CDN — reduces TCP handshake delay for video load -->
+   <link rel="preconnect" href="https://oilix.wpthemeverse.com" crossorigin>
+   <link rel="dns-prefetch" href="https://oilix.wpthemeverse.com">
    <!-- Main Custom CSS -->
    <link href="css/custom.css" rel="stylesheet" media="screen">
 
@@ -240,7 +246,7 @@
                                     <br> <span class="sisf-e-colored">Strength and Precision</span>
                                  </h1>
                                  <div class="sisf-m-text" data-aos="fade-up" data-aos-delay="100">
-                                    <p class="text-white pb-0">Executing complex projects with discipline, reliability,
+                                    <p class="text-white pb-0 fs-16">Executing complex projects with discipline, reliability,
                                        and uncompromising technical standards.</p>
                                  </div>
                                  <div class="sis-comman-bottom-line-text d-flex align-items-center justify-content-center gap-3 mb-4">
@@ -333,11 +339,11 @@
                      <div class="sisf-about-left-image position-relative">
                         <figure class="sis-image-anime sis-reveal mb-3 sis-radius">
                            <img src="images/jachins-homesec.png" class="w-100"
-                              alt="JACHINS Development — Oil and Gas Operations in Nigeria">
+                              alt="JACHINS Development — Oil and Gas Operations in Nigeria" loading="lazy" decoding="async" width="600" height="666">
                         </figure>
                         <div class="sis-e-icon-spin sis-icon-spin" style="bottom:5px">
                            <figure>
-                              <img src="images/NUPRC_permit.png" style="width: 120px; height: 120px;" alt="">
+                              <img src="images/NUPRC_permit.png" style="width: 120px; height: 120px;" alt="NUPRC Operating Permit" loading="lazy" decoding="async" width="120" height="120">
                            </figure>
                         </div>
                      </div>
@@ -402,7 +408,7 @@
    <div id="services" class="sis-services-section sis-primary-background section position-relative">
       <div class="sisf-sis-bottom-right-image" data-aos="zoom-in-left" data-aos-delay="300">
          <figure>
-            <img src="images/technology-image.png" alt="">
+            <img src="images/technology-image.png" alt="JACHINS engineering technology" loading="lazy" decoding="async">
          </figure>
       </div>
       <div class="container">
@@ -422,25 +428,7 @@
                         <a href="service.html" class="sis-btn-default">View All Services <i
                               class="fa-solid fa-arrow-right"></i></a>
                      </div>
-                     <div class="sis-page-content-part d-flex align-items-center gap-3" data-aos="fade-up"
-                        data-aos-delay="100">
-                        <div class="sis-e-icon">
-                           <figure>
-                              <img src="images/client-icon1.svg" alt="">
-                           </figure>
-                        </div>
-                        <div class="sis-e-content">
-                           <div class="sisf-m-star sisf--initial mb-1 text-start">
-                              <span class="star sisf-e-main-color">★</span>
-                              <span class="star sisf-e-main-color">★</span>
-                              <span class="star sisf-e-main-color">★</span>
-                              <span class="star sisf-e-main-color">★</span>
-                              <span class="star sisf-e-main-color">★</span>
-                           </div>
-                           <p class="mb-0 mt-0 text-white">Trusted Across Nigeria's Energy Sector</p>
-                        </div>
                      </div>
-                  </div>
                </div>
             </div>
          </div>
@@ -453,7 +441,7 @@
                         <a href="project-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
                               <img src="images/service-img1.jpg" class="w-100 sis-radius"
-                                 alt="Field Development Strategy">
+                                 alt="Field Development Strategy" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -483,7 +471,7 @@
                      <div class="sisf-service-icon-image position-relative">
                         <a href="project-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
-                              <img src="images/service-img2.jpg" class="w-100 sis-radius" alt="Engineering Design">
+                              <img src="images/end_design.jpeg" class="w-100 sis-radius" alt="Engineering Design" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -513,8 +501,8 @@
                      <div class="sisf-service-icon-image position-relative">
                         <a href="management-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
-                              <img src="images/service-img3.jpg" class="w-100 sis-radius"
-                                 alt="Procurement, Construction and Installation">
+                              <img src="images/procument_home.jpeg" class="w-100 sis-radius"
+                                 alt="Procurement, Construction and Installation" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -546,7 +534,7 @@
                         <a href="consultancy-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
                               <img src="images/people_development.png" class="w-100 sis-radius"
-                                 alt="People Development and Training">
+                                 alt="People Development and Training" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -576,7 +564,7 @@
                         <a href="project-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
                               <img src="images/asset_mag1.png" class="w-100 sis-radius"
-                                 alt="Asset Performance Management">
+                                 alt="Asset Performance Management" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -606,7 +594,7 @@
                         <a href="management-services.html" class="sisf-sis-page-link">
                            <figure class="sis-image-anime">
                               <img src="images/completed_epcim.png" class="w-100 sis-radius"
-                                 alt="Critical Infrastructure EPC">
+                                 alt="Critical Infrastructure EPC" loading="lazy" decoding="async">
                            </figure>
                         </a>
                      </div>
@@ -717,11 +705,11 @@
                <div class="sis-benefit-image-center position-relative">
                   <figure class="sis-reveal">
                      <img src="images/iStock-2.jpg" class="w-100 sis-radius"
-                        alt="JACHINS team at work on an oil and gas facility in Nigeria">
+                        alt="JACHINS team at work on an oil and gas facility in Nigeria" loading="lazy" decoding="async">
                   </figure>
                   <div class="sis-e-icon-spin" data-aos="zoom-in" data-aos-delay="300">
                      <figure>
-                        <img src="images/spin-image1.svg" class="spin-img" alt="">
+                        <img src="images/spin-image1.svg" class="spin-img" alt="" loading="lazy" decoding="async">
                      </figure>
                   </div>
                </div>
@@ -911,7 +899,7 @@
                      <div class="sis-our-map-image">
                         <figure class="sis-reveal">
                            <img src="images/location.png" class="w-100 sis-radius"
-                              alt="JACHINS operational locations in Nigeria — Niger Delta, Lagos, Port Harcourt">
+                              alt="JACHINS operational locations in Nigeria — Niger Delta, Lagos, Port Harcourt" loading="lazy" decoding="async">
                         </figure>
                      </div>
                   </div>
