@@ -2248,6 +2248,18 @@ i::before {
 /* Equal-height, compact service card images */
 .sisf-sis-e-service-list .sisf-service-icon-image {
 	flex-shrink: 0;
+	width: 100%;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border-radius: 12px;
+	background-color: var(--secondary-color);
+}
+
+.sisf-sis-e-service-list .sisf-service-icon-image > a,
+.sisf-sis-e-service-list .sisf-service-icon-image .sis-image-anime {
+	display: block;
+	width: 100%;
+	height: 100%;
 }
 
 .sisf-sis-e-service-list .sisf-service-icon-image .sis-image-anime {
@@ -2258,8 +2270,10 @@ i::before {
 .sisf-sis-e-service-list .sisf-service-icon-image img {
 	width: 100%;
 	height: 100%;
-	aspect-ratio: 1 / 0.6; 
 	display: block;
+	object-fit: cover;
+	object-position: center;
+	border-radius: inherit;
 }
 
 .sisf-sis-e-service-list .sis-m-text p {
@@ -3003,6 +3017,40 @@ i::before {
 	margin-bottom: 0;
 }
 
+/* CHANGED: unified project image sizing so every project image shares the same frame height and crops cleanly without distortion */
+.sis-project-list-item .sis-project-image {
+	position: relative;
+	overflow: hidden;
+	height: 420px;
+	border-radius: 12px;
+}
+
+.sis-project-list-item .sis-project-image > a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.sis-project-list-item .sis-project-image .sis-image-anime {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+.sis-project-list-item .sis-project-image img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+	object-position: center;
+	transition: transform .5s ease;
+}
+
+.sis-project-list-item:hover .sis-project-image img {
+	transform: scale(1.05);
+}
+
 .sis-project-list-item .sis-status-title {
 	position: absolute;
 	top: 20px;
@@ -3086,11 +3134,6 @@ i::before {
 	padding: 0;
 	text-transform: capitalize;
 
-}
-
-.sis-project-grid-page .sis-project-list-item .sis-project-image img {
-	height: 400px;
-	object-fit: cover;
 }
 
 .sis-project-grid-page .sis-project-list-item .sis-project-content .sisf-m-title a {
