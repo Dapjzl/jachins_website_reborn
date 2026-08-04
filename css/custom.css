@@ -693,7 +693,12 @@ i::before {
 .sisf-e-main-color {
 	color: #F4C430 !important;
 }
-
+.sisf-e-main-color1{
+	color: blue !important;
+}
+.sisf-e-main-color2{
+	color: #9e7909 !important;
+}
 .sisf-ceo-main-color {
 	color: #c70205 !important;
 }
@@ -3017,7 +3022,7 @@ i::before {
 	margin-bottom: 0;
 }
 
-/* CHANGED: unified project image sizing so every project image shares the same frame height and crops cleanly without distortion */
+/* CHANGED: unify project image sizing so every project card uses the same image frame and crops consistently */
 .sis-project-list-item .sis-project-image {
 	position: relative;
 	overflow: hidden;
