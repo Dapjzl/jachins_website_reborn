@@ -225,6 +225,10 @@
                <div class="col-lg-8">
                   <div class="sisf-blog sisf--blog sisf-blog-standard-page">
 
+                     <!-- Dynamic Admin Posts (injected from localStorage) -->
+                     <div id="sisf-dynamic-posts"></div>
+                     <!-- Dynamic Admin Posts End -->
+
                      <!-- Blog Item 1 -->
                      <article class="sisf-blog-item" aria-label="Blog post: Optimizing Pipeline Infrastructure">
                         <div class="sisf-e-inner position-relative">
@@ -833,7 +837,7 @@
                         <!-- Footer Copyright Start -->
                         <div class="footer-copyright-text">
                            <p class="mb-0 sisf-e-main-color">&copy; 2026 JACHINS Development Limited. All Rights
-                              Reserved.</p>
+                              Reserved. <a href="admin-blog.html" class="text-muted ms-2" style="font-size:10px;">Admin</a></p>
                         </div>
                         <!-- Footer Copyright End -->
                      </div>
@@ -936,6 +940,101 @@
    <script src="js/script.js"></script>
    <!-- Accessibility js file -->
    <script src="js/accessibility.js"></script>
+
+    <!-- Dynamic Blog Posts Bridge (reads from admin localStorage) -->
+    <script>
+    (function () {
+      'use strict';
+      var STORE_KEY = 'jachins_blog_posts';
+
+      function fmtDate(iso) {
+        try {
+          var d = new Date(iso);
+          return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        } catch(e) { return iso; }
+      }
+
+      function escHtml(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      function buildArticle(post) {
+        var coverDataUrl = '';
+        if (post.images && post.images.length) {
+          var ci = post.coverIndex || 0;
+          coverDataUrl = (post.images[ci] || post.images[0]).dataUrl || '';
+        }
+        var dateDisplay = post.date ? fmtDate(post.date + 'T00:00:00') : (post.createdAt ? fmtDate(post.createdAt) : '');
+        var articleSlug = 'blog-single.html'; // replace with real slug routing if available
+        var imgHtml = coverDataUrl
+          ? '<figure class="sis-image-anime sis-reveal"><img src="' + coverDataUrl + '" class="image-fluid sis-radius" alt="' + escHtml(post.title) + ' — JACHINS"></figure>'
+          : '<figure class="sis-image-anime sis-reveal"><img src="images/blog-image1.jpg" class="image-fluid sis-radius" alt="' + escHtml(post.title) + '"></figure>';
+
+        return [
+          '<article class="sisf-blog-item sisf-dynamic-post" aria-label="Blog post: ' + escHtml(post.title) + '">',
+          '  <div class="sisf-e-inner position-relative">',
+          '    <div class="sisf-e-media position-relative">',
+          '      <div class="sisf-e-media-image">',
+          '        <a href="' + articleSlug + '" aria-label="Read more: ' + escHtml(post.title) + '">',
+          '          ' + imgHtml,
+          '        </a>',
+          '      </div>',
+          '    </div>',
+          '    <div class="sisf-e-content p-0">',
+          '      <div class="sisf-e-info mb-2 sisf-info--top-holder">',
+          '        <div class="post-meta-list-after">',
+          '          <a href="blogs.html" class="meta--date">' + escHtml(dateDisplay) + '</a>',
+          '          <span class="mx-2 text-muted">&middot;</span>',
+          '          <span class="meta--cat text-muted">' + escHtml(post.category || 'News') + '</span>',
+          '          <span class="mx-2 text-muted">&middot;</span>',
+          '          <span class="meta--cat" style="color:#F4C430;font-size:11px;font-weight:700;">&#9679; NEW</span>',
+          '        </div>',
+          '      </div>',
+          '      <div class="sisf-e-content-inner d-flex align-items-center justify-content-between gap-3">',
+          '        <div class="sisf-e-text">',
+          '          <h2 class="sisf-e-title sis-comman-title mb-2">',
+          '            <a class="sisf-e-title-link" href="' + articleSlug + '">' + escHtml(post.title) + '</a>',
+          '          </h2>',
+          '          <p class="sisf-e-excerpt mb-0">' + escHtml(post.excerpt || '') + '</p>',
+          '        </div>',
+          '        <div class="sisf-sis-blog-bottom">',
+          '          <div class="sisf-e-info">',
+          '            <div class="sisf-e-info-icon">',
+          '              <a href="' + articleSlug + '" aria-label="Read full article: ' + escHtml(post.title) + '">',
+          '                <i class="fa-solid fa-arrow-right-long"></i>',
+          '              </a>',
+          '            </div>',
+          '          </div>',
+          '        </div>',
+          '      </div>',
+          '    </div>',
+          '  </div>',
+          '</article>'
+        ].join('\n');
+      }
+
+      function injectPosts() {
+        var container = document.getElementById('sisf-dynamic-posts');
+        if (!container) return;
+        var posts;
+        try {
+          posts = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+        } catch(e) { posts = []; }
+
+        var published = posts.filter(function(p) { return p.status === 'published'; });
+        published.sort(function(a,b) { return new Date(b.updatedAt||0) - new Date(a.updatedAt||0); });
+
+        if (!published.length) { container.innerHTML = ''; return; }
+        container.innerHTML = published.map(buildArticle).join('\n');
+      }
+
+      // Run on load; also listen for storage events from other tabs
+      document.addEventListener('DOMContentLoaded', injectPosts);
+      window.addEventListener('storage', function(e) {
+        if (e.key === STORE_KEY) injectPosts();
+      });
+    })();
+    </script>
 </body>
 
 </html>
