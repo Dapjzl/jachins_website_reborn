@@ -13,7 +13,7 @@ const SESSION_KEY = 'jachins_adm_auth';
 const CREDENTIALS = { username: 'admin', password: 'jachins2024' };
 const MAX_IMG_W   = 1200;     // px
 const IMG_QUALITY = 0.75;     // JPEG quality
-const MAX_IMAGES  = 10;       // per post
+const MAX_IMAGES  = 6;       // per post
 const CATEGORIES  = [
   'Pipeline Infrastructure', 'Smart Energy Technology', 'Safety & Compliance',
   'Infrastructure Engineering', 'Asset Integrity', 'EPC Projects',
