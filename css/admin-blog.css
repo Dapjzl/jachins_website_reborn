@@ -1085,6 +1085,14 @@ input, textarea, select {
   .adm-io-grid { grid-template-columns: 1fr; }
 }
 
+@media (max-width: 360px) {
+  .adm-content { padding: 10px; }
+  .adm-topbar { padding: 0 10px; }
+  .adm-login-box { padding: 24px 14px; }
+  .adm-modal-body { padding: 14px; }
+  .adm-btn { font-size: 12px; padding: 6px 10px; }
+}
+
 /* ============================================================
    SCROLLBAR
    ============================================================ */

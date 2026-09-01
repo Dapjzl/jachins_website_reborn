@@ -1,7 +1,7 @@
 (function ($) {
    "use strict";
     const $window = $(window);
-    const CONFIG = { mobileBreakpoint: 768, formAction: ["form-process.php", "review-form.php"] };
+    const CONFIG = { mobileBreakpoint: 991, formAction: ["form-process.php", "review-form.php"] };
 
     // Preloader
     $window.on("load", () => setTimeout(() => $(".sis-preloader").fadeOut(1000), 700));
