@@ -100,21 +100,17 @@
 
 <body>
    <!-- Preloader Start -->
-   <!-- <div class="sis-preloader">
-      <div class="sis-loading-container">
+   <div class="sis-preloader sis-preloader-video">
+      <div class="sis-loading-container sis-preloader-logo">
          <div class="sis-loading"></div>
          <div class="sis-loading-icon">
-            <figure class="sis-reveal">
+            <figure>
                <img src="images/jachins_logo.png" alt="JACHINS Development Ltd">
             </figure>
          </div>
       </div>
-      </div> -->
-   <div class="sis-preloader sis-preloader-video">
-      <figure class="sis-reveal">
-         <video autoplay muted loop playsinline>
-            <source src="images/jachins_desktop.mp4" type="video/mp4">
-         </video>
+      <figure class="sis-preloader-video-media">
+         <video id="sisPreloaderVideo" muted loop playsinline preload="none" data-src="images/jachins_desktop.mp4"></video>
       </figure>
    </div>
    <!-- Preloader End -->

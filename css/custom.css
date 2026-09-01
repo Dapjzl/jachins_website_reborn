@@ -8944,6 +8944,251 @@ input[type="text"]:focus,
 	}
 }
 
+/* ========================================================
+   35. CSR & Contact page — mobile / tablet layouts
+   (covers 1199, 991, 767, 576, 480, 390, 375, 360, 320)
+   ======================================================== */
+
+.sis-csr-lead {
+	line-height: 1.75;
+	font-size: clamp(15px, 2.1vw, 18px);
+}
+
+@supports (padding: max(0px, env(safe-area-inset-bottom))) {
+	.sis-back-to-top {
+		bottom: max(20px, env(safe-area-inset-bottom));
+		right: max(16px, env(safe-area-inset-right));
+	}
+
+	.slicknav_menu {
+		padding-left: max(15px, env(safe-area-inset-left));
+		padding-right: max(15px, env(safe-area-inset-right));
+	}
+}
+
+.sis-gallery-items .sisf-e-inner img {
+	width: 100%;
+	height: auto;
+	max-width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
+
+.sis-right-contact-image .sis-contact.sisf-sis-contact-information {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 16px;
+	background: rgba(11, 22, 40, 0.9);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	padding: 16px 18px;
+	box-sizing: border-box;
+}
+
+.sis-right-contact-image .sis-contact .sisf-contact-box {
+	width: calc(50% - 8px);
+	margin: 0 !important;
+	min-width: 0;
+	align-items: flex-start;
+}
+
+.sis-right-contact-image .sis-contact .sisf-sis-e-content {
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.sis-right-contact-image .sis-contact .sis-title {
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.sis-contact-section .sisf-m-title {
+	overflow-wrap: anywhere;
+}
+
+.sis-contact-section .form-section .form-control,
+.sis-contact-section .form-section textarea.form-control {
+	width: 100%;
+	max-width: 100%;
+}
+
+.sis-contact-section .form-section textarea.form-control {
+	min-height: 120px;
+	resize: vertical;
+}
+
+@media only screen and (max-width: 1199px) {
+	.sis-right-contact-image img {
+		aspect-ratio: 16 / 9;
+		max-height: 380px;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.sis-right-contact-image .sis-contact.sisf-sis-contact-information {
+		position: static !important;
+		width: 100%;
+		margin: 16px 0 0;
+		bottom: auto;
+		left: auto;
+		right: auto;
+		padding: 16px 18px;
+	}
+
+	.sis-right-contact-image .sis-contact .sisf-contact-box {
+		width: calc(50% - 8px);
+	}
+
+	.sis-contact-map {
+		height: 420px;
+	}
+}
+
+@media only screen and (max-width: 991px) {
+	.sis-right-contact-image {
+		margin-bottom: 8px;
+	}
+
+	.sis-right-contact-image img {
+		aspect-ratio: 16 / 9;
+		max-height: 320px;
+		width: 100%;
+		object-fit: cover;
+	}
+
+	.sis-right-contact-image .sis-contact .sisf-contact-box {
+		width: 100%;
+	}
+
+	.sis-contact-map {
+		height: 340px;
+	}
+
+	.sis-contact-section .sis-contect-right {
+		margin-top: 8px;
+	}
+
+	.sis-csr-commitment .sisf-m-title,
+	.sis-cta-section .sisf-m-title {
+		overflow-wrap: anywhere;
+	}
+
+	.sis-gallery-items .col-lg-4,
+	.sis-advantages-section .col-lg-4 {
+		min-width: 0;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.sis-contact-section {
+		padding-top: 40px;
+		padding-bottom: 40px;
+	}
+
+	.sis-contact-map {
+		height: 280px;
+	}
+
+	.sis-contact-map iframe {
+		filter: none;
+	}
+
+	.sis-right-contact-image img {
+		max-height: 220px;
+		aspect-ratio: 16 / 10;
+	}
+
+	.sis-right-contact-image .sis-contact .sisf-contact-box {
+		width: 100%;
+		min-height: 44px;
+	}
+
+	.sisf-banner .sisf-m-title {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.sis-gallery-items .sisf-e-inner {
+		margin-bottom: 0;
+	}
+
+	.sisf-comman-swiper--slider .swiper-slide img {
+		max-height: 56px !important;
+		width: auto;
+		max-width: 120px;
+		object-fit: contain;
+	}
+
+	.sis-benefits-section .sis-counter-title h2 {
+		justify-content: center;
+	}
+
+	.sis-cta-section .sisf-m-button .sis-btn-default {
+		display: inline-flex;
+	}
+}
+
+@media only screen and (max-width: 576px) {
+	.sis-contact-map {
+		height: 240px;
+	}
+
+	.sis-contact-section .sisf-m-title,
+	.sis-contact-section h2.sisf-m-title {
+		font-size: clamp(1.35rem, 6vw, 1.85rem);
+		line-height: 1.25;
+	}
+
+	.sis-csr-commitment {
+		padding: 18px 14px !important;
+	}
+
+	.sis-advantages-section .sisf-e-inner h3 {
+		font-size: 1.1rem;
+	}
+
+	.sis-gallery-items .sisf-e-inner img {
+		aspect-ratio: 16 / 10;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.sis-contact-map {
+		height: 210px;
+	}
+
+	.sis-contact-section .form-section .form-group {
+		margin-bottom: 4px;
+	}
+
+	.sis-contact-section .sisf-m-btn .sis-btn-default {
+		width: 100%;
+	}
+
+	.sis-cta-section .sisf-m-button .sis-btn-default {
+		width: 100%;
+	}
+
+	.sis-right-contact-image .sis-contact.sisf-sis-contact-information {
+		padding: 12px;
+		gap: 10px;
+	}
+
+	.sis-right-contact-image img {
+		max-height: 180px;
+	}
+}
+
+@media only screen and (max-width: 360px) {
+	.sis-contact-map {
+		height: 190px;
+	}
+
+	.sis-csr-lead {
+		font-size: 14px;
+	}
+}
+
 .help-block.with-errors {
   color: #a94442 !important;
 }
