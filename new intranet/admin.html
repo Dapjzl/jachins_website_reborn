@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Admin — Employee Accounts | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+   <!-- Supabase JS Client Library -->
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="sisf-comman-bg-light" id="admin-body">
+
+   <!-- Topbar Placeholder -->
+   <div id="topbar-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Main Content (Full Width - Sidebar Removed) -->
+      <main class="sis-intranet-main w-100 px-4 py-4">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Admin</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Employee <span class="sisf-e-colored">Accounts</span></h2>
+            <p class="mb-0">Add new employee logins and manage account status connected to Supabase.</p>
+         </div>
+
+         <!-- Status & Error Alert Notifications -->
+         <div id="admin-error-alert" class="sis-login-error is-visible mb-3 d-none">
+            <i class="fa-solid fa-circle-exclamation pe-2"></i><span id="error-message-text">An error occurred.</span>
+         </div>
+
+         <div id="admin-success-alert" class="sisf-sis-comman-drop-bg sis-radius p-3 mb-3 d-none" style="border-left:4px solid #28a745;">
+            <i class="fa-solid fa-circle-check pe-2" style="color:#28a745;"></i><span id="success-message-text">Operation completed successfully.</span>
+         </div>
+
+         <!-- Add / Edit Employee Form Container -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+            <h3 class="sisf-e-title sis-comman-title mb-3" id="employee-form-title">Add Employee</h3>
+            
+            <form id="employee-account-form" action="#" method="post" class="row g-3">
+               <input type="hidden" name="action" id="form-action" value="create_employee">
+
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Employee ID</label>
+                  <input type="text" name="employeeId" id="input-employee-id" class="form-control" placeholder="e.g. FN-0090" required>
+               </div>
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Work Email</label>
+                  <input type="email" name="email" id="input-email" class="form-control" placeholder="name@jachinsgroup.com" required>
+               </div>
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Full Name</label>
+                  <input type="text" name="name" id="input-name" class="form-control" required placeholder="e.g. Jane Doe">
+               </div>
+               <div class="col-md-3">
+                  <label class="form-label text-white" style="font-size:13px;">Department</label>
+                  <input type="text" name="department" id="input-department" class="form-control" placeholder="e.g. Finance">
+               </div>
+               <div class="col-md-3">
+                  <label class="form-label text-white" style="font-size:13px;">Role</label>
+                  <select name="role" id="select-role" class="form-select" required>
+                     <option value="employee" selected>Employee</option>
+                     <option value="admin">Admin</option>
+                  </select>
+               </div>
+               <div class="col-md-4 d-flex align-items-end" id="setup-hint-col">
+                  <small class="text-muted">A password setup email will be sent automatically upon creation.</small>
+               </div>
+               <div class="col-md-2 d-flex align-items-end">
+                  <button type="submit" id="btn-submit-employee" class="sis-btn-default" style="width:100%; justify-content:center; border:none;">
+                     Create
+                  </button>
+               </div>
+               <div class="col-md-2 d-flex align-items-end d-none" id="cancel-edit-col">
+                  <a href="#" id="btn-cancel-edit" class="sisf-e-main-color">Cancel</a>
+               </div>
+            </form>
+         </div>
+
+         <!-- Employee List Table -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            <h3 class="sisf-e-title sis-comman-title mb-3">All Employees</h3>
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>ID</th>
+                     <th>Email</th>
+                     <th>Role</th>
+                     <th>Department</th>
+                     <th>Status</th>
+                     <th>Actions</th>
+                  </tr>
+               </thead>
+               <tbody id="employee-table-body">
+                  <tr>
+                     <td colspan="7" class="text-center text-muted">Loading employees from Supabase...</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+      </main>
+   </div>
+
+   <!-- Footer Placeholder (Retained) -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+
+   <script>
+      // ==========================================
+      // SUPABASE CONFIGURATION
+      // Replace these two strings with your Supabase Project details
+      // ==========================================
+      const SUPABASE_URL = 'https://YOUR_SUPABASE_PROJECT_REF.supabase.co';
+      const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+      
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      (function () {
+         "use strict";
+
+         const errorAlert = document.getElementById("admin-error-alert");
+         const errorMessageText = document.getElementById("error-message-text");
+         const successAlert = document.getElementById("admin-success-alert");
+         const successMessageText = document.getElementById("success-message-text");
+
+         const formTitle = document.getElementById("employee-form-title");
+         const formAction = document.getElementById("form-action");
+         const inputId = document.getElementById("input-employee-id");
+         const inputEmail = document.getElementById("input-email");
+         const inputName = document.getElementById("input-name");
+         const inputDept = document.getElementById("input-department");
+         const selectRole = document.getElementById("select-role");
+         const submitBtn = document.getElementById("btn-submit-employee");
+         const setupHintCol = document.getElementById("setup-hint-col");
+         const cancelEditCol = document.getElementById("cancel-edit-col");
+         const cancelEditBtn = document.getElementById("btn-cancel-edit");
+         const accountForm = document.getElementById("employee-account-form");
+         const tableBody = document.getElementById("employee-table-body");
+
+         // 1. AUTH GUARD: Check session, fallback gracefully to index.html if explicitly unauthorized
+         async function initAdminAuth() {
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (user) {
+               const { data: profile } = await supabase
+                  .from("profiles")
+                  .select("role")
+                  .eq("id", user.id)
+                  .single();
+
+               if (profile && profile.role !== "admin") {
+                  window.location.href = "index.html";
+                  return;
+               }
+            }
+
+            // Load Employee table content
+            fetchEmployees();
+         }
+
+         function showError(msg) {
+            errorMessageText.textContent = msg;
+            errorAlert.classList.remove("d-none");
+            successAlert.classList.add("d-none");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+         }
+
+         function showSuccess(msg) {
+            successMessageText.textContent = msg;
+            successAlert.classList.remove("d-none");
+            errorAlert.classList.add("d-none");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+         }
+
+         // 2. FETCH & DISPLAY EMPLOYEES FROM SUPABASE
+         async function fetchEmployees() {
+            const { data: employees, error } = await supabase
+               .from("employees")
+               .select("*")
+               .order("created_at", { ascending: false });
+
+            if (error) {
+               showError("Failed to fetch employees: " + error.message);
+               tableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Database connection error. Check your Supabase URL & Key.</td></tr>';
+               return;
+            }
+
+            tableBody.innerHTML = "";
+
+            if (!employees || employees.length === 0) {
+               tableBody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: rgba(255,255,255,0.6);">No employee records found in Supabase. Create one above.</td></tr>';
+               return;
+            }
+
+            employees.forEach(emp => {
+               const tr = document.createElement("tr");
+               tr.setAttribute("data-emp-id", emp.employee_id);
+               tr.setAttribute("data-name", emp.name || "");
+               tr.setAttribute("data-email", emp.email || "");
+               tr.setAttribute("data-department", emp.department || "");
+               tr.setAttribute("data-role", emp.role || "employee");
+               tr.setAttribute("data-status", emp.status || "active");
+
+               const isCurrentActive = emp.status === "active";
+               const statusBadge = isCurrentActive 
+                  ? '<span class="sis-badge-pill sis-badge-pinned">Active</span>'
+                  : '<span class="sis-badge-pill" style="background:#f8d7da;color:#842029;">Disabled</span>';
+
+               const statusBtnText = isCurrentActive ? "Disable" : "Reactivate";
+
+               tr.innerHTML = `
+                  <td>${escapeHtml(emp.name)}</td>
+                  <td>${escapeHtml(emp.employee_id)}</td>
+                  <td>${escapeHtml(emp.email)}</td>
+                  <td><span class="sis-badge-pill sis-badge-dept">${escapeHtml(emp.role)}</span></td>
+                  <td>${escapeHtml(emp.department || '-')}</td>
+                  <td>${statusBadge}</td>
+                  <td class="d-flex flex-column gap-1">
+                     <a href="#" class="sisf-e-main-color edit-emp-btn" style="font-size:13px;">Edit</a>
+                     <button type="button" class="border-0 bg-transparent text-start p-0 reset-password-btn" style="font-size:13px; color:#c8a84b;">Reset Password</button>
+                     <button type="button" class="sisf-e-main-color border-0 bg-transparent text-start p-0 toggle-status-btn" style="font-size:13px;">${statusBtnText}</button>
+                  </td>
+               `;
+
+               tableBody.appendChild(tr);
+            });
+
+            bindRowEvents();
+         }
+
+         function escapeHtml(str) {
+            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+         }
+
+         // 3. FORM SUBMIT: CREATE OR UPDATE EMPLOYEE
+         accountForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const action = formAction.value;
+            const empId = inputId.value.trim();
+            const email = inputEmail.value.trim();
+            const name = inputName.value.trim();
+            const department = inputDept.value.trim();
+            const role = selectRole.value;
+
+            if (action === "create_employee") {
+               const { error } = await supabase
+                  .from("employees")
+                  .insert([
+                     { 
+                        employee_id: empId, 
+                        email: email, 
+                        name: name, 
+                        department: department, 
+                        role: role, 
+                        status: "active" 
+                     }
+                  ]);
+
+               if (error) {
+                  showError("Failed to create employee: " + error.message);
+                  return;
+               }
+
+               // Dispatch automated password setup email via Supabase Auth
+               await supabase.auth.resetPasswordForEmail(email, {
+                  redirectTo: window.location.origin + '/setup-password.html',
+               });
+
+               showSuccess(`Account created for ${name} (${empId}). Setup email dispatched to ${email}.`);
+               resetAddMode();
+               fetchEmployees();
+
+            } else if (action === "update_employee") {
+               const { error } = await supabase
+                  .from("employees")
+                  .update({
+                     email: email,
+                     name: name,
+                     department: department,
+                     role: role
+                  })
+                  .eq("employee_id", empId);
+
+               if (error) {
+                  showError("Failed to update profile: " + error.message);
+                  return;
+               }
+
+               showSuccess(`Updated profile for ${empId} (${name}).`);
+               resetAddMode();
+               fetchEmployees();
+            }
+         });
+
+         // 4. BIND DYNAMIC ROW EVENT LISTENERS
+         function bindRowEvents() {
+            document.querySelectorAll(".edit-emp-btn").forEach(btn => {
+               btn.addEventListener("click", function (e) {
+                  e.preventDefault();
+                  const row = this.closest("tr");
+                  if (row) setEditMode(row);
+               });
+            });
+
+            document.querySelectorAll(".reset-password-btn").forEach(btn => {
+               btn.addEventListener("click", async function () {
+                  const row = this.closest("tr");
+                  const email = row.getAttribute("data-email");
+                  const empId = row.getAttribute("data-emp-id");
+
+                  if (confirm(`Send password reset email to ${email}?`)) {
+                     const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                        redirectTo: window.location.origin + '/setup-password.html',
+                     });
+
+                     if (error) {
+                        showError("Failed to dispatch reset email: " + error.message);
+                     } else {
+                        showSuccess(`Password reset email sent to ${email} (${empId}).`);
+                     }
+                  }
+               });
+            });
+
+            document.querySelectorAll(".toggle-status-btn").forEach(btn => {
+               btn.addEventListener("click", async function () {
+                  const row = this.closest("tr");
+                  const empId = row.getAttribute("data-emp-id");
+                  const currentStatus = row.getAttribute("data-status");
+                  const newStatus = currentStatus === "active" ? "disabled" : "active";
+
+                  const { error } = await supabase
+                     .from("employees")
+                     .update({ status: newStatus })
+                     .eq("employee_id", empId);
+
+                  if (error) {
+                     showError(`Failed to set status to ${newStatus}: ` + error.message);
+                  } else {
+                     showSuccess(`Employee ${empId} set to ${newStatus}.`);
+                     fetchEmployees();
+                  }
+               });
+            });
+         }
+
+         function setEditMode(row) {
+            formTitle.textContent = "Edit Employee — " + row.getAttribute("data-emp-id");
+            formAction.value = "update_employee";
+            inputId.value = row.getAttribute("data-emp-id");
+            inputId.setAttribute("readonly", "readonly");
+            inputEmail.value = row.getAttribute("data-email");
+            inputName.value = row.getAttribute("data-name");
+            inputDept.value = row.getAttribute("data-department");
+            selectRole.value = row.getAttribute("data-role");
+
+            submitBtn.textContent = "Save Changes";
+            if (setupHintCol) setupHintCol.classList.add("d-none");
+            if (cancelEditCol) cancelEditCol.classList.remove("d-none");
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+         }
+
+         function resetAddMode() {
+            formTitle.textContent = "Add Employee";
+            formAction.value = "create_employee";
+            inputId.removeAttribute("readonly");
+            inputId.value = "";
+            inputEmail.value = "";
+            inputName.value = "";
+            inputDept.value = "";
+            selectRole.value = "employee";
+
+            submitBtn.textContent = "Create";
+            if (setupHintCol) setupHintCol.classList.remove("d-none");
+            if (cancelEditCol) cancelEditCol.classList.add("d-none");
+         }
+
+         if (cancelEditBtn) {
+            cancelEditBtn.addEventListener("click", function (e) {
+               e.preventDefault();
+               resetAddMode();
+            });
+         }
+
+         initAdminAuth();
+      })();
+   </script>
+</body>
+
+</html>

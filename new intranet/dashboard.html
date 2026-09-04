@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Dashboard | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <!-- Welcome Start -->
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Dashboard</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Welcome back, <span class="sisf-e-colored" id="welcomeFirstName">User</span></h2>
+            <p class="mb-0">Here's what's happening across JACHINS Development today, <span id="liveDate"></span> &middot; <span id="liveTime"></span>.</p>
+         </div>
+         <!-- Welcome End -->
+
+         <!-- Stats Row Start -->
+         <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+               <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius">
+                  <div class="sis-stat-number" id="statEmployees">128</div>
+                  <p class="mb-0" style="font-size:13px;">Employees Company-Wide</p>
+               </div>
+            </div>
+            <div class="col-6 col-lg-3">
+               <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius">
+                  <div class="sis-stat-number" id="statDepartments">6</div>
+                  <p class="mb-0" style="font-size:13px;">Departments</p>
+               </div>
+            </div>
+            <div class="col-6 col-lg-3">
+               <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius">
+                  <div class="sis-stat-number" id="statJobDescriptions">14</div>
+                  <p class="mb-0" style="font-size:13px;">Open Job Descriptions</p>
+               </div>
+            </div>
+            <div class="col-6 col-lg-3">
+               <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius">
+                  <div class="sis-stat-number" id="statAnnouncements">5</div>
+                  <p class="mb-0" style="font-size:13px;">New Announcements</p>
+               </div>
+            </div>
+         </div>
+         <!-- Stats Row End -->
+
+         <div class="row g-4">
+            <!-- Quick Links Start -->
+            <div class="col-lg-8">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+                  <h3 class="sisf-e-title1 sis-comman-title mb-3">Quick Links</h3>
+                  <div class="row g-3">
+                     <div class="col-6 col-md-4">
+                        <a href="job-descriptions.html" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-briefcase fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">Job Descriptions</p>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-6 col-md-4">
+                        <a href="employees.html" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-users fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">Employee Directory</p>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-6 col-md-4">
+                        <a href="hr.html" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-user-tie fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">HR Resources</p>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-6 col-md-4">
+                        <a href="documents.html" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-folder-open fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">Documents</p>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-6 col-md-4">
+                        <a href="announcements.html" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-bullhorn fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">Announcements</p>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-6 col-md-4">
+                        <a href="mailto:it-support@jachinsgroup.com" class="text-decoration-none">
+                           <div class="sis-stat-tile sis-comman-bg sis-radius text-center">
+                              <i class="fa-solid fa-headset fs-3 mb-2 sisf-e-main-color"></i>
+                              <p class="mb-0" style="font-size:15px;">IT Support</p>
+                           </div>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Recent Announcements Start -->
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4">
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Recent Announcements</h3>
+                     <a href="announcements.html" class="sisf-e-main-color" style="font-size:13px;">View all <i class="fa-solid fa-arrow-right"></i></a>
+                  </div>
+                  <div class="d-flex flex-column gap-3">
+                     <div class="d-flex justify-content-between align-items-start border-bottom pb-3" style="border-color: rgba(255,255,255,0.08) !important;">
+                        <div>
+                           <span class="sis-badge-pill sis-badge-pinned me-2">Pinned</span>
+                           <a href="announcements.html" class="text-white fw-bold d-block mt-2">Updated HSE Policy — Effective 1 September</a>
+                           <span style="font-size:12px; color: rgba(255,255,255,0.55);">HSE &middot; 15 Aug 2026</span>
+                        </div>
+                     </div>
+                     <div class="d-flex justify-content-between align-items-start border-bottom pb-3" style="border-color: rgba(255,255,255,0.08) !important;">
+                        <div>
+                           <a href="announcements.html" class="text-white fw-bold d-block">Q3 Town Hall — Friday, 10:00 AM</a>
+                           <span style="font-size:12px; color: rgba(255,255,255,0.55);">Administration &middot; 12 Aug 2026</span>
+                        </div>
+                     </div>
+                     <div>
+                        <a href="announcements.html" class="text-white fw-bold d-block">New JETS Training Cohort Now Open for Registration</a>
+                        <span style="font-size:12px; color: rgba(255,255,255,0.55);">Human Resources &middot; 8 Aug 2026</span>
+                     </div>
+                  </div>
+               </div>
+               <!-- Recent Announcements End -->
+            </div>
+            <!-- Quick Links End -->
+
+            <!-- Right Column Start -->
+            <div class="col-lg-4">
+               <!-- Profile Card -->
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4 text-center">
+                  <span class="sis-avatar-sm mx-auto mb-3" id="profileInitials" style="width:64px;height:64px;font-size:20px;">--</span>
+                  <h3 class="sisf-e-title1 sis-comman-title mb-0" id="profileName">User Name</h3>
+                  <p class="sisf-e-main-color mb-1" id="profileRole" style="font-size:13px;">Employee Role</p>
+                  <p style="font-size:12px; color: rgba(255,255,255,0.55);">
+                     <span id="profileDepartment">JACHINS Development</span> &middot; ID <span id="profileEmployeeId">----</span>
+                  </p>
+                  <a href="employees.html" class="sis-btn-default mt-2" style="width:100%; justify-content:center;">View Profile</a>
+               </div>
+
+               <!-- Important Documents -->
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0" style="font-size:17px;">Important Documents</h3>
+                     <a href="documents.html" class="sisf-e-main-color" style="font-size:12px;">All <i class="fa-solid fa-arrow-right"></i></a>
+                  </div>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-2">
+                     <li><a href="documents.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-regular fa-file-pdf sisf-e-main-color"></i> Employee Handbook 2026</a></li>
+                     <li><a href="documents.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-regular fa-file-lines sisf-e-main-color"></i> Leave Request Form</a></li>
+                     <li><a href="documents.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-regular fa-file-lines sisf-e-main-color"></i> HSE Policy v3</a></li>
+                  </ul>
+               </div>
+
+               <!-- HR Resources -->
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4">
+                  <h3 class="sisf-e-title1 sis-comman-title mb-3" style="font-size:17px;">HR Resources</h3>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-2">
+                     <li><a href="hr.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-solid fa-umbrella-beach sisf-e-main-color"></i> Leave Balance &amp; Requests</a></li>
+                     <li><a href="hr.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-solid fa-heart-pulse sisf-e-main-color"></i> Benefits Overview</a></li>
+                     <li><a href="hr.html" class="text-white d-flex align-items-center gap-2" style="font-size:14px;"><i class="fa-solid fa-address-book sisf-e-main-color"></i> HR Contacts</a></li>
+                  </ul>
+               </div>
+            </div>
+            <!-- Right Column End -->
+         </div>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         var timeEl = document.getElementById('liveTime');
+         var dateEl = document.getElementById('liveDate');
+         if (!timeEl || !dateEl) return;
+
+         function tick() {
+            var now = new Date();
+            var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            
+            if (dateEl) {
+               dateEl.textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+            }
+
+            if (timeEl) {
+               var hours = now.getHours();
+               var minutes = now.getMinutes();
+               var ampm = hours >= 12 ? 'PM' : 'AM';
+               hours = hours % 12 || 12;
+               timeEl.textContent = hours + ':' + String(minutes).padStart(2, '0') + ' ' + ampm;
+            }
+         }
+
+         tick();
+         setInterval(tick, 60 * 1000);
+      })();
+   </script>
+</body>
+
+</html>

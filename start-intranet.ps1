@@ -1,0 +1,4 @@
+https://ukiqmxjewewfnppsxour.supabase.co
+
+
+sb_publishable_dIT_5d803IvY65ba30q2jw_IosfndRG

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Job Descriptions | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+
+   <!-- Supabase JS Client & Auth Check -->
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script>
+      // Auth Guard: Protect page client-side via Supabase
+      (async function guard() {
+         const user = await checkAuth();
+         if (!user) {
+            window.location.href = "index.html";
+         }
+      })();
+   </script>
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Job <span class="sisf-e-colored">Descriptions</span>
+            </h2>
+            <p class="mb-0">Browse role responsibilities, qualifications, and reporting lines across every department.
+            </p>
+         </div>
+
+         <!-- Search / Filter Bar -->
+         <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius mb-4 p-3">
+            <div class="row g-2 align-items-center">
+               <div class="col-md-6">
+                  <input type="text" id="jdSearch" class="form-control" placeholder="Search job title or keyword...">
+               </div>
+               <div class="col-md-4">
+                  <select id="jdDeptFilter" class="form-select">
+                     <option value="all">All Departments</option>
+                     <option value="IT">IT</option>
+                     <option value="Human Resources">Human Resources</option>
+                     <option value="Finance">Finance</option>
+                     <option value="Marketing">Marketing</option>
+                     <option value="Operations">Operations</option>
+                     <option value="Administration">Administration</option>
+                  </select>
+               </div>
+               <div class="col-md-2 text-md-end text-start">
+                  <span class="text-white" style="font-size:13px;"><span id="jdCount">12</span> roles</span>
+               </div>
+            </div>
+         </div>
+
+         <!-- Job Descriptions Accordion -->
+         <div class="sisf-faq-accordian sisf-sis-page-accordian sisf-sis-comman-drop-bg sis-radius p-3">
+            <div class="accordion" id="jdAccordion">
+
+               <!-- IT -->
+               <div class="accordion-item jd-item" data-dept="IT" data-title="IT Systems Administrator">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd1">
+                        <span class="sis-badge-pill sis-badge-dept me-3">IT</span>
+                        <span>IT Systems Administrator</span>
+                     </button>
+                  </h2>
+                  <div id="jd1" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">IT Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Maintain company servers, network infrastructure, and endpoint security; manage user accounts, backups, and the internal helpdesk queue.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc in Computer Science/IT or equivalent, 3+ years in systems administration.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Windows/Linux server administration, networking, Microsoft 365, ticketing systems.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="IT" data-title="Network &amp; Cybersecurity Engineer">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd2">
+                        <span class="sis-badge-pill sis-badge-dept me-3">IT</span>
+                        <span>Network &amp; Cybersecurity Engineer</span>
+                     </button>
+                  </h2>
+                  <div id="jd2" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">IT Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Design and monitor network security controls, conduct vulnerability assessments, and enforce corporate security policy across sites.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc in Computer Science/Cybersecurity, CompTIA Security+ or equivalent.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Firewall management, SIEM tools, incident response, penetration testing basics.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Human Resources -->
+               <div class="accordion-item jd-item" data-dept="Human Resources" data-title="HR Business Partner">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd3">
+                        <span class="sis-badge-pill sis-badge-dept me-3">HR</span>
+                        <span>HR Business Partner</span>
+                     </button>
+                  </h2>
+                  <div id="jd3" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Head of HR</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Partner with department leads on recruitment, performance management, employee relations, and policy compliance.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc in Human Resources or related field, CIPM/CIPD an advantage, 4+ years HR generalist experience.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Nigerian labour law, HRIS systems, conflict resolution, stakeholder management.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="Human Resources" data-title="Training &amp; Development Officer (JETS)">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd4">
+                        <span class="sis-badge-pill sis-badge-dept me-3">HR</span>
+                        <span>Training &amp; Development Officer (JETS)</span>
+                     </button>
+                  </h2>
+                  <div id="jd4" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Head of HR</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Coordinate JETS training cohorts, competency assessments, and workforce development curricula for field and office staff.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc/HND in a relevant field, training/facilitation certification an advantage.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Curriculum design, competency mapping, LMS administration, presentation skills.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Finance -->
+               <div class="accordion-item jd-item" data-dept="Finance" data-title="Financial Accountant">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd5">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Finance</span>
+                        <span>Financial Accountant</span>
+                     </button>
+                  </h2>
+                  <div id="jd5" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Finance Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Prepare monthly financial statements, manage accounts payable/receivable, and support statutory audits.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc Accounting/Finance, ICAN/ACCA in view or qualified.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">IFRS, Excel/ERP systems, reconciliations, tax compliance.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="Finance" data-title="Payroll &amp; Compensation Analyst">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd6">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Finance</span>
+                        <span>Payroll &amp; Compensation Analyst</span>
+                     </button>
+                  </h2>
+                  <div id="jd6" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Finance Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Process monthly payroll, statutory remittances (PAYE, pension, NHF), and maintain compensation benchmarking data.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc Accounting/Finance/HR, 2+ years payroll experience.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Payroll software, Nigerian tax regulations, attention to detail.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Marketing -->
+               <div class="accordion-item jd-item" data-dept="Marketing" data-title="Business Development Executive">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd7">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Marketing</span>
+                        <span>Business Development Executive</span>
+                     </button>
+                  </h2>
+                  <div id="jd7" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Head of Business Development</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Identify tender opportunities, support proposal development, and maintain client relationships across the oil &amp; gas sector.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc in Business, Engineering, or related field, 3+ years in B2B business development.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Proposal writing, CRM tools, negotiation, industry networking.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="Marketing" data-title="Communications &amp; Brand Officer">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd8">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Marketing</span>
+                        <span>Communications &amp; Brand Officer</span>
+                     </button>
+                  </h2>
+                  <div id="jd8" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Head of Business Development</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Manage brand assets, website/social content, CSR communications, and internal announcement distribution.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc in Mass Communication, Marketing, or related field.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Content writing, design tools, social media management, brand guidelines.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Operations -->
+               <div class="accordion-item jd-item" data-dept="Operations" data-title="Site Operations Supervisor">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd9">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Operations</span>
+                        <span>Site Operations Supervisor</span>
+                     </button>
+                  </h2>
+                  <div id="jd9" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Operations Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Supervise onshore/swamp site crews, enforce permit-to-work procedures, and report daily progress against the project schedule.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">HND/BSc in Engineering, 5+ years site supervision experience in oil &amp; gas.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">HSE compliance, permit-to-work systems, crew scheduling, field reporting.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="Operations" data-title="QA/QC Inspector">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd10">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Operations</span>
+                        <span>QA/QC Inspector</span>
+                     </button>
+                  </h2>
+                  <div id="jd10" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Operations Manager</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Conduct inspections against QA/QC checklists during fabrication and construction, and log non-conformance reports.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">HND/BSc in Engineering, relevant NDT/welding inspection certification an advantage.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">API/ASME standards familiarity, inspection reporting, attention to detail.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- Administration -->
+               <div class="accordion-item jd-item" data-dept="Administration" data-title="Executive Assistant">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd11">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Admin</span>
+                        <span>Executive Assistant</span>
+                     </button>
+                  </h2>
+                  <div id="jd11" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Managing Director</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Manage executive calendars, coordinate travel and correspondence, and prepare board meeting materials.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc/HND in Business Administration or related field, 3+ years in an executive support role.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Diary management, confidentiality, MS Office, professional communication.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="accordion-item jd-item" data-dept="Administration" data-title="Procurement Officer">
+                  <h2 class="accordion-header sis-comman-title">
+                     <button class="accordion-button ps-4 collapsed" data-bs-toggle="collapse" data-bs-target="#jd12">
+                        <span class="sis-badge-pill sis-badge-dept me-3">Admin</span>
+                        <span>Procurement Officer</span>
+                     </button>
+                  </h2>
+                  <div id="jd12" class="accordion-collapse collapse" data-bs-parent="#jdAccordion">
+                     <div class="accordion-body pt-2">
+                        <div class="row g-3">
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Reports To</strong>
+                              <p class="mb-3">Head of Administration</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Responsibilities</strong>
+                              <p class="mb-0">Manage vendor sourcing, purchase orders, and procurement records for project and office materials.</p>
+                           </div>
+                           <div class="col-md-6">
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Qualifications</strong>
+                              <p class="mb-3">BSc/HND in Purchasing &amp; Supply, Business Admin, or related field.</p>
+                              <strong class="text-white d-block mb-1" style="font-size:13px;">Required Skills</strong>
+                              <p class="mb-0">Vendor negotiation, procurement software, contract documentation.</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+
+         <p id="jdNoResults" class="text-center mt-4 d-none" style="color: rgba(255,255,255,0.6);">No job descriptions match your search.</p>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         "use strict";
+         var searchInput = document.getElementById("jdSearch");
+         var deptFilter = document.getElementById("jdDeptFilter");
+         var items = Array.prototype.slice.call(document.querySelectorAll(".jd-item"));
+         var countEl = document.getElementById("jdCount");
+         var noResults = document.getElementById("jdNoResults");
+
+         function applyFilters() {
+            var query = searchInput.value.trim().toLowerCase();
+            var dept = deptFilter.value;
+            var visible = 0;
+
+            items.forEach(function (item) {
+               var title = (item.getAttribute("data-title") || "").toLowerCase();
+               var itemDept = item.getAttribute("data-dept");
+               var matchesQuery = title.indexOf(query) !== -1;
+               var matchesDept = dept === "all" || dept === itemDept;
+               var show = matchesQuery && matchesDept;
+               item.classList.toggle("d-none", !show);
+               if (show) visible++;
+            });
+
+            countEl.textContent = visible;
+            noResults.classList.toggle("d-none", visible !== 0);
+         }
+
+         if (searchInput && deptFilter) {
+            searchInput.addEventListener("input", applyFilters);
+            deptFilter.addEventListener("change", applyFilters);
+         }
+      })();
+   </script>
+</body>
+
+</html>

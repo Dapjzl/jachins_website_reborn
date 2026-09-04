@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Announcements | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Company <span class="sisf-e-colored">Announcements</span></h2>
+            <p class="mb-0">Company-wide news, policy updates, and events. Pinned items appear first.</p>
+         </div>
+
+         <div class="row g-2 mb-4">
+            <div class="col-auto">
+               <select id="annDeptFilter" class="form-select" style="min-width:200px;">
+                  <option value="all">All Departments</option>
+                  <option value="HSE">HSE</option>
+                  <option value="Administration">Administration</option>
+                  <option value="Human Resources">Human Resources</option>
+                  <option value="IT">IT</option>
+                  <option value="Operations">Operations</option>
+               </select>
+            </div>
+         </div>
+
+         <div class="d-flex flex-column gap-3" id="annList">
+
+            <!-- Pinned -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="HSE">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div>
+                     <span class="sis-badge-pill sis-badge-pinned me-2"><i class="fa-solid fa-thumbtack me-1"></i>Pinned</span>
+                     <span class="sis-badge-pill sis-badge-dept">HSE</span>
+                  </div>
+                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">15 Aug 2026</span>
+               </div>
+               <h3 class="sisf-e-title1 sis-comman-title mb-2">Updated HSE Policy — Effective 1 September</h3>
+               <p class="mb-2">A revised HSE Policy (v3) takes effect on 1 September 2026, introducing updated permit-to-work procedures and mandatory refresher training for all site personnel.</p>
+               <details>
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0">All employees working on or visiting project sites must complete the updated HSE induction module via the JETS learning portal before 1 September 2026. Site supervisors are responsible for confirming crew completion. The full policy document is available on the <a href="documents.html" class="sisf-e-main-color">Documents</a> page under Policies. Questions should be directed to the HSE desk or your line manager.</p>
+               </details>
+            </div>
+
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Administration">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div>
+                     <span class="sis-badge-pill sis-badge-dept">Administration</span>
+                  </div>
+                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">12 Aug 2026</span>
+               </div>
+               <h3 class="sisf-e-title1 sis-comman-title mb-2">Q3 Town Hall — Friday, 10:00 AM</h3>
+               <p class="mb-2">Join the Managing Director and department heads for the Q3 company town hall covering project wins, upcoming tenders, and an open Q&amp;A session.</p>
+               <details>
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0">The town hall will hold in the main conference room at HQ with a virtual dial-in option for site-based staff. An agenda will be circulated by the Business Development team ahead of the meeting. Attendance is strongly encouraged for all department leads.</p>
+               </details>
+            </div>
+
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Human Resources">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div>
+                     <span class="sis-badge-pill sis-badge-dept">Human Resources</span>
+                  </div>
+                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">8 Aug 2026</span>
+               </div>
+               <h3 class="sisf-e-title1 sis-comman-title mb-2">New JETS Training Cohort Now Open for Registration</h3>
+               <p class="mb-2">Registration is now open for the next JACHINS Engineering Training School (JETS) cohort, covering competency modules for field operations and asset integrity.</p>
+               <details>
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0">Employees interested in enrolling should speak with their line manager and submit an interest form to the HR Training &amp; Development team by 29 August. Priority will be given to roles with upcoming site assignments. Sponsorship details are outlined in the Benefits Overview on the HR page.</p>
+               </details>
+            </div>
+
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="IT">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div>
+                     <span class="sis-badge-pill sis-badge-dept">IT</span>
+                  </div>
+                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">4 Aug 2026</span>
+               </div>
+               <h3 class="sisf-e-title1 sis-comman-title mb-2">Scheduled Email &amp; Intranet Maintenance — Saturday Night</h3>
+               <p class="mb-2">IT will perform scheduled maintenance on company email and the intranet portal this Saturday from 11:00 PM to 2:00 AM. Brief interruptions to access should be expected.</p>
+               <details>
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0">No action is required from employees. If access issues persist after 3:00 AM, please contact the IT helpdesk. This maintenance window supports the security patching schedule covered in the recent Network &amp; Cybersecurity policy update.</p>
+               </details>
+            </div>
+
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Operations">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div>
+                     <span class="sis-badge-pill sis-badge-dept">Operations</span>
+                  </div>
+                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">29 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title1 sis-comman-title mb-2">EFE EPF Facility — Mechanical Completion Milestone Reached</h3>
+               <p class="mb-2">The project team has achieved mechanical completion on the EFE EPF compression system, a key milestone ahead of commissioning activities.</p>
+               <details>
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0">Congratulations to the site operations and QA/QC teams for delivering this milestone safely and on schedule. Commissioning support requirements will be communicated by the Operations Manager in the coming weeks. Photos and project details are available on request from the Business Development team.</p>
+               </details>
+            </div>
+
+         </div>
+
+         <p id="annNoResults" class="text-center mt-4 d-none" style="color: rgba(255,255,255,0.6);">No announcements match this filter.</p>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         "use strict";
+         var deptFilter = document.getElementById("annDeptFilter");
+         var items = Array.prototype.slice.call(document.querySelectorAll(".ann-item"));
+         var noResults = document.getElementById("annNoResults");
+
+         deptFilter.addEventListener("change", function () {
+            var dept = deptFilter.value;
+            var visible = 0;
+            items.forEach(function (item) {
+               var show = dept === "all" || dept === item.getAttribute("data-dept");
+               item.classList.toggle("d-none", !show);
+               if (show) visible++;
+            });
+            noResults.classList.toggle("d-none", visible !== 0);
+         });
+      })();
+   </script>
+</body>
+
+</html>

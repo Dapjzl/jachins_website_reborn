@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>HR | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+
+   <!-- Supabase JS Client & Auth Check -->
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script>
+      // Auth Guard: Protect page client-side via Supabase
+      (async function guard() {
+         const user = await checkAuth();
+         if (!user) {
+            window.location.href = "index.html";
+         }
+      })();
+   </script>
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Human <span class="sisf-e-colored">Resources</span>
+            </h2>
+            <p class="mb-0">Policies, leave, benefits, forms, and your HR contacts — all in one place.</p>
+         </div>
+
+         <div class="row g-4">
+
+            <!-- Leave Info -->
+            <div class="col-lg-6">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                     <i class="fa-solid fa-umbrella-beach fs-3 sisf-e-main-color"></i>
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Leave Information</h3>
+                  </div>
+                  <div class="row g-3 mb-3">
+                     <div class="col-6">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                           <div class="sis-stat-number" style="font-size:24px;">14</div>
+                           <p class="mb-0" style="font-size:13px;">Annual Leave Days Remaining</p>
+                        </div>
+                     </div>
+                     <div class="col-6">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                           <div class="sis-stat-number" style="font-size:24px;">3</div>
+                           <p class="mb-0" style="font-size:13px;">Pending Requests</p>
+                        </div>
+                     </div>
+                  </div>
+                  <p class="mb-2">JACHINS employees are entitled to 21 working days of annual leave, plus statutory
+                     public holidays, sick leave, and maternity/paternity leave as outlined in the Employee Handbook.
+                  </p>
+                  <a href="documents.html" class="sisf-e-main-color" style="font-size:14px;">Submit a Leave Request
+                     Form <i class="fa-solid fa-arrow-right"></i></a>
+               </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="col-lg-6">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                     <i class="fa-solid fa-heart-pulse fs-3 sisf-e-main-color"></i>
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Benefits Overview</h3>
+                  </div>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-2">
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>HMO health insurance for employee and
+                        dependents</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Group life insurance</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Pension contributions (employer +
+                        employee, per PENCOM guidelines)</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>JETS training &amp; professional
+                        development sponsorship</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Annual performance bonus (eligibility
+                        per appraisal policy)</li>
+                  </ul>
+               </div>
+            </div>
+
+            <!-- Policies & Handbook -->
+            <div class="col-lg-6">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                     <i class="fa-solid fa-book fs-3 sisf-e-main-color"></i>
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Policies &amp; Handbook</h3>
+                  </div>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-3">
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-pdf sisf-e-main-color pe-2"></i>Employee Handbook
+                           2026</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
+                     </li>
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Code of Conduct</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
+                     </li>
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>HSE Policy v3</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
+                     </li>
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Anti-Harassment
+                           Policy</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+
+            <!-- HR Forms -->
+            <div class="col-lg-6">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                     <i class="fa-solid fa-file-signature fs-3 sisf-e-main-color"></i>
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">HR Forms</h3>
+                  </div>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-3">
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Leave Request Form</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
+                     </li>
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Expense Reimbursement
+                           Form</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
+                     </li>
+                     <li class="d-flex justify-content-between align-items-center">
+                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Change of Bank/Next of Kin
+                           Form</span>
+                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+
+            <!-- HR Contacts -->
+            <div class="col-12">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                     <i class="fa-solid fa-address-book fs-3 sisf-e-main-color"></i>
+                     <h3 class="sisf-e-title1 sis-comman-title mb-0">HR Contacts</h3>
+                  </div>
+                  <div class="row g-3">
+                     <div class="col-md-4">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                           <span class="sis-avatar-sm mb-2 d-inline-flex">NE</span>
+                           <h4 class="text-white mb-0" style="font-size:15px;">Ngozi Eze</h4>
+                           <p class="sisf-e-main-color mb-1" style="font-size:12px;">HR Business Partner</p>
+                           <a href="mailto:n.eze@jachinsgroup.com" class="text-white"
+                              style="font-size:13px;">n.eze@jachinsgroup.com</a>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                           <span class="sis-avatar-sm mb-2 d-inline-flex">IN</span>
+                           <h4 class="text-white mb-0" style="font-size:15px;">Ifeoma Nwachukwu</h4>
+                           <p class="sisf-e-main-color mb-1" style="font-size:12px;">Training &amp; Development
+                              Officer</p>
+                           <a href="mailto:i.nwachukwu@jachinsgroup.com" class="text-white"
+                              style="font-size:13px;">i.nwachukwu@jachinsgroup.com</a>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                           <span class="sis-avatar-sm mb-2 d-inline-flex">HR</span>
+                           <h4 class="text-white mb-0" style="font-size:15px;">General HR Desk</h4>
+                           <p class="sisf-e-main-color mb-1" style="font-size:12px;">All HR Enquiries</p>
+                           <a href="mailto:hr@jachinsgroup.com" class="text-white"
+                              style="font-size:13px;">hr@jachinsgroup.com</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+</body>
+
+</html>

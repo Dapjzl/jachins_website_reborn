@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Asset Management | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Asset <span class="sisf-e-colored">Management</span></h2>
+            <p class="mb-0">View assets assigned to you and browse the company asset register.</p>
+         </div>
+
+         <!-- Asset Details View (Static Preview - hidden by default, can be toggled via js if needed) -->
+         <div id="asset-detail-card" class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4 d-none">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+               <h3 class="sisf-e-title sis-comman-title mb-0">Dell Latitude 5540</h3>
+               <a href="#" id="close-detail-btn" class="sisf-e-main-color"><i class="fa-solid fa-arrow-left pe-1"></i>Back to Assets</a>
+            </div>
+            <div class="row g-3">
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Asset ID</strong><p class="mb-0">AST-2026-001</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Category / Type</strong><p class="mb-0">IT Equipment &middot; Laptop</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Serial Number</strong><p class="mb-0">SN-99882211</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Location</strong><p class="mb-0">Lekki Office - HQ</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Department</strong><p class="mb-0">Operations</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Assigned Employee</strong><p class="mb-0">EMP-001</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Condition</strong><p class="mb-0">Good</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Status</strong><p class="mb-0"><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Assignment Date</strong><p class="mb-0">2026-01-15</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Purchase Date</strong><p class="mb-0">2025-11-10</p></div>
+               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Last Maintenance</strong><p class="mb-0">2026-02-01</p></div>
+               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Description</strong><p class="mb-0">Primary workstation laptop assigned for field operations and reporting.</p></div>
+               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Notes</strong><p class="mb-0">Includes charger, docking station, and wireless mouse.</p></div>
+            </div>
+         </div>
+
+         <!-- Main Asset Views -->
+         <div id="asset-tables-container">
+            <!-- My Assigned Assets -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
+               <h3 class="sisf-e-title1 sis-comman-title mb-3 px-2 pt-1">My Assigned Assets</h3>
+               <table class="sis-data-table">
+                  <thead>
+                     <tr>
+                        <th>Asset ID</th>
+                        <th>Asset</th>
+                        <th>Category</th>
+                        <th>Serial Number</th>
+                        <th>Condition</th>
+                        <th>Status</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>AST-2026-001</td>
+                        <td>Dell Latitude 5540</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">IT Equipment</span></td>
+                        <td>SN-99882211</td>
+                        <td>Good</td>
+                        <td><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius mb-3 p-3">
+               <div class="row g-2 align-items-center">
+                  <div class="col-md-6">
+                     <input type="text" id="assetSearch" class="form-control" placeholder="Search asset name, ID, or serial number...">
+                  </div>
+                  <div class="col-md-4">
+                     <select id="assetCategoryFilter" class="form-select">
+                        <option value="all">All Categories</option>
+                        <option value="IT Equipment">IT Equipment</option>
+                        <option value="Safety Gear">Safety Gear</option>
+                        <option value="Field Machinery">Field Machinery</option>
+                     </select>
+                  </div>
+                  <div class="col-md-2">
+                     <span class="text-white" style="font-size:13px;"><span id="assetCount">3</span> assets</span>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Full Register -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <table class="sis-data-table">
+                  <thead>
+                     <tr>
+                        <th>Asset ID</th>
+                        <th>Asset</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Assigned To</th>
+                        <th>Status</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr class="asset-row" data-name="dell latitude 5540 ast-2026-001 sn-99882211" data-category="IT Equipment">
+                        <td>AST-2026-001</td>
+                        <td>Dell Latitude 5540</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">IT Equipment</span></td>
+                        <td>Lekki HQ</td>
+                        <td>EMP-001</td>
+                        <td><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                     <tr class="asset-row" data-name="gas detector multi-4 ast-2026-002 sn-gd-44211" data-category="Safety Gear">
+                        <td>AST-2026-002</td>
+                        <td>Gas Detector Multi-4</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Safety Gear</span></td>
+                        <td>EFE EPF Facility</td>
+                        <td>Unassigned</td>
+                        <td><span class="sis-badge-pill" style="background:#28a74522; color:#28a745;">Available</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                     <tr class="asset-row" data-name="diesel generator 50kva ast-2026-003 sn-gen-9011" data-category="Field Machinery">
+                        <td>AST-2026-003</td>
+                        <td>Diesel Generator 50kVA</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Field Machinery</span></td>
+                        <td>Bay 3 Workshop</td>
+                        <td>Unassigned</td>
+                        <td><span class="sis-badge-pill" style="background:#fd7e1422; color:#fd7e14;">Under Maintenance</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                  </tbody>
+               </table>
+               <p id="assetNoResults" class="text-center mt-3 mb-0 d-none" style="color: rgba(255,255,255,0.6);">No assets match your search.</p>
+            </div>
+         </div>
+
+      </main>
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         "use strict";
+
+         var searchInput = document.getElementById("assetSearch");
+         var categoryFilter = document.getElementById("assetCategoryFilter");
+         var rows = Array.prototype.slice.call(document.querySelectorAll(".asset-row"));
+         var countEl = document.getElementById("assetCount");
+         var noResults = document.getElementById("assetNoResults");
+
+         // Interactive search & category filter
+         function applyFilters() {
+            if (!searchInput || !categoryFilter) return;
+            var query = searchInput.value.trim().toLowerCase();
+            var category = categoryFilter.value;
+            var visible = 0;
+
+            rows.forEach(function (row) {
+               var matchesQuery = row.getAttribute("data-name").indexOf(query) !== -1;
+               var matchesCategory = category === "all" || category === row.getAttribute("data-category");
+               var show = matchesQuery && matchesCategory;
+               row.classList.toggle("d-none", !show);
+               if (show) visible++;
+            });
+
+            if (countEl) countEl.textContent = visible;
+            if (noResults) noResults.classList.toggle("d-none", visible !== 0);
+         }
+
+         if (searchInput) searchInput.addEventListener("input", applyFilters);
+         if (categoryFilter) categoryFilter.addEventListener("change", applyFilters);
+
+         // Front-end preview toggle for detail card
+         var detailCard = document.getElementById("asset-detail-card");
+         var tablesContainer = document.getElementById("asset-tables-container");
+         var closeBtn = document.getElementById("close-detail-btn");
+
+         document.querySelectorAll(".view-details-link").forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
+               e.preventDefault();
+               detailCard.classList.remove("d-none");
+            });
+         });
+
+         if (closeBtn) {
+            closeBtn.addEventListener("click", function (e) {
+               e.preventDefault();
+               detailCard.classList.add("d-none");
+            });
+         }
+      })();
+   </script>
+</body>
+
+</html>

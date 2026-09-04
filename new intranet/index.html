@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>
+        Employee Login | JACHINS Intranet
+    </title>
+
+
+    <link
+        rel="shortcut icon"
+        type="image/png"
+        href="../images/jachins_logo.png"
+    >
+
+
+    <!-- Bootstrap -->
+    <link
+        href="../css/bootstrap.min.css"
+        rel="stylesheet"
+        media="screen"
+    >
+
+
+    <!-- Font Awesome -->
+    <link
+        href="../css/all.min.css"
+        rel="stylesheet"
+        media="screen"
+    >
+
+
+    <!-- Google Fonts -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Existing project styles -->
+
+    <link
+        href="../css/custom.css"
+        rel="stylesheet"
+        media="screen"
+    >
+
+    <link
+        href="intranet.css"
+        rel="stylesheet"
+        media="screen"
+    >
+
+
+    <style>
+
+        .sis-login-card {
+            position: relative;
+        }
+
+
+        .sis-login-error {
+
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            background: rgba(220, 53, 69, 0.12);
+
+            border: 1px solid rgba(220, 53, 69, 0.35);
+
+            color: #ffb3bb;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+
+        .sis-login-error.show {
+            display: block;
+        }
+
+
+        .sis-login-success {
+
+            display: none;
+
+            margin-bottom: 20px;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            background: rgba(25, 135, 84, 0.15);
+
+            border: 1px solid rgba(25, 135, 84, 0.35);
+
+            color: #b7f0d1;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+
+        .sis-login-success.show {
+            display: block;
+        }
+
+
+        .sis-password-field {
+            position: relative;
+        }
+
+
+        .sis-password-field .form-control {
+            padding-right: 48px;
+        }
+
+
+        .sis-password-toggle {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 12px;
+
+            transform: translateY(-50%);
+
+            border: 0;
+
+            background: transparent;
+
+            color: #777;
+
+            cursor: pointer;
+
+            padding: 5px;
+
+            z-index: 5;
+        }
+
+
+        .sis-password-toggle:hover {
+            color: #333;
+        }
+
+
+        .sis-password-toggle:focus {
+            outline: none;
+        }
+
+
+        #loginButton:disabled {
+
+            opacity: 0.7;
+
+            cursor: not-allowed;
+        }
+
+
+        #loginButton .login-spinner {
+            display: none;
+        }
+
+
+        #loginButton.loading .login-text {
+            display: none;
+        }
+
+
+        #loginButton.loading .login-spinner {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="sis-login-section sis-primary-background">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-12">
+
+                    <div
+                        class="sis-login-card sisf-sis-comman-drop-bg sis-radius text-center"
+                    >
+
+
+                        <!-- Logo -->
+
+                        <a
+                            href="index.html"
+                            class="d-inline-block"
+                        >
+
+                            <img
+                                src="../images/jachins_logo.png"
+                                alt="JACHINS Development Limited"
+                                class="sis-login-logo"
+                            >
+
+                        </a>
+
+
+                        <!-- Title -->
+
+                        <div class="sis-section-title mb-4">
+
+                            <span class="sisf-m-subtitle text-white">
+                                Employee Portal
+                            </span>
+
+
+                            <h2
+                                class="sisf-m-title text-white"
+                                style="font-size: 26px;"
+                            >
+
+                                Sign in to the
+
+                                <span class="sisf-e-colored">
+                                    Intranet
+                                </span>
+
+                            </h2>
+
+                        </div>
+
+
+                        <!-- Login error -->
+
+                        <div
+                            id="loginError"
+                            class="sis-login-error"
+                            role="alert"
+                            aria-live="polite"
+                        >
+
+                            <i
+                                class="fa-solid fa-circle-exclamation pe-2"
+                            ></i>
+
+                            <span id="loginErrorMessage"></span>
+
+                        </div>
+
+
+                        <!-- Login success -->
+
+                        <div
+                            id="loginSuccess"
+                            class="sis-login-success"
+                            role="status"
+                            aria-live="polite"
+                        >
+
+                            <i
+                                class="fa-solid fa-circle-check pe-2"
+                            ></i>
+
+                            <span id="loginSuccessMessage"></span>
+
+                        </div>
+
+
+                        <!-- Login form -->
+
+                        <form
+                            id="loginForm"
+                            class="text-start"
+                            novalidate
+                        >
+
+
+                            <!-- Email -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    for="employeeEmail"
+                                    class="form-label"
+                                >
+                                    Email Address
+                                </label>
+
+
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="employeeEmail"
+                                    name="email"
+                                    autocomplete="username"
+                                    placeholder="you@jachinsgroup.com"
+                                    required
+                                    autofocus
+                                >
+
+                            </div>
+
+
+                            <!-- Password -->
+
+                            <div class="mb-2">
+
+                                <label
+                                    for="password"
+                                    class="form-label"
+                                >
+                                    Password
+                                </label>
+
+
+                                <div class="sis-password-field">
+
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="password"
+                                        name="password"
+                                        autocomplete="current-password"
+                                        placeholder="Enter your password"
+                                        required
+                                    >
+
+
+                                    <button
+                                        type="button"
+                                        class="sis-password-toggle"
+                                        id="passwordToggle"
+                                        aria-label="Show password"
+                                        aria-pressed="false"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-eye"
+                                            id="passwordToggleIcon"
+                                        ></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Remember me / Forgot password -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-between mb-4 mt-3"
+                            >
+
+                                <div class="form-check">
+
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        id="rememberMe"
+                                        name="rememberMe"
+                                    >
+
+
+                                    <label
+                                        class="form-check-label"
+                                        for="rememberMe"
+                                    >
+                                        Remember me
+                                    </label>
+
+                                </div>
+
+
+                                <a
+                                    href="forgot-password.html"
+                                    class="sisf-e-main-color"
+                                    style="font-size: 14px;"
+                                >
+                                    Forgot password?
+                                </a>
+
+                            </div>
+
+
+                            <!-- Login button -->
+
+                            <button
+                                type="submit"
+                                id="loginButton"
+                                class="sis-btn-default"
+                                style="width:100%; justify-content:center; border:none;"
+                            >
+
+                                <span class="login-text">
+                                    Login
+                                </span>
+
+
+                                <span class="login-spinner">
+
+                                    <i
+                                        class="fa-solid fa-spinner fa-spin"
+                                    ></i>
+
+                                    Signing in...
+
+                                </span>
+
+                            </button>
+
+
+                        </form>
+
+
+                        <!-- Support -->
+
+                        <p
+                            class="mt-4 mb-0"
+                            style="font-size: 13px; color: rgba(255,255,255,0.5);"
+                        >
+
+                            Having trouble signing in?
+
+                            Contact
+
+                            <a
+                                href="mailto:it-support@jachinsgroup.com"
+                                class="sisf-e-main-color"
+                            >
+                                IT Support
+                            </a>.
+
+                        </p>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         SCRIPTS
+         ========================================================= -->
+
+
+    <!-- jQuery -->
+
+    <script src="../js/jquery-3.7.1.min.js"></script>
+
+
+    <!-- Bootstrap -->
+
+    <script src="../js/bootstrap.min.js"></script>
+
+
+    <!-- Supabase -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.js"></script>
+
+
+    <!-- Supabase configuration -->
+
+    <script src="supabase-config.js"></script>
+
+
+    <!-- Authentication -->
+
+    <script src="auth.js"></script>
+
+
+    <!-- Intranet controller -->
+
+    <script src="intranet.js"></script>
+
+
+    <!-- =========================================================
+         LOGIN PAGE CONTROLLER
+         ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const loginForm =
+                    document.getElementById(
+                        "loginForm"
+                    );
+
+
+                const emailInput =
+                    document.getElementById(
+                        "employeeEmail"
+                    );
+
+
+                const passwordInput =
+                    document.getElementById(
+                        "password"
+                    );
+
+
+                const rememberMe =
+                    document.getElementById(
+                        "rememberMe"
+                    );
+
+
+                const loginButton =
+                    document.getElementById(
+                        "loginButton"
+                    );
+
+
+                const loginError =
+                    document.getElementById(
+                        "loginError"
+                    );
+
+
+                const loginErrorMessage =
+                    document.getElementById(
+                        "loginErrorMessage"
+                    );
+
+
+                const loginSuccess =
+                    document.getElementById(
+                        "loginSuccess"
+                    );
+
+
+                const loginSuccessMessage =
+                    document.getElementById(
+                        "loginSuccessMessage"
+                    );
+
+
+                const passwordToggle =
+                    document.getElementById(
+                        "passwordToggle"
+                    );
+
+
+                const passwordToggleIcon =
+                    document.getElementById(
+                        "passwordToggleIcon"
+                    );
+
+
+                if (!loginForm) {
+                    return;
+                }
+
+
+                /* =================================================
+                   PASSWORD SHOW / HIDE
+                   ================================================= */
+
+                if (
+                    passwordToggle &&
+                    passwordInput
+                ) {
+
+                    passwordToggle.addEventListener(
+                        "click",
+                        function () {
+
+                            const isPassword =
+                                passwordInput.type ===
+                                "password";
+
+
+                            passwordInput.type =
+                                isPassword
+                                    ? "text"
+                                    : "password";
+
+
+                            if (passwordToggleIcon) {
+
+                                passwordToggleIcon.className =
+                                    isPassword
+                                        ? "fa-solid fa-eye-slash"
+                                        : "fa-solid fa-eye";
+                            }
+
+
+                            passwordToggle.setAttribute(
+                                "aria-label",
+                                isPassword
+                                    ? "Hide password"
+                                    : "Show password"
+                            );
+
+
+                            passwordToggle.setAttribute(
+                                "aria-pressed",
+                                isPassword
+                                    ? "true"
+                                    : "false"
+                            );
+
+                        }
+                    );
+                }
+
+
+                /* =================================================
+                   REMEMBER EMAIL
+                   ================================================= */
+
+                const rememberedEmail =
+                    localStorage.getItem(
+                        "jachins_login_email"
+                    );
+
+
+                if (
+                    rememberedEmail &&
+                    emailInput
+                ) {
+
+                    emailInput.value =
+                        rememberedEmail;
+
+                    if (rememberMe) {
+                        rememberMe.checked =
+                            true;
+                    }
+                }
+
+
+                /* =================================================
+                   ERROR
+                   ================================================= */
+
+                function showError(message) {
+
+                    if (
+                        !loginError ||
+                        !loginErrorMessage
+                    ) {
+                        return;
+                    }
+
+                    loginErrorMessage.textContent =
+                        message;
+
+                    loginError.classList.add(
+                        "show"
+                    );
+                }
+
+
+                function hideError() {
+
+                    if (loginError) {
+
+                        loginError.classList.remove(
+                            "show"
+                        );
+                    }
+
+                    if (loginErrorMessage) {
+
+                        loginErrorMessage.textContent =
+                            "";
+                    }
+                }
+
+
+                /* =================================================
+                   SUCCESS
+                   ================================================= */
+
+                function showSuccess(message) {
+
+                    if (
+                        !loginSuccess ||
+                        !loginSuccessMessage
+                    ) {
+                        return;
+                    }
+
+                    loginSuccessMessage.textContent =
+                        message;
+
+                    loginSuccess.classList.add(
+                        "show"
+                    );
+                }
+
+
+                /* =================================================
+                   LOADING
+                   ================================================= */
+
+                function setLoading(loading) {
+
+                    if (!loginButton) {
+                        return;
+                    }
+
+                    loginButton.disabled =
+                        loading;
+
+
+                    if (loading) {
+
+                        loginButton.classList.add(
+                            "loading"
+                        );
+
+                    } else {
+
+                        loginButton.classList.remove(
+                            "loading"
+                        );
+                    }
+                }
+
+
+                /* =================================================
+                   LOGIN
+                   ================================================= */
+
+                loginForm.addEventListener(
+                    "submit",
+                    async function (event) {
+
+                        event.preventDefault();
+
+                        hideError();
+
+                        if (loginSuccess) {
+
+                            loginSuccess.classList.remove(
+                                "show"
+                            );
+                        }
+
+
+                        const email =
+                            emailInput
+                                ? emailInput.value
+                                    .trim()
+                                    .toLowerCase()
+                                : "";
+
+
+                        const password =
+                            passwordInput
+                                ? passwordInput.value
+                                : "";
+
+
+                        /* -----------------------------------------
+                           VALIDATION
+                           ----------------------------------------- */
+
+                        if (!email) {
+
+                            showError(
+                                "Please enter your email address."
+                            );
+
+                            if (emailInput) {
+                                emailInput.focus();
+                            }
+
+                            return;
+                        }
+
+
+                        if (!password) {
+
+                            showError(
+                                "Please enter your password."
+                            );
+
+                            if (passwordInput) {
+                                passwordInput.focus();
+                            }
+
+                            return;
+                        }
+
+
+                        /* -----------------------------------------
+                           SUPABASE CHECK
+                           ----------------------------------------- */
+
+                        if (!window.supabaseClient) {
+
+                            console.error(
+                                "Supabase client is not initialized."
+                            );
+
+                            showError(
+                                "The authentication system is not available. Please refresh the page or contact IT Support."
+                            );
+
+                            return;
+                        }
+
+
+                        if (
+                            !window.IntranetAuth ||
+                            typeof window.IntranetAuth.login !==
+                            "function"
+                        ) {
+
+                            console.error(
+                                "IntranetAuth.login is not available."
+                            );
+
+                            showError(
+                                "The login system is not available. Please refresh the page."
+                            );
+
+                            return;
+                        }
+
+
+                        setLoading(true);
+
+
+                        try {
+
+                            /* -------------------------------------
+                               AUTHENTICATE
+                               ------------------------------------- */
+
+                            const result =
+                                await window.IntranetAuth.login(
+                                    email,
+                                    password
+                                );
+
+
+                            console.log(
+                                "JACHINS login successful:",
+                                result
+                            );
+
+
+                            /* -------------------------------------
+                               REMEMBER EMAIL
+                               ------------------------------------- */
+
+                            if (
+                                rememberMe &&
+                                rememberMe.checked
+                            ) {
+
+                                localStorage.setItem(
+                                    "jachins_login_email",
+                                    email
+                                );
+
+                            } else {
+
+                                localStorage.removeItem(
+                                    "jachins_login_email"
+                                );
+                            }
+
+
+                            /* -------------------------------------
+                               REDIRECT
+                               ------------------------------------- */
+
+                            showSuccess(
+                                "Login successful. Opening your employee portal..."
+                            );
+
+
+                            window.setTimeout(
+                                function () {
+
+                                    window.location.replace(
+                                        "dashboard.html"
+                                    );
+
+                                },
+                                250
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "JACHINS Login error:",
+                                error
+                            );
+
+
+                            let message =
+                                "Invalid email or password. Please try again.";
+
+
+                            if (
+                                error &&
+                                error.code ===
+                                "EMPLOYEE_PROFILE_NOT_FOUND"
+                            ) {
+
+                                message =
+                                    "Your login was successful, but your employee profile could not be loaded. Please contact IT Support.";
+
+                            } else if (
+                                error &&
+                                error.code ===
+                                "EMPLOYEE_PROFILE_QUERY_ERROR"
+                            ) {
+
+                                message =
+                                    "Your account is authenticated, but the employee database could not be accessed. Please contact IT Support.";
+
+                            } else if (
+                                error &&
+                                error.message
+                            ) {
+
+                                const errorText =
+                                    error.message.toLowerCase();
+
+
+                                if (
+                                    errorText.includes(
+                                        "email not confirmed"
+                                    )
+                                ) {
+
+                                    message =
+                                        "Your email address has not been confirmed. Please contact IT Support.";
+
+                                } else if (
+                                    errorText.includes(
+                                        "failed to fetch"
+                                    ) ||
+                                    errorText.includes(
+                                        "network"
+                                    )
+                                ) {
+
+                                    message =
+                                        "Unable to connect to the authentication service. Please check your internet connection.";
+
+                                } else if (
+                                    errorText.includes(
+                                        "invalid login credentials"
+                                    )
+                                ) {
+
+                                    message =
+                                        "Invalid email or password. Please try again.";
+                                }
+                            }
+
+
+                            showError(
+                                message
+                            );
+
+
+                            setLoading(false);
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

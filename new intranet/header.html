@@ -1,0 +1,51 @@
+<!--
+   header.html
+-->
+<header id="sisf-page-header" class="sisf-main-header sisf-standerd-header position-relative">
+   <div id="sisf-page-header-inner" class="sisf-skin--dark position-relative d-flex align-items-center py-2 px-3">
+      <div class="container-fluid px-2">
+         <div class="d-flex align-items-center w-100">
+            
+            <!-- Sidebar Toggle Button -->
+            <button class="sis-sidebar-toggle me-3 border-0 bg-transparent text-dark" data-sidebar-toggle type="button" aria-label="Toggle menu">
+               <i class="fa-solid fa-bars fs-5"></i>
+            </button>
+
+            <!-- Brand Logo -->
+            <a class="navbar-brand sisf-header-logo-link d-flex align-items-center me-3" href="dashboard.html">
+               <img src="../images/jachins_logo.png" onerror="this.onerror=null;this.src='images/jachins_logo.png'" alt="JACHINS Logo" style="max-height: 40px;">
+            </a>
+
+            <!-- Vertical Demarcation Line -->
+            <!-- <div style="width: 1px; height: 35px; background-color: rgba(0, 0, 0, 0.15); margin-right: 15px;"></div> -->
+
+            <!-- Employee Intranet Text (Placed AFTER the demarcation) -->
+            <span class="fw-bold text-uppercase d-none d-sm-inline-block" style="font-size: 13px; color: #888888; letter-spacing: 1.5px;">
+               EMPLOYEE INTRANET
+            </span>
+
+            <!-- Right User Dropdown Widget -->
+            <div class="sisf-widget-holder ms-auto d-flex align-items-center">
+               <div class="dropdown">
+                  <button class="btn d-flex align-items-center gap-2 text-dark border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <!-- Avatar Placeholder: Holds Image or Initials -->
+                     <span class="sis-avatar-sm d-inline-flex align-items-center justify-content-center overflow-hidden rounded-circle" data-user-avatar style="width: 36px; height: 36px; background: #d3a029; color: #fff; font-weight: 600;">
+                        --
+                     </span>
+                     <span class="d-none d-md-inline fw-semibold text-dark ms-1" data-user-name>Loading&hellip;</span>
+                     <i class="fa-solid fa-chevron-down text-dark ms-1" style="font-size: 11px;"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2">
+                     <li><a class="dropdown-item" href="employees.html"><i class="fa-regular fa-user me-2"></i>My Profile</a></li>
+                     <li><a class="dropdown-item" href="change-password.html"><i class="fa-solid fa-key me-2"></i>Change Password</a></li>
+                     <li><a class="dropdown-item" href="hr.html"><i class="fa-solid fa-user-tie me-2"></i>HR Resources</a></li>
+                     <li><hr class="dropdown-divider"></li>
+                     <li><button type="button" class="dropdown-item text-danger" data-logout><i class="fa-solid fa-right-from-bracket me-2"></i>Log Out</button></li>
+                  </ul>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+</header>

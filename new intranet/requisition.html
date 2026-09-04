@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Item Requisition | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Item <span class="sisf-e-colored">Requisition</span></h2>
+            <p class="mb-0">Use this form to request approved workplace items, equipment, stationery, PPE, or other required materials.</p>
+         </div>
+
+         <!-- Requisition Details View (Hidden by default, toggled via JavaScript preview) -->
+         <div id="requisition-detail-card" class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4 d-none">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+               <h3 class="sisf-e-title sis-comman-title mb-0" id="detail-ref-id">REQ-2026-001</h3>
+               <a href="#" id="close-req-detail-btn" class="sisf-e-main-color"><i class="fa-solid fa-arrow-left pe-1"></i>Back to Requisitions</a>
+            </div>
+            <div class="row g-3">
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Item</strong><p class="mb-0">Safety Helmet & Goggles</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Category</strong><p class="mb-0">PPE</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Quantity</strong><p class="mb-0">2 pairs</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Required Date</strong><p class="mb-0">2026-09-05</p></div>
+               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Priority</strong><p class="mb-0">Urgent</p></div>
+               <div class="col-md-4">
+                  <strong class="text-white d-block mb-1" style="font-size:13px;">Status</strong>
+                  <span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Submitted</span>
+               </div>
+               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Description / Specification</strong><p class="mb-0">EN 397 certified hard hat and anti-fog eye protection for site operations.</p></div>
+               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Reason for Request</strong><p class="mb-0">Replacement for damaged field gear prior to upcoming site inspection.</p></div>
+               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Additional Comments</strong><p class="mb-0">Please expedite if possible.</p></div>
+            </div>
+         </div>
+
+         <!-- Main Form & Table Views -->
+         <div id="requisition-main-container">
+
+            <!-- Success Alert Preview (Static example) -->
+            <div id="requisition-success-alert" class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4 d-none" style="border-left:4px solid #28a745;">
+               <i class="fa-solid fa-circle-check pe-2" style="color:#28a745; font-size:20px;"></i>
+               <strong class="text-white">Requisition submitted.</strong>
+               <p class="mb-0 mt-1">Your requisition number is <strong class="sisf-e-main-color">REQ-2026-004</strong>. Track its status in "My Requisitions" below.</p>
+            </div>
+
+            <!-- Error Alert Preview (Hidden by default) -->
+            <div id="requisition-error-alert" class="sis-login-error is-visible mb-3 d-none">
+               <i class="fa-solid fa-circle-exclamation pe-2"></i>Please fill in all required fields.
+            </div>
+
+            <!-- Requisition Form -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+               <form id="requisition-form" action="#" method="post" class="row g-3">
+
+                  <div class="col-md-4">
+                     <label class="form-label text-white" style="font-size:13px;">Item Category</label>
+                     <select name="item_category" class="form-select" required>
+                        <option value="">Select category&hellip;</option>
+                        <option value="Stationery">Stationery</option>
+                        <option value="IT Equipment">IT Equipment</option>
+                        <option value="PPE">PPE</option>
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Equipment">Equipment</option>
+                        <option value="Other">Other</option>
+                     </select>
+                  </div>
+                  <div class="col-md-8">
+                     <label class="form-label text-white" style="font-size:13px;">Item Name</label>
+                     <input type="text" name="item_name" class="form-control" required placeholder="e.g. Wireless Mouse, High-Vis Jacket">
+                  </div>
+
+                  <div class="col-12">
+                     <label class="form-label text-white" style="font-size:13px;">Description / Specification</label>
+                     <textarea name="description" class="form-control" rows="2" placeholder="Provide extra specifications or model numbers if applicable..."></textarea>
+                  </div>
+
+                  <div class="col-md-3">
+                     <label class="form-label text-white" style="font-size:13px;">Quantity</label>
+                     <input type="number" name="quantity" class="form-control" min="1" step="1" value="1" required>
+                  </div>
+                  <div class="col-md-3">
+                     <label class="form-label text-white" style="font-size:13px;">Unit of Measurement</label>
+                     <input type="text" name="unit" class="form-control" placeholder="e.g. pcs, boxes, pairs" required>
+                  </div>
+                  <div class="col-md-3">
+                     <label class="form-label text-white" style="font-size:13px;">Required Date</label>
+                     <input type="date" name="required_date" class="form-control" required>
+                  </div>
+                  <div class="col-md-3">
+                     <label class="form-label text-white" style="font-size:13px;">Priority</label>
+                     <select name="priority" class="form-select" required>
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="Critical">Critical</option>
+                     </select>
+                  </div>
+
+                  <div class="col-12">
+                     <label class="form-label text-white" style="font-size:13px;">Reason for Request</label>
+                     <textarea name="reason" class="form-control" rows="2" required placeholder="Explain why this request is required..."></textarea>
+                  </div>
+                  <div class="col-12">
+                     <label class="form-label text-white" style="font-size:13px;">Additional Comments</label>
+                     <textarea name="comments" class="form-control" rows="2" placeholder="Any additional delivery instructions or notes..."></textarea>
+                  </div>
+
+                  <div class="col-12">
+                     <button type="submit" class="sis-btn-default" style="border:none;"><i class="fa-solid fa-paper-plane pe-2"></i>Submit Requisition</button>
+                  </div>
+               </form>
+            </div>
+
+            <!-- My Requisitions -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <h3 class="sisf-e-title1 sis-comman-title mb-3 px-2 pt-1">My Requisitions</h3>
+               <table class="sis-data-table">
+                  <thead>
+                     <tr>
+                        <th>Requisition #</th>
+                        <th>Date</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Required Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>REQ-2026-001</td>
+                        <td>2026-08-15</td>
+                        <td>Safety Helmet & Goggles</td>
+                        <td>2 pairs</td>
+                        <td>2026-09-05</td>
+                        <td>Urgent</td>
+                        <td><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Submitted</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-req-details" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                     <tr>
+                        <td>REQ-2026-002</td>
+                        <td>2026-08-10</td>
+                        <td>Ergonomic Office Chair</td>
+                        <td>1 pcs</td>
+                        <td>2026-08-20</td>
+                        <td>Normal</td>
+                        <td><span class="sis-badge-pill" style="background:#28a74522; color:#28a745;">Approved</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-req-details" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                     <tr>
+                        <td>REQ-2026-003</td>
+                        <td>2026-07-28</td>
+                        <td>USB-C Docking Station</td>
+                        <td>1 pcs</td>
+                        <td>2026-08-01</td>
+                        <td>Critical</td>
+                        <td><span class="sis-badge-pill" style="background:#28a74522; color:#28a745;">Fulfilled</span></td>
+                        <td><a href="#" class="sisf-e-main-color view-req-details" style="font-size:13px;">View Details</a></td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+
+         </div>
+
+      </main>
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         "use strict";
+
+         var detailCard = document.getElementById("requisition-detail-card");
+         var mainContainer = document.getElementById("requisition-main-container");
+         var closeBtn = document.getElementById("close-req-detail-btn");
+         var form = document.getElementById("requisition-form");
+         var successAlert = document.getElementById("requisition-success-alert");
+
+         // View details toggle logic
+         document.querySelectorAll(".view-req-details").forEach(function (btn) {
+            btn.addEventListener("click", function (e) {
+               e.preventDefault();
+               if (detailCard) detailCard.classList.remove("d-none");
+               if (mainContainer) mainContainer.classList.add("d-none");
+            });
+         });
+
+         if (closeBtn) {
+            closeBtn.addEventListener("click", function (e) {
+               e.preventDefault();
+               if (detailCard) detailCard.classList.add("d-none");
+               if (mainContainer) mainContainer.classList.remove("d-none");
+            });
+         }
+
+         // Form submit preview handler
+         if (form) {
+            form.addEventListener("submit", function (e) {
+               e.preventDefault();
+               if (successAlert) {
+                  successAlert.classList.remove("d-none");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+               }
+            });
+         }
+      })();
+   </script>
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Employee Directory | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+
+   <!-- Supabase JS Client & Auth Check -->
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script>
+      // Auth Guard: Protect page client-side via Supabase
+      (async function guard() {
+         const user = await checkAuth();
+         if (!user) {
+            window.location.href = "index.html";
+         }
+      })();
+   </script>
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Employee <span class="sisf-e-colored">Directory</span>
+            </h2>
+            <p class="mb-0">Find colleagues by name, department, or position. Contact details shown are work contact only.</p>
+         </div>
+
+         <!-- Search / Filter Bar -->
+         <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius">
+            <div class="row g-2 align-items-center">
+               <div class="col-md-6">
+                  <input type="text" id="empSearch" class="form-control" placeholder="Search by name or position...">
+               </div>
+               <div class="col-md-4">
+                  <select id="empDeptFilter" class="form-select">
+                     <option value="all">All Departments</option>
+                     <option value="Engineering">Engineering</option>
+                     <option value="IT">IT</option>
+                     <option value="Human Resources">Human Resources</option>
+                     <option value="Finance">Finance</option>
+                     <option value="Marketing">Marketing</option>
+                     <option value="Operations">Operations</option>
+                     <option value="Administration">Administration</option>
+                  </select>
+               </div>
+               <div class="col-md-2">
+                  <span class="text-white" style="font-size:13px;"><span id="empCount">10</span> employees</span>
+               </div>
+            </div>
+         </div>
+
+         <!-- Employee Table -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>Name</th>
+                     <th>ID</th>
+                     <th>Department</th>
+                     <th>Position</th>
+                     <th>Email</th>
+                     <th>Ext.</th>
+                  </tr>
+               </thead>
+               <tbody id="empTableBody">
+                  <tr class="emp-row" data-dept="Engineering" data-name="Chidinma Okafor" data-position="Engineering Design Lead">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">CO</span> Chidinma Okafor</td>
+                     <td>JD-0231</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Engineering</span></td>
+                     <td>Engineering Design Lead</td>
+                     <td><a href="mailto:c.okafor@jachinsgroup.com" class="sisf-e-main-color">c.okafor@jachinsgroup.com</a></td>
+                     <td>102</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="IT" data-name="Tunde Balogun" data-position="IT Systems Administrator">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">TB</span> Tunde Balogun</td>
+                     <td>IT-0105</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">IT</span></td>
+                     <td>IT Systems Administrator</td>
+                     <td><a href="mailto:t.balogun@jachinsgroup.com" class="sisf-e-main-color">t.balogun@jachinsgroup.com</a></td>
+                     <td>110</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Human Resources" data-name="Ngozi Eze" data-position="HR Business Partner">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">NE</span> Ngozi Eze</td>
+                     <td>HR-0044</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Human Resources</span></td>
+                     <td>HR Business Partner</td>
+                     <td><a href="mailto:n.eze@jachinsgroup.com" class="sisf-e-main-color">n.eze@jachinsgroup.com</a></td>
+                     <td>121</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Human Resources" data-name="Ifeoma Nwachukwu" data-position="Training &amp; Development Officer">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">IN</span> Ifeoma Nwachukwu</td>
+                     <td>HR-0058</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Human Resources</span></td>
+                     <td>Training &amp; Development Officer</td>
+                     <td><a href="mailto:i.nwachukwu@jachinsgroup.com" class="sisf-e-main-color">i.nwachukwu@jachinsgroup.com</a></td>
+                     <td>123</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Finance" data-name="Emeka Obi" data-position="Financial Accountant">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">EO</span> Emeka Obi</td>
+                     <td>FN-0071</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Finance</span></td>
+                     <td>Financial Accountant</td>
+                     <td><a href="mailto:e.obi@jachinsgroup.com" class="sisf-e-main-color">e.obi@jachinsgroup.com</a></td>
+                     <td>130</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Finance" data-name="Blessing Udo" data-position="Payroll &amp; Compensation Analyst">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">BU</span> Blessing Udo</td>
+                     <td>FN-0082</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Finance</span></td>
+                     <td>Payroll &amp; Compensation Analyst</td>
+                     <td><a href="mailto:b.udo@jachinsgroup.com" class="sisf-e-main-color">b.udo@jachinsgroup.com</a></td>
+                     <td>131</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Marketing" data-name="Chuka Nnamdi" data-position="Business Development Executive">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">CN</span> Chuka Nnamdi</td>
+                     <td>MK-0019</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Marketing</span></td>
+                     <td>Business Development Executive</td>
+                     <td><a href="mailto:c.nnamdi@jachinsgroup.com" class="sisf-e-main-color">c.nnamdi@jachinsgroup.com</a></td>
+                     <td>140</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Operations" data-name="Aisha Mohammed" data-position="Site Operations Supervisor">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">AM</span> Aisha Mohammed</td>
+                     <td>OP-0206</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Operations</span></td>
+                     <td>Site Operations Supervisor</td>
+                     <td><a href="mailto:a.mohammed@jachinsgroup.com" class="sisf-e-main-color">a.mohammed@jachinsgroup.com</a></td>
+                     <td>150</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Operations" data-name="Kelechi Anyanwu" data-position="QA/QC Inspector">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">KA</span> Kelechi Anyanwu</td>
+                     <td>OP-0219</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Operations</span></td>
+                     <td>QA/QC Inspector</td>
+                     <td><a href="mailto:k.anyanwu@jachinsgroup.com" class="sisf-e-main-color">k.anyanwu@jachinsgroup.com</a></td>
+                     <td>151</td>
+                  </tr>
+                  <tr class="emp-row" data-dept="Administration" data-name="Grace Adeyemi" data-position="Executive Assistant">
+                     <td class="d-flex align-items-center gap-2"><span class="sis-avatar-sm">GA</span> Grace Adeyemi</td>
+                     <td>AD-0003</td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Administration</span></td>
+                     <td>Executive Assistant</td>
+                     <td><a href="mailto:g.adeyemi@jachinsgroup.com" class="sisf-e-main-color">g.adeyemi@jachinsgroup.com</a></td>
+                     <td>101</td>
+                  </tr>
+               </tbody>
+            </table>
+            <p id="empNoResults" class="text-center mt-3 mb-0 d-none" style="color: rgba(255,255,255,0.6);">No employees match your search.</p>
+         </div>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      (function () {
+         "use strict";
+         var searchInput = document.getElementById("empSearch");
+         var deptFilter = document.getElementById("empDeptFilter");
+         var rows = Array.prototype.slice.call(document.querySelectorAll(".emp-row"));
+         var countEl = document.getElementById("empCount");
+         var noResults = document.getElementById("empNoResults");
+
+         function applyFilters() {
+            var query = searchInput.value.trim().toLowerCase();
+            var dept = deptFilter.value;
+            var visible = 0;
+
+            rows.forEach(function (row) {
+               var name = (row.getAttribute("data-name") || "").toLowerCase();
+               var position = (row.getAttribute("data-position") || "").toLowerCase();
+               var rowDept = row.getAttribute("data-dept");
+               var matchesQuery = name.indexOf(query) !== -1 || position.indexOf(query) !== -1;
+               var matchesDept = dept === "all" || dept === rowDept;
+               var show = matchesQuery && matchesDept;
+               row.classList.toggle("d-none", !show);
+               if (show) visible++;
+            });
+
+            countEl.textContent = visible;
+            noResults.classList.toggle("d-none", visible !== 0);
+         }
+
+         if (searchInput && deptFilter) {
+            searchInput.addEventListener("input", applyFilters);
+            deptFilter.addEventListener("change", applyFilters);
+         }
+      })();
+   </script>
+</body>
+
+</html>

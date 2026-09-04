@@ -1,0 +1,29 @@
+<!--
+    partials/sidebar.html
+    Converted from includes/sidebar.php. The PHP version looped over an
+    array and only rendered the Admin link server-side if role === 'admin';
+    there's no server here, so all links are always in the DOM and the
+    Admin link is hidden via the sis-admin-only-hidden class (already
+    defined in css/intranet.css) — auth.js removes that class once it
+    confirms role === 'admin' from the employees table. Active-link
+    highlighting is done by intranet.js comparing each href to the current
+    page's filename, same approach as before.
+-->
+<aside class="sis-intranet-sidebar sis-primary-background">
+   <div class="sisf-e-inner sisf-sis-comman-drop-bg sis-radius p-3">
+      <ul class="sis-sidebar-nav">
+         <li><a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+         <li><a href="job-descriptions.html"><i class="fa-solid fa-briefcase"></i> Job Descriptions</a></li>
+         <li><a href="employees.html"><i class="fa-solid fa-users"></i> Employees</a></li>
+         <li><a href="hr.html"><i class="fa-solid fa-user-tie"></i> HR</a></li>
+         <li><a href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+         <li><a href="documents.html"><i class="fa-solid fa-folder-open"></i> Documents</a></li>
+         <li><a href="risk-report.html"><i class="fa-solid fa-triangle-exclamation"></i> Risk Reporting</a></li>
+         <li><a href="assets.html"><i class="fa-solid fa-boxes-stacked"></i> Asset Management</a></li>
+         <li><a href="requisition.html"><i class="fa-solid fa-cart-shopping"></i> Item Requisition</a></li>
+         <!-- <li class="sis-admin-only-hidden"><a href="admin.html"><i class="fa-solid fa-user-shield"></i> Admin</a></li> -->
+         <li><a href="#" data-logout><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+      </ul>
+   </div>
+</aside>
+<div class="sis-sidebar-backdrop"></div>

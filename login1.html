@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title> JACHINS Development Limited</title>
+  <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b62aceb299.js" crossorigin="anonymous"></script>
+  <!-- Admin CSS -->
+  <link href="css/login.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ====================================================
+     LOGIN GATE
+     ==================================================== -->
+<div id="adm-login-overlay">
+  <div class="adm-login-box">
+    <div class="adm-login-logo">
+      <img src="images/jachins_logo.png" alt="JACHINS">
+    </div>
+    <h1> Employee Login </h1>
+    <p>Sign in to access the employee portal</p>
+
+    <form id="adm-login-form" novalidate>
+      <div class="adm-field">
+        <label for="adm-username">Username</label>
+        <input id="adm-username" class="adm-input" type="text" placeholder="Enter username" autocomplete="username" required>
+      </div>
+      <div class="adm-field">
+        <label for="adm-password">Password</label>
+        <input id="adm-password" class="adm-input" type="password" placeholder="Enter password" autocomplete="current-password" required>
+      </div>
+      <div id="adm-login-error" class="adm-login-error">
+        <i class="fa-solid fa-circle-xmark"></i> Invalid username or password
+      </div>
+      <button type="submit" class="adm-btn-primary" style="margin-top:20px;">
+        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+      </button>
+    </form>
+    <p style="margin-top:16px;font-size:12px;color:#555;">
+      <a href="blogs.html" style="color:#666;">&larr; Back to public blog</a>
+    </p>
+  </div>
+</div>
+
+<!-- ====================================================
+     MAIN APP
+     ==================================================== -->
+<div id="adm-app" class="hidden">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div id="adm-sidebar-overlay" class="adm-sidebar-overlay"></div>
+
+  <!-- ---- SIDEBAR ---- -->
+  <aside class="adm-sidebar">
+    <div class="adm-sidebar-brand">
+      <div class="adm-brand-logo">
+        <img src="images/jachins_logo.png" alt="JACHINS">
+      </div>
+      <div class="adm-brand-text">
+        <div class="adm-brand-name">JACHINS</div>
+        <div class="adm-brand-sub">Blog Admin</div>
+      </div>
+    </div>
+
+    <nav class="adm-nav" aria-label="Admin navigation">
+      <div class="adm-nav-section">Main</div>
+      <div class="adm-nav-item" data-view="dashboard">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Dashboard</span>
+      </div>
+      <div class="adm-nav-item" data-view="posts">
+        <i class="fa-regular fa-newspaper"></i>
+        <span>All Posts</span>
+        <span class="adm-nav-badge">0</span>
+      </div>
+      <div class="adm-nav-item" data-view="editor">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>New Post</span>
+      </div>
+
+      <div class="adm-nav-section" style="margin-top:12px;">Tools</div>
+      <div class="adm-nav-item" data-view="io">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        <span>Import / Export</span>
+      </div>
+      <div class="adm-nav-item" onclick="window.open('blogs.html','_blank')">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        <span>View Public Blog</span>
+      </div>
+    </nav>
+
+    <div class="adm-sidebar-footer">
+      <button id="adm-logout-btn" class="adm-logout-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ---- MAIN CONTENT ---- -->
+  <main class="adm-main">
+
+    <!-- Topbar -->
+    <header class="adm-topbar">
+      <div class="adm-topbar-left">
+        <button id="adm-menu-toggle" class="adm-menu-toggle" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 id="adm-page-title" class="adm-page-title">Dashboard</h1>
+      </div>
+      <div class="adm-topbar-right">
+        <button id="adm-btn-new" class="adm-topbar-btn primary">
+          <i class="fa-solid fa-plus"></i> New Post
+        </button>
+      </div>
+    </header>
+
+    <div class="adm-content">
+
+      <!-- ================================================
+           DASHBOARD VIEW
+           ================================================ -->
+      <section id="adm-view-dashboard" class="adm-view active" aria-label="Dashboard">
+        <div class="adm-stats-grid">
+          <div class="adm-stat-card">
+            <div class="adm-stat-icon">
+              <i class="fa-regular fa-newspaper"></i>
+            </div>
+            <div>
+              <div id="adm-stat-total" class="adm-stat-num">0</div>
+              <div class="adm-stat-label">Total Posts</div>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-icon green">
+              <i class="fa-solid fa-circle-dot"></i>
+            </div>
+            <div>
+              <div id="adm-stat-published" class="adm-stat-num">0</div>
+              <div class="adm-stat-label">Published</div>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-icon orange">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div>
+              <div id="adm-stat-drafts" class="adm-stat-num">0</div>
+              <div class="adm-stat-label">Drafts</div>
+            </div>
+          </div>
+          <div class="adm-stat-card">
+            <div class="adm-stat-icon blue">
+              <i class="fa-regular fa-images"></i>
+            </div>
+            <div>
+              <div id="adm-stat-images" class="adm-stat-num">0</div>
+              <div class="adm-stat-label">Total Images</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-recent-title">Recent Posts</div>
+        <div class="adm-table-wrap">
+          <table class="adm-table" aria-label="Recent posts">
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Author</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adm-recent-tbody">
+              <tr><td colspan="6"><div class="adm-empty-state"><i class="fa-regular fa-newspaper"></i><p>No posts yet. Create your first post!</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================
+           POSTS TABLE VIEW
+           ================================================ -->
+      <section id="adm-view-posts" class="adm-view" aria-label="All posts">
+        <div class="adm-toolbar">
+          <div class="adm-search-box">
+            <i class="fa-solid fa-magnifying-glass adm-search-icon"></i>
+            <input id="adm-post-search" type="search" placeholder="Search posts…" aria-label="Search posts">
+          </div>
+          <select id="adm-post-filter" class="adm-filter-select" aria-label="Filter by status">
+            <option value="all">All Statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+
+        <div class="adm-table-wrap">
+          <table class="adm-table" aria-label="All posts">
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th>Author</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adm-posts-tbody">
+              <tr><td colspan="6"><div class="adm-empty-state"><i class="fa-regular fa-newspaper"></i><p>No posts yet.</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================
+           POST EDITOR VIEW
+           ================================================ -->
+      <section id="adm-view-editor" class="adm-view" aria-label="Post editor">
+        <h2 id="adm-editor-heading" style="font-family:var(--adm-heading);font-size:22px;color:#fff;font-weight:700;margin-bottom:24px;">New Post</h2>
+        <form id="adm-editor-form" novalidate>
+          <div class="adm-editor-layout">
+
+            <!-- ---- LEFT COLUMN: Content ---- -->
+            <div class="adm-editor-main">
+
+              <!-- Title & Slug -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-solid fa-heading"></i> Post Details</div>
+                </div>
+                <div class="adm-card-body">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-title-input">Title <span class="required">*</span></label>
+                    <input id="adm-title-input" class="adm-input" type="text" placeholder="Enter an engaging post title…" required>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-slug-input">URL Slug</label>
+                    <input id="adm-slug-input" class="adm-input" type="text" placeholder="auto-generated-from-title">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-excerpt-input">Excerpt <span class="required">*</span></label>
+                    <textarea id="adm-excerpt-input" class="adm-textarea" rows="3" placeholder="A short summary shown on the blog listing page (max 200 characters)…" required></textarea>
+                    <div id="adm-excerpt-count" class="adm-char-count">0/200</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Body Content -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-solid fa-align-left"></i> Body Content</div>
+                </div>
+                <div class="adm-card-body" style="padding-bottom:0;">
+                  <!-- Rich Text Toolbar -->
+                  <div class="adm-rte-toolbar" role="toolbar" aria-label="Text formatting">
+                    <select class="adm-rte-select" data-cmd="formatBlock" title="Heading">
+                      <option value="">Paragraph</option>
+                      <option value="h2">Heading 2</option>
+                      <option value="h3">Heading 3</option>
+                      <option value="h4">Heading 4</option>
+                    </select>
+                    <div class="adm-rte-sep"></div>
+                    <button type="button" class="adm-rte-btn" data-cmd="bold"          title="Bold"><i class="fa-solid fa-bold"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="italic"        title="Italic"><i class="fa-solid fa-italic"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="underline"     title="Underline"><i class="fa-solid fa-underline"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="strikeThrough" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+                    <div class="adm-rte-sep"></div>
+                    <button type="button" class="adm-rte-btn" data-cmd="insertUnorderedList" title="Bullet list"><i class="fa-solid fa-list-ul"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="insertOrderedList"   title="Numbered list"><i class="fa-solid fa-list-ol"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="indent"              title="Indent"><i class="fa-solid fa-indent"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="outdent"             title="Outdent"><i class="fa-solid fa-outdent"></i></button>
+                    <div class="adm-rte-sep"></div>
+                    <button type="button" class="adm-rte-btn" data-cmd="justifyLeft"   title="Align left"><i class="fa-solid fa-align-left"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="justifyCenter" title="Center"><i class="fa-solid fa-align-center"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="justifyRight"  title="Align right"><i class="fa-solid fa-align-right"></i></button>
+                    <div class="adm-rte-sep"></div>
+                    <button type="button" class="adm-rte-btn" id="adm-rte-link" title="Insert link" onclick="AdminUI._insertLink()"><i class="fa-solid fa-link"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="formatBlock" data-arg="blockquote" title="Blockquote"><i class="fa-solid fa-quote-left"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="removeFormat" title="Clear formatting"><i class="fa-solid fa-text-slash"></i></button>
+                    <div class="adm-rte-sep"></div>
+                    <button type="button" class="adm-rte-btn" data-cmd="undo" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button type="button" class="adm-rte-btn" data-cmd="redo" title="Redo"><i class="fa-solid fa-rotate-right"></i></button>
+                  </div>
+                  <div id="adm-rte-content" class="adm-rte-content" contenteditable="true" aria-label="Post body content" aria-multiline="true" role="textbox" data-placeholder="Start writing your article here…"></div>
+                </div>
+              </div>
+
+              <!-- Image Upload -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-regular fa-images"></i> Images &amp; Media</div>
+                  <span style="font-size:12px;color:var(--adm-muted);">Max 10 images · Auto-optimized</span>
+                </div>
+                <div class="adm-card-body" id="adm-image-uploader">
+                  <div class="adm-drop-zone" id="adm-main-drop-zone">
+                    <input type="file" id="adm-file-input" multiple accept="image/*">
+                    <i class="fa-solid fa-cloud-arrow-up adm-drop-icon"></i>
+                    <div class="adm-drop-title">Drop images here</div>
+                    <div class="adm-drop-sub">or click to browse your files</div>
+                    <button type="button" class="adm-browse-btn">
+                      <i class="fa-solid fa-folder-open"></i> Choose Images
+                    </button>
+                    <div class="adm-drop-limit">Supports JPG, PNG, WebP, GIF · Auto-compressed to JPEG 75% quality · Max 1200px wide</div>
+                  </div>
+
+                  <!-- Stats row -->
+                  <div class="adm-compress-row"></div>
+
+                  <!-- Preview grid -->
+                  <div class="adm-image-grid" id="adm-img-preview-grid"></div>
+
+                  <!-- Hint -->
+                  <p style="font-size:12px;color:var(--adm-muted);margin-top:12px;">
+                    <i class="fa-solid fa-circle-info" style="color:var(--adm-gold);margin-right:4px;"></i>
+                    Drag images to reorder. Click the <i class="fa-solid fa-star" style="color:var(--adm-gold);"></i> icon to set the cover image (shown on the blog listing).
+                  </p>
+                </div>
+              </div>
+
+            </div>
+            <!-- ---- END LEFT COLUMN ---- -->
+
+            <!-- ---- RIGHT COLUMN: Settings ---- -->
+            <div class="adm-sidebar-panel">
+
+              <!-- Publish / Status -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-solid fa-rocket"></i> Publish</div>
+                </div>
+                <div class="adm-card-body">
+                  <div class="adm-form-group">
+                    <label class="adm-label">Status</label>
+                    <div class="adm-status-toggle">
+                      <div class="adm-status-opt draft active" data-status="draft">Draft</div>
+                      <div class="adm-status-opt published" data-status="published">Published</div>
+                    </div>
+                  </div>
+                  <div class="adm-save-actions">
+                    <button type="submit" class="adm-btn primary">
+                      <i class="fa-solid fa-floppy-disk"></i> Save Post
+                    </button>
+                    <button type="button" id="adm-btn-preview" class="adm-btn secondary">
+                      <i class="fa-solid fa-eye"></i> Preview
+                    </button>
+                    <button type="button" id="adm-btn-cancel" class="adm-btn ghost">
+                      <i class="fa-solid fa-xmark"></i> Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category & Author -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-solid fa-tags"></i> Metadata</div>
+                </div>
+                <div class="adm-card-body">
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-category-select">Category</label>
+                    <select id="adm-category-select" class="adm-select">
+                      <option value="">— Select category —</option>
+                    </select>
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-author-input">Author</label>
+                    <input id="adm-author-input" class="adm-input" type="text" placeholder="JACHINS Editorial">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-date-input">Publish Date</label>
+                    <input id="adm-date-input" class="adm-input" type="date">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-label" for="adm-tags-input">Tags</label>
+                    <input id="adm-tags-input" class="adm-input" type="text" placeholder="pipeline, HSE, EPC (comma-separated)">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Tips -->
+              <div class="adm-card">
+                <div class="adm-card-header">
+                  <div class="adm-card-title"><i class="fa-solid fa-lightbulb"></i> Tips</div>
+                </div>
+                <div class="adm-card-body" style="font-size:13px;color:var(--adm-muted);line-height:1.7;">
+                  <p>✦ Set status to <strong style="color:var(--adm-success);">Published</strong> for posts to appear on the public blog.</p>
+                  <p style="margin-top:8px;">✦ Images are auto-compressed using the browser's Canvas API — no server needed.</p>
+                  <p style="margin-top:8px;">✦ Drag images to reorder them in the gallery.</p>
+                  <p style="margin-top:8px;">✦ Posts are stored in your browser's localStorage and persist across page reloads.</p>
+                </div>
+              </div>
+
+            </div>
+            <!-- ---- END RIGHT COLUMN ---- -->
+
+          </div>
+        </form>
+      </section>
+
+      <!-- ================================================
+           IMPORT / EXPORT VIEW
+           ================================================ -->
+      <section id="adm-view-io" class="adm-view" aria-label="Import and Export">
+        <h2 style="font-family:var(--adm-heading);font-size:22px;color:#fff;font-weight:700;margin-bottom:24px;">Import / Export</h2>
+        <div class="adm-io-grid">
+
+          <!-- Export -->
+          <div class="adm-io-card">
+            <span class="adm-io-icon">⬇️</span>
+            <h3>Export Posts</h3>
+            <p>Download all posts (including images) as a JSON backup file. Use this to migrate posts or create a backup.</p>
+            <button id="adm-btn-export" class="adm-btn primary" style="width:auto;padding:12px 28px;">
+              <i class="fa-solid fa-file-export"></i> Download JSON Backup
+            </button>
+          </div>
+
+          <!-- Import -->
+          <div class="adm-io-card">
+            <span class="adm-io-icon">⬆️</span>
+            <h3>Import Posts</h3>
+            <p>Import posts from a previously exported JSON file. Existing posts with the same ID will not be overwritten.</p>
+            <div id="adm-import-zone" class="adm-drop-zone-json">
+              <i class="fa-solid fa-file-import" style="font-size:24px;display:block;margin-bottom:8px;"></i>
+              Drop JSON file here or click to browse
+            </div>
+            <input type="file" id="adm-import-input" accept=".json" style="display:none;">
+            <button type="button" class="adm-btn secondary" style="width:auto;padding:12px 24px;" onclick="document.getElementById('adm-import-input').click()">
+              <i class="fa-solid fa-folder-open"></i> Browse File
+            </button>
+          </div>
+
+          <!-- Clear all -->
+          <div class="adm-io-card" style="border-color:rgba(229,83,83,0.2);">
+            <span class="adm-io-icon">🗑️</span>
+            <h3>Clear All Posts</h3>
+            <p>Permanently delete all posts from browser storage. This cannot be undone — export a backup first!</p>
+            <button class="adm-btn danger" style="width:auto;padding:12px 28px;" id="adm-btn-clear-all">
+              <i class="fa-solid fa-trash-can"></i> Clear All Posts
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /.adm-content -->
+  </main>
+</div>
+<!-- /#adm-app -->
+
+<!-- ================================================
+     PREVIEW MODAL
+     ================================================ -->
+<div id="adm-preview-modal" class="adm-modal-overlay" role="dialog" aria-modal="true" aria-label="Post preview">
+  <div class="adm-modal">
+    <div class="adm-modal-header">
+      <span class="adm-modal-title"><i class="fa-solid fa-eye" style="color:var(--adm-gold);margin-right:8px;"></i>Post Preview</span>
+      <button id="adm-preview-close" class="adm-modal-close" aria-label="Close preview"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="adm-modal-body">
+      <div id="adm-preview-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
+     CONFIRM DIALOG
+     ================================================ -->
+<div id="adm-confirm-overlay" class="adm-confirm-overlay" role="dialog" aria-modal="true">
+  <div class="adm-confirm-box">
+    <div class="adm-confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+    <div class="adm-confirm-title">Are you sure?</div>
+    <div class="adm-confirm-msg">This action cannot be undone.</div>
+    <div class="adm-confirm-actions">
+      <button id="adm-confirm-yes" class="adm-btn danger" style="width:auto;padding:10px 24px;">Yes, continue</button>
+      <button id="adm-confirm-no"  class="adm-btn ghost"  style="width:auto;padding:10px 24px;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin JS -->
+<script src="js/admin-blog.js"></script>
+<script>
+  // Insert link helper (called from RTE toolbar button)
+  AdminUI._insertLink = function() {
+    const url = prompt('Enter URL:', 'https://');
+    if (url) document.execCommand('createLink', false, url);
+    document.getElementById('adm-rte-content').focus();
+  };
+
+  // Clear all posts
+  document.getElementById('adm-btn-clear-all').addEventListener('click', async () => {
+    const ok = await confirmDialog.show('Clear All Posts', 'All posts will be permanently deleted. Export a backup first!');
+    if (!ok) return;
+    localStorage.removeItem('jachins_blog_posts');
+    BlogStore._data = null;
+    toast('All posts cleared', 'warning');
+    AdminUI._renderDashboard();
+  });
+</script>
+</body>
+</html>

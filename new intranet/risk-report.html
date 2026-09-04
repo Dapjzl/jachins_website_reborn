@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Risk Reporting | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+</head>
+
+<body class="sisf-comman-bg-light">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">HSE</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Report a Risk / <span class="sisf-e-colored">Observation</span></h2>
+            <p class="mb-0">Use this form to report any workplace risk, unsafe condition, safety observation,
+               environmental concern, or other issue that may require attention.</p>
+         </div>
+
+         <!-- Static Success Banner -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4" style="border-left:4px solid #28a745;">
+            <i class="fa-solid fa-circle-check pe-2" style="color:#28a745; font-size:20px;"></i>
+            <strong class="text-white">Report submitted.</strong>
+            <p class="mb-0 mt-1">Your reference number is <strong class="sisf-e-main-color">RISK-2026-0001</strong>.
+               Keep this for your records — you can track its status in "My Recent Reports" below.</p>
+         </div>
+
+         <!-- Report Form -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+            <form method="post" action="#" enctype="multipart/form-data" class="row g-3">
+               
+               <input type="hidden" name="csrf_token" value="static_demo_token">
+
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Report Type</label>
+                  <select name="report_type" class="form-select" required>
+                     <option value="">Select type&hellip;</option>
+                     <option value="Risk">Risk</option>
+                     <option value="Safety Observation">Safety Observation</option>
+                     <option value="Unsafe Condition">Unsafe Condition</option>
+                     <option value="Unsafe Act">Unsafe Act</option>
+                     <option value="Environmental Concern">Environmental Concern</option>
+                     <option value="Other">Other</option>
+                  </select>
+               </div>
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Date of Report</label>
+                  <input type="date" name="date_of_report" class="form-control" required value="2026-08-30">
+               </div>
+               <div class="col-md-4">
+                  <label class="form-label text-white" style="font-size:13px;">Risk Category</label>
+                  <select name="risk_category" class="form-select" required>
+                     <option value="">Select category&hellip;</option>
+                     <option value="Health & Safety">Health &amp; Safety</option>
+                     <option value="Environmental">Environmental</option>
+                     <option value="Security">Security</option>
+                     <option value="Equipment">Equipment</option>
+                     <option value="Operational">Operational</option>
+                     <option value="Other">Other</option>
+                  </select>
+               </div>
+
+               <div class="col-md-6">
+                  <label class="form-label text-white" style="font-size:13px;">Location</label>
+                  <input type="text" name="location" class="form-control" required placeholder="e.g. EFE EPF Facility, Bay 3" value="">
+               </div>
+               <div class="col-md-6">
+                  <label class="form-label text-white" style="font-size:13px;">Department</label>
+                  <input type="text" name="department" class="form-control" required value="Operations">
+               </div>
+
+               <div class="col-12">
+                  <label class="form-label text-white" style="font-size:13px;">Description of Risk / Observation</label>
+                  <textarea name="description" class="form-control" rows="3" required maxlength="4000"></textarea>
+               </div>
+               <div class="col-md-6">
+                  <label class="form-label text-white" style="font-size:13px;">Potential Consequence</label>
+                  <textarea name="potential_consequence" class="form-control" rows="2"></textarea>
+               </div>
+               <div class="col-md-6">
+                  <label class="form-label text-white" style="font-size:13px;">Recommended Corrective Action</label>
+                  <textarea name="corrective_action" class="form-control" rows="2"></textarea>
+               </div>
+
+               <div class="col-md-3">
+                  <label class="form-label text-white" style="font-size:13px;">Risk Severity</label>
+                  <select name="severity" class="form-select" required>
+                     <option value="">Select&hellip;</option>
+                     <option value="Low">Low</option>
+                     <option value="Medium">Medium</option>
+                     <option value="High">High</option>
+                     <option value="Critical">Critical</option>
+                  </select>
+               </div>
+               <div class="col-md-3">
+                  <label class="form-label text-white" style="font-size:13px;">Likelihood</label>
+                  <select name="likelihood" class="form-select" required>
+                     <option value="">Select&hellip;</option>
+                     <option value="Rare">Rare</option>
+                     <option value="Unlikely">Unlikely</option>
+                     <option value="Possible">Possible</option>
+                     <option value="Likely">Likely</option>
+                     <option value="Almost Certain">Almost Certain</option>
+                  </select>
+               </div>
+               <div class="col-md-6">
+                  <label class="form-label text-white" style="font-size:13px;">Attachment / Photo <span style="font-weight:400; color:rgba(255,255,255,0.5);">(optional, JPG/PNG/PDF, max 5MB)</span></label>
+                  <input type="file" name="attachment" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
+               </div>
+
+               <div class="col-12">
+                  <label class="form-label text-white" style="font-size:13px;">Additional Comments</label>
+                  <textarea name="comments" class="form-control" rows="2"></textarea>
+               </div>
+
+               <div class="col-12">
+                  <button type="submit" class="sis-btn-default" style="border:none;"><i class="fa-solid fa-paper-plane pe-2"></i>Submit Report</button>
+               </div>
+            </form>
+         </div>
+
+         <!-- My Recent Reports Table -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            <h3 class="sisf-e-title1 sis-comman-title mb-3 px-2 pt-1">My Recent Reports</h3>
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>Reference</th>
+                     <th>Date</th>
+                     <th>Type</th>
+                     <th>Category</th>
+                     <th>Severity</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>RISK-2026-0001</td>
+                     <td>2026-08-30</td>
+                     <td>Unsafe Condition</td>
+                     <td>Health &amp; Safety</td>
+                     <td>
+                        <span class="sis-badge-pill" style="background:#fd7e1422; color:#fd7e14;">High</span>
+                     </td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Submitted</span></td>
+                  </tr>
+                  <tr>
+                     <td>RISK-2026-0000</td>
+                     <td>2026-08-15</td>
+                     <td>Safety Observation</td>
+                     <td>Equipment</td>
+                     <td>
+                        <span class="sis-badge-pill" style="background:#28a74522; color:#28a745;">Low</span>
+                     </td>
+                     <td><span class="sis-badge-pill sis-badge-dept">Resolved</span></td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="intranet.js"></script>
+</body>
+
+</html>
