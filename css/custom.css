@@ -1,9 +1,3 @@
-/* ----------------------------------------------------------------------------------------
-* Author        : Siddhi Infosoft
-* Template Name : JACHINS - Oil - Gas-Company - HTML Template
-* File          : CSS File
-* Version       : 1.0
-* ---------------------------------------------------------------------------------------- */
 /* INDEX
 ----------------------------------------------------------------------------------------
 01. Global Variables
@@ -137,6 +131,39 @@ body {
 	position: relative;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
+}
+
+/* Photos stay grey until hover (pointer devices only) */
+@media (hover: hover) and (pointer: fine) {
+	img {
+		filter: grayscale(0.35) !important;
+		transition: filter 0.35s ease;
+	}
+
+	a:hover img,
+	figure:hover img,
+	.swiper-slide:hover img,
+	.sisf-e-inner:hover img,
+	.sis-project-list-item:hover img,
+	.sisf-blog-item:hover img,
+	.sis-gallery-items a:hover img,
+	.sis-right-contact-image:hover img,
+	.banner-img:hover img,
+	img:hover {
+		filter: grayscale(0) !important;
+	}
+
+	.navbar-brand img,
+	.sisf-header-logo-link img,
+	.footer-logo img,
+	.sis-preloader img,
+	.sis-loading-icon img,
+	.sisf-m-icon img,
+	.sisf-technology-icon-image img,
+	.sis-counter-icon img,
+	.sis-counter-item img {
+		filter: none !important;
+	}
 }
 
 p {
@@ -1466,6 +1493,39 @@ i::before {
 
 .header-btn {
 	line-height: 0px;
+}
+
+.header-staff-portal {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	border: 1px solid rgba(199, 2, 5, 0.4);
+	background: rgba(199, 2, 5, 0.08);
+	color: #c70205;
+	text-decoration: none;
+	flex-shrink: 0;
+	transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-staff-portal i {
+	font-size: 16px;
+	line-height: 1;
+}
+
+.header-staff-portal:hover,
+.header-staff-portal:focus-visible {
+	background: #c70205;
+	border-color: #c70205;
+	color: #fff;
+	box-shadow: 0 6px 16px rgba(199, 2, 5, 0.28);
+	outline: none;
+}
+
+.header-staff-portal--mobile {
+	display: none;
 }
 
 .responsive-menu,
@@ -7158,6 +7218,16 @@ input[type="text"]:focus,
 
 	.header-btn .sis-btn-default {
 		display: none;
+	}
+
+	.header-staff-portal--mobile {
+		display: inline-flex !important;
+		margin-left: auto;
+		margin-right: 10px;
+		width: 42px;
+		height: 42px;
+		position: relative;
+		z-index: 20;
 	}
 
 	.home-page .hero-slider-layout .hero-slide {
