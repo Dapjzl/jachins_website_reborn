@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Executive Item Requisitions | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-ceo-only="true" data-page="ceo-requisitions">
+
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Executive Oversight</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Staff Item <span class="sisf-e-colored">Requisitions</span></h2>
+            <p class="mb-0 text-secondary">Review item requisitions submitted across departments and authorize fulfillment.</p>
+         </div>
+
+         <!-- Requisitions Table Card -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-2 pt-1">
+               <h3 class="sisf-e-title sis-comman-title2 mb-0" style="font-size:20px;">Incoming Employee Requests</h3>
+               <button class="btn btn-sm btn-outline-dark" onclick="loadCeoRequisitions()"><i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+            </div>
+            
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>Req ID</th>
+                     <th>Date</th>
+                     <th>Employee</th>
+                     <th>Item Name</th>
+                     <th>Category</th>
+                     <th>Qty</th>
+                     <th>Required Date</th>
+                     <th>Priority</th>
+                     <th>Status</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody id="ceoRequisitionsBody">
+                  <tr><td colspan="10" class="text-center py-4 text-muted">Loading employee requisitions...</td></tr>
+               </tbody>
+            </table>
+         </div>
+      </main>
+   </div>
+
+   <div id="footer-placeholder"></div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      async function loadCeoRequisitions() {
+         const tbody = document.getElementById("ceoRequisitionsBody");
+         const sb = window.supabaseClient;
+         if (!sb || !tbody) return;
+
+         try {
+            const { data, error } = await sb.from("requisitions").select("*").order("created_at", { ascending: false });
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+               tbody.innerHTML = data.map(req => `
+                  <tr>
+                     <td>${req.id}</td>
+                     <td>${req.created_at}</td>
+                     <td><strong>${req.requester_name || 'Staff Member'}</strong></td>
+                     <td>${req.item_name}</td>
+                     <td>${req.category}</td>
+                     <td>${req.quantity} ${req.uom || ''}</td>
+                     <td>${req.required_date}</td>
+                     <td>${req.priority}</td>
+                     <td><span class="badge bg-${req.status === 'Approved' ? 'success' : req.status === 'Rejected' ? 'danger' : 'warning'}">${req.status}</span></td>
+                     <td>
+                        <button class="btn btn-sm btn-success me-1 mb-1" onclick="updateReqStatus('${req.id}', 'Approved')">Approve</button>
+                        <button class="btn btn-sm btn-danger mb-1" onclick="updateReqStatus('${req.id}', 'Rejected')">Reject</button>
+                     </td>
+                  </tr>
+               `).join("");
+            } else {
+               tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted py-4">No item requisitions submitted by staff yet.</td></tr>';
+            }
+         } catch (e) {
+            console.error("Error loading CEO requisitions:", e);
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center text-danger py-4">Error loading requisitions from database.</td></tr>';
+         }
+      }
+
+      async function updateReqStatus(id, newStatus) {
+         const sb = window.supabaseClient;
+         if (!sb) return;
+
+         try {
+            const { error } = await sb.from("requisitions").update({ status: newStatus }).eq("id", id);
+            if (error) throw error;
+            alert(`Requisition ${id} has been marked as ${newStatus}.`);
+            loadCeoRequisitions();
+         } catch (err) {
+            alert("Failed to update status.");
+         }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadCeoRequisitions);
+      window.onIntranetReady = loadCeoRequisitions;
+   </script>
+</body>
+</html>

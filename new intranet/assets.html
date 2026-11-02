@@ -8,216 +8,603 @@
    <meta name="robots" content="noindex, nofollow">
    <title>Asset Management | JACHINS Intranet</title>
    <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
-   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-   <link href="../css/all.min.css" rel="stylesheet" media="screen">
-   <link rel="preconnect" href="https://fonts.googleapis.com/">
-   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-   <link href="../css/custom.css" rel="stylesheet" media="screen">
-   <link href="intranet.css" rel="stylesheet" media="screen">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+
+   <style>
+      /* --- Custom Red Action Button --- */
+      .sis-btn-default {
+         position: relative;
+         font-size: clamp(12px, 1.1vw, 15px);
+         font-weight: 800;
+         line-height: 24px;
+         letter-spacing: 0px;
+         text-transform: uppercase;
+         background: #c70205 !important;
+         color: #ffffff !important;
+         border-radius: 4px;
+         padding: 3px 3px 3px clamp(12px, 1.5vw, 20px);
+         min-height: 42px;
+         font-family: 'Space Grotesk', sans-serif;
+         border: 1px solid #c70205 !important;
+         z-index: 1;
+         transition: all 0.3s ease-in-out;
+         overflow: hidden;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         gap: 10px;
+         max-width: 100%;
+         white-space: nowrap;
+         text-align: center;
+         cursor: pointer;
+         text-decoration: none;
+      }
+
+      .sis-btn-default .sis-btn-icon {
+         width: 34px;
+         height: 34px;
+         background: #ffffff;
+         border-radius: 4px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         transition: all 0.3s ease-in-out;
+         flex-shrink: 0;
+      }
+
+      .sis-btn-default .sis-btn-icon i {
+         color: #1a1a1a;
+         font-size: 14px;
+         transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+      }
+
+      .sis-btn-default:hover {
+         background: #171717 !important;
+         border-color: #c70205 !important;
+         color: #c70205 !important;
+      }
+
+      .sis-btn-default:hover .sis-btn-text {
+         color: #c70205 !important;
+      }
+
+      .sis-btn-default:hover .sis-btn-icon i {
+         color: #c70205 !important;
+         transform: scale(1.15) rotate(12deg);
+      }
+
+      /* Custom Dropdown Styling with Icon */
+      .category-select-wrapper {
+         position: relative;
+         display: flex;
+         align-items: center;
+      }
+
+      .category-select-wrapper select {
+         appearance: none;
+         -webkit-appearance: none;
+         -moz-appearance: none;
+         padding-right: 36px;
+         cursor: pointer;
+      }
+
+      .category-select-wrapper .select-icon {
+         position: absolute;
+         right: 14px;
+         pointer-events: none;
+         color: #6c757d;
+         font-size: 13px;
+         transition: transform 0.2s ease;
+      }
+
+      .category-select-wrapper select:focus + .select-icon {
+         transform: rotate(180deg);
+         color: #c70205;
+      }
+
+      /* Skeleton Loader */
+      .sis-skeleton-loader {
+         height: 18px;
+         background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+         background-size: 200% 100%;
+         animation: sisSkeletonLoading 1.5s infinite;
+         border-radius: 4px;
+         display: inline-block;
+      }
+
+      @keyframes sisSkeletonLoading {
+         0% { background-position: 200% 0; }
+         100% { background-position: -200% 0; }
+      }
+   </style>
 </head>
 
-<body class="sisf-comman-bg-light">
+<body class="sisf-comman-bg-light" data-protected="true" data-page="asset-management">
 
-   <!-- Header Container Placeholder -->
    <div id="header-placeholder"></div>
 
    <div class="sis-intranet-body sis-comman-background">
 
-      <!-- Sidebar Container Placeholder -->
       <div id="sidebar-placeholder"></div>
 
       <main class="sis-intranet-main">
 
-         <div class="sisf-sis-section-title sis-section-title mb-4">
-            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
-            <h2 class="sisf-m-title" style="font-size: 28px;">Asset <span class="sisf-e-colored">Management</span></h2>
-            <p class="mb-0">View assets assigned to you and browse the company asset register.</p>
-         </div>
-
-         <!-- Asset Details View (Static Preview - hidden by default, can be toggled via js if needed) -->
-         <div id="asset-detail-card" class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4 d-none">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-               <h3 class="sisf-e-title sis-comman-title mb-0">Dell Latitude 5540</h3>
-               <a href="#" id="close-detail-btn" class="sisf-e-main-color"><i class="fa-solid fa-arrow-left pe-1"></i>Back to Assets</a>
+         <!-- Header & Action Row -->
+         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+            <div class="sisf-sis-section-title sis-section-title">
+               <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+               <h2 class="sisf-m-title" style="font-size: 28px;">Asset <span class="sisf-e-colored">Management</span></h2>
+               <p class="mb-0 text-secondary">View assets assigned to you and browse or submit items to the company asset register.</p>
             </div>
-            <div class="row g-3">
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Asset ID</strong><p class="mb-0">AST-2026-001</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Category / Type</strong><p class="mb-0">IT Equipment &middot; Laptop</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Serial Number</strong><p class="mb-0">SN-99882211</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Location</strong><p class="mb-0">Lekki Office - HQ</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Department</strong><p class="mb-0">Operations</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Assigned Employee</strong><p class="mb-0">EMP-001</p></div>
-               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Condition</strong><p class="mb-0">Good</p></div>
-               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Status</strong><p class="mb-0"><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></p></div>
-               <div class="col-md-4"><strong class="text-white d-block mb-1" style="font-size:13px;">Assignment Date</strong><p class="mb-0">2026-01-15</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Purchase Date</strong><p class="mb-0">2025-11-10</p></div>
-               <div class="col-md-6"><strong class="text-white d-block mb-1" style="font-size:13px;">Last Maintenance</strong><p class="mb-0">2026-02-01</p></div>
-               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Description</strong><p class="mb-0">Primary workstation laptop assigned for field operations and reporting.</p></div>
-               <div class="col-12"><strong class="text-white d-block mb-1" style="font-size:13px;">Notes</strong><p class="mb-0">Includes charger, docking station, and wireless mouse.</p></div>
+
+            <!-- Submit Asset Button -->
+            <div>
+               <button type="button" class="sis-btn-default" data-bs-toggle="modal" data-bs-target="#submitAssetModal" onclick="openCreateModal()">
+                  <span class="sis-btn-text">SUBMIT NEW ASSET</span>
+                  <span class="sis-btn-icon">
+                     <i class="fa-solid fa-plus"></i>
+                  </span>
+               </button>
             </div>
          </div>
 
-         <!-- Main Asset Views -->
-         <div id="asset-tables-container">
-            <!-- My Assigned Assets -->
-            <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
-               <h3 class="sisf-e-title1 sis-comman-title mb-3 px-2 pt-1">My Assigned Assets</h3>
-               <table class="sis-data-table">
-                  <thead>
-                     <tr>
-                        <th>Asset ID</th>
-                        <th>Asset</th>
-                        <th>Category</th>
-                        <th>Serial Number</th>
-                        <th>Condition</th>
-                        <th>Status</th>
-                        <th></th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>AST-2026-001</td>
-                        <td>Dell Latitude 5540</td>
-                        <td><span class="sis-badge-pill sis-badge-dept">IT Equipment</span></td>
-                        <td>SN-99882211</td>
-                        <td>Good</td>
-                        <td><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></td>
-                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
+         <!-- Section 1: My Assigned Assets -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
+            <h3 class="sisf-e-title sis-comman-title2 mb-3 px-2 pt-1" style="font-size:18px;">My Assigned Assets</h3>
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>ASSET ID</th>
+                     <th>ASSET</th>
+                     <th>CATEGORY</th>
+                     <th>SERIAL NUMBER</th>
+                     <th>CONDITION</th>
+                     <th>STATUS</th>
+                     <th>ACTIONS</th>
+                  </tr>
+               </thead>
+               <tbody id="myAssetsBody">
+                  <tr>
+                     <td colspan="7" class="text-center py-3">
+                        <span class="sis-skeleton-loader" style="width: 200px;"></span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
 
-            <!-- Filter Bar -->
-            <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius mb-3 p-3">
-               <div class="row g-2 align-items-center">
-                  <div class="col-md-6">
-                     <input type="text" id="assetSearch" class="form-control" placeholder="Search asset name, ID, or serial number...">
+         <!-- Section 2: All Company Assets Search & Table -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            
+            <!-- Search & Dropdown Filter Bar -->
+            <div class="row g-2 mb-3 align-items-center">
+               <div class="col-md-7">
+                  <div class="input-group">
+                     <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                     <input type="text" id="assetSearchInput" class="form-control border-start-0" placeholder="Search asset name, ID, or serial number...">
                   </div>
-                  <div class="col-md-4">
-                     <select id="assetCategoryFilter" class="form-select">
-                        <option value="all">All Categories</option>
+               </div>
+               
+               <!-- Category Select with Dropdown Icon -->
+               <div class="col-md-5">
+                  <div class="category-select-wrapper">
+                     <select id="assetCategoryFilter" class="form-select bg-white">
+                        <option value="ALL" selected>All Categories</option>
                         <option value="IT Equipment">IT Equipment</option>
-                        <option value="Safety Gear">Safety Gear</option>
-                        <option value="Field Machinery">Field Machinery</option>
+                        <option value="Safety Gear">Safety Gear / PPE</option>
+                        <option value="Plant & Machinery">Plant & Machinery</option>
+                        <option value="Vehicles">Vehicles</option>
+                        <option value="Furniture & Fixtures">Furniture & Fixtures</option>
                      </select>
-                  </div>
-                  <div class="col-md-2">
-                     <span class="text-white" style="font-size:13px;"><span id="assetCount">3</span> assets</span>
+                     <i class="fa-solid fa-chevron-down select-icon"></i>
                   </div>
                </div>
             </div>
 
-            <!-- Full Register -->
-            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
-               <table class="sis-data-table">
-                  <thead>
-                     <tr>
-                        <th>Asset ID</th>
-                        <th>Asset</th>
-                        <th>Category</th>
-                        <th>Location</th>
-                        <th>Assigned To</th>
-                        <th>Status</th>
-                        <th></th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr class="asset-row" data-name="dell latitude 5540 ast-2026-001 sn-99882211" data-category="IT Equipment">
-                        <td>AST-2026-001</td>
-                        <td>Dell Latitude 5540</td>
-                        <td><span class="sis-badge-pill sis-badge-dept">IT Equipment</span></td>
-                        <td>Lekki HQ</td>
-                        <td>EMP-001</td>
-                        <td><span class="sis-badge-pill" style="background:#c8a84b22; color:#c8a84b;">Assigned</span></td>
-                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
-                     </tr>
-                     <tr class="asset-row" data-name="gas detector multi-4 ast-2026-002 sn-gd-44211" data-category="Safety Gear">
-                        <td>AST-2026-002</td>
-                        <td>Gas Detector Multi-4</td>
-                        <td><span class="sis-badge-pill sis-badge-dept">Safety Gear</span></td>
-                        <td>EFE EPF Facility</td>
-                        <td>Unassigned</td>
-                        <td><span class="sis-badge-pill" style="background:#28a74522; color:#28a745;">Available</span></td>
-                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
-                     </tr>
-                     <tr class="asset-row" data-name="diesel generator 50kva ast-2026-003 sn-gen-9011" data-category="Field Machinery">
-                        <td>AST-2026-003</td>
-                        <td>Diesel Generator 50kVA</td>
-                        <td><span class="sis-badge-pill sis-badge-dept">Field Machinery</span></td>
-                        <td>Bay 3 Workshop</td>
-                        <td>Unassigned</td>
-                        <td><span class="sis-badge-pill" style="background:#fd7e1422; color:#fd7e14;">Under Maintenance</span></td>
-                        <td><a href="#" class="sisf-e-main-color view-details-link" style="font-size:13px;">View Details</a></td>
-                     </tr>
-                  </tbody>
-               </table>
-               <p id="assetNoResults" class="text-center mt-3 mb-0 d-none" style="color: rgba(255,255,255,0.6);">No assets match your search.</p>
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>ASSET ID</th>
+                     <th>ASSET</th>
+                     <th>CATEGORY</th>
+                     <th>LOCATION</th>
+                     <th>ASSIGNED TO</th>
+                     <th>STATUS</th>
+                     <th>ACTIONS</th>
+                  </tr>
+               </thead>
+               <tbody id="allAssetsBody">
+                  <tr>
+                     <td colspan="7" class="text-center py-3">
+                        <span class="sis-skeleton-loader" style="width: 250px;"></span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <!-- Modal: Submit / Edit Asset Form -->
+         <div class="modal fade" id="submitAssetModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+               <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                  <div class="modal-header border-bottom px-4 py-3" style="background: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                     <h5 class="modal-title fw-bold text-dark" id="modalFormTitle" style="font-size: 18px;">
+                        <i class="fa-solid fa-boxes-stacked me-2 text-danger"></i>Register / Submit New Asset
+                     </h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body p-4">
+                     <form id="submitAssetForm">
+                        <input type="hidden" id="editAssetUuid">
+                        <div class="row g-3">
+                           
+                           <div class="col-md-6">
+                              <label for="newAssetName" class="form-label fw-bold text-dark" style="font-size: 13px;">Asset Name *</label>
+                              <input type="text" id="newAssetName" class="form-control" placeholder="e.g. Dell Latitude 5540" required>
+                           </div>
+
+                           <div class="col-md-6">
+                              <label for="newAssetCategory" class="form-label fw-bold text-dark" style="font-size: 13px;">Category *</label>
+                              <select id="newAssetCategory" class="form-select" required>
+                                 <option value="" selected disabled>Select category...</option>
+                                 <option value="IT Equipment">IT Equipment</option>
+                                 <option value="Safety Gear">Safety Gear / PPE</option>
+                                 <option value="Plant & Machinery">Plant & Machinery</option>
+                                 <option value="Vehicles">Vehicles</option>
+                                 <option value="Furniture & Fixtures">Furniture & Fixtures</option>
+                              </select>
+                           </div>
+
+                           <div class="col-md-6">
+                              <label for="newSerialNumber" class="form-label fw-bold text-dark" style="font-size: 13px;">Serial / Tag Number *</label>
+                              <input type="text" id="newSerialNumber" class="form-control" placeholder="e.g. SN-890221" required>
+                           </div>
+
+                           <div class="col-md-6">
+                              <label for="newLocation" class="form-label fw-bold text-dark" style="font-size: 13px;">Current Location *</label>
+                              <input type="text" id="newLocation" class="form-control" placeholder="e.g. Lekki HQ / Site A" required>
+                           </div>
+
+                           <div class="col-md-6">
+                              <label for="newCondition" class="form-label fw-bold text-dark" style="font-size: 13px;">Condition *</label>
+                              <select id="newCondition" class="form-select" required>
+                                 <option value="New" selected>New / Excellent</option>
+                                 <option value="Good">Good</option>
+                                 <option value="Fair">Fair (Minor Wear)</option>
+                                 <option value="Needs Maintenance">Needs Maintenance</option>
+                              </select>
+                           </div>
+
+                           <div class="col-md-6">
+                              <label for="newAssignedTo" class="form-label fw-bold text-dark" style="font-size: 13px;">Assigned Custodian / Staff</label>
+                              <input type="text" id="newAssignedTo" class="form-control" placeholder="e.g. EMP-001 (Unassigned if blank)">
+                           </div>
+
+                           <div class="col-12">
+                              <label for="newAssetDesc" class="form-label fw-bold text-dark" style="font-size: 13px;">Asset Specifications / Details</label>
+                              <textarea id="newAssetDesc" class="form-control" rows="2" placeholder="Model details, purchase specs, or notes..."></textarea>
+                           </div>
+
+                           <div class="col-12 mt-4 text-end">
+                              <button type="button" class="btn btn-light me-2 fw-semibold" data-bs-dismiss="modal">Cancel</button>
+                              <button type="submit" id="saveAssetBtn" class="sis-btn-default">
+                                 <span class="sis-btn-text" id="modalSubmitText">SUBMIT ASSET FOR MANAGEMENT</span>
+                                 <span class="sis-btn-icon">
+                                    <i class="fa-solid fa-check"></i>
+                                 </span>
+                              </button>
+                           </div>
+
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <!-- Details Modal -->
+         <div class="modal fade" id="assetDetailModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+               <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                  <div class="modal-header border-bottom px-4 py-3" style="background: #f8f9fa; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                     <h5 class="modal-title fw-bold text-dark" id="assetDetailTitle" style="font-size: 18px;">Asset Details</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body p-4" id="assetDetailBody"></div>
+               </div>
             </div>
          </div>
 
       </main>
    </div>
 
-   <!-- Footer Container Placeholder -->
    <div id="footer-placeholder"></div>
 
-   <script src="../js/jquery-3.7.1.min.js"></script>
-   <script src="../js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
    <script src="intranet.js"></script>
    <script>
-      (function () {
-         "use strict";
+      var allAssets = [
+         { id: "AST-2026-001", name: "Dell Latitude 5540", category: "IT Equipment", location: "Lekki HQ", assigned: "EMP-021", status: "Assigned", serial: "SN-890221", condition: "Good", description: "Standard company issue laptop." },
+         { id: "AST-2026-002", name: "Mac Defender Multi-G", category: "Safety Gear", location: "STP NFF Facility", assigned: "Unassigned", status: "Available", serial: "SN-441092", condition: "New", description: "Safety harness kit." },
+         { id: "AST-2026-003", name: "Diesel Generator 50kW", category: "Plant & Machinery", location: "Bay 3 Workshop", assigned: "Unassigned", status: "Under Maintenance", serial: "GEN-00921", condition: "Needs Maintenance", description: "Backup power engine." }
+      ];
 
-         var searchInput = document.getElementById("assetSearch");
-         var categoryFilter = document.getElementById("assetCategoryFilter");
-         var rows = Array.prototype.slice.call(document.querySelectorAll(".asset-row"));
-         var countEl = document.getElementById("assetCount");
-         var noResults = document.getElementById("assetNoResults");
+      function escapeHtml(str) {
+         var div = document.createElement("div");
+         div.textContent = str == null ? "" : str;
+         return div.innerHTML;
+      }
 
-         // Interactive search & category filter
-         function applyFilters() {
-            if (!searchInput || !categoryFilter) return;
-            var query = searchInput.value.trim().toLowerCase();
-            var category = categoryFilter.value;
-            var visible = 0;
+      function badge(status) {
+         var colors = {
+            "Assigned": "#fd7e14",
+            "Available": "#198754",
+            "Under Maintenance": "#c8a84b",
+            "Retired": "#c70205"
+         };
+         var c = colors[status] || "#6c757d";
+         return '<span class="sis-badge-pill" style="background:' + c + '22;color:' + c + ';">' + escapeHtml(status) + '</span>';
+      }
 
-            rows.forEach(function (row) {
-               var matchesQuery = row.getAttribute("data-name").indexOf(query) !== -1;
-               var matchesCategory = category === "all" || category === row.getAttribute("data-category");
-               var show = matchesQuery && matchesCategory;
-               row.classList.toggle("d-none", !show);
-               if (show) visible++;
+      function renderTables() {
+         var currentUserEmail = (window.currentUser && window.currentUser.email) ? window.currentUser.email : "";
+         var currentEmployeeId = (window.currentUser && window.currentUser.employee_id) ? window.currentUser.employee_id : "EMP-021"; // fallback demo check
+
+         var myBody = document.getElementById("myAssetsBody");
+         if (myBody) {
+            var myFiltered = allAssets.filter(function(item) {
+               return item.assigned && (item.assigned.toLowerCase() === currentEmployeeId.toLowerCase() || item.assigned.toLowerCase() === currentUserEmail.toLowerCase());
             });
 
-            if (countEl) countEl.textContent = visible;
-            if (noResults) noResults.classList.toggle("d-none", visible !== 0);
+            if (myFiltered.length > 0) {
+               myBody.innerHTML = myFiltered.map(function(item) {
+                  return '<tr>' +
+                     '<td>' + escapeHtml(item.id) + '</td>' +
+                     '<td>' + escapeHtml(item.name) + '</td>' +
+                     '<td>' + escapeHtml(item.category) + '</td>' +
+                     '<td>' + escapeHtml(item.serial) + '</td>' +
+                     '<td>' + escapeHtml(item.condition) + '</td>' +
+                     '<td>' + badge(item.status) + '</td>' +
+                     '<td>' +
+                        '<button type="button" class="text-primary border-0 bg-transparent me-2 view-asset-btn" style="font-size:12px;" data-id="' + item.id + '"><i class="fa-solid fa-eye"></i></button>' +
+                     '</td>' +
+                  '</tr>';
+               }).join("");
+            } else {
+               myBody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No assets currently assigned directly to your profile.</td></tr>';
+            }
          }
 
-         if (searchInput) searchInput.addEventListener("input", applyFilters);
-         if (categoryFilter) categoryFilter.addEventListener("change", applyFilters);
+         filterAllAssets();
+      }
 
-         // Front-end preview toggle for detail card
-         var detailCard = document.getElementById("asset-detail-card");
-         var tablesContainer = document.getElementById("asset-tables-container");
-         var closeBtn = document.getElementById("close-detail-btn");
+      function filterAllAssets() {
+         var searchInput = document.getElementById("assetSearchInput");
+         var categoryFilter = document.getElementById("assetCategoryFilter");
+         
+         var searchVal = searchInput ? searchInput.value.toLowerCase() : "";
+         var catVal = categoryFilter ? categoryFilter.value : "ALL";
 
-         document.querySelectorAll(".view-details-link").forEach(function (btn) {
-            btn.addEventListener("click", function (e) {
-               e.preventDefault();
-               detailCard.classList.remove("d-none");
-            });
+         var filtered = allAssets.filter(function(item) {
+            var matchesSearch = (item.name || "").toLowerCase().includes(searchVal) ||
+                                (item.id || "").toLowerCase().includes(searchVal) ||
+                                (item.serial || "").toLowerCase().includes(searchVal);
+            var matchesCategory = (catVal === "ALL" || item.category === catVal);
+            return matchesSearch && matchesCategory;
          });
 
-         if (closeBtn) {
-            closeBtn.addEventListener("click", function (e) {
-               e.preventDefault();
-               detailCard.classList.add("d-none");
-            });
+         var allBody = document.getElementById("allAssetsBody");
+         if (!allBody) return;
+
+         if (filtered.length > 0) {
+            allBody.innerHTML = filtered.map(function(item) {
+               return '<tr>' +
+                  '<td>' + escapeHtml(item.id) + '</td>' +
+                  '<td>' + escapeHtml(item.name) + '</td>' +
+                  '<td>' + escapeHtml(item.category) + '</td>' +
+                  '<td>' + escapeHtml(item.location) + '</td>' +
+                  '<td>' + escapeHtml(item.assigned) + '</td>' +
+                  '<td>' + badge(item.status) + '</td>' +
+                  '<td>' +
+                     '<button type="button" class="text-primary border-0 bg-transparent me-2 view-asset-btn" title="View Details" data-id="' + item.id + '"><i class="fa-solid fa-eye"></i></button>' +
+                     '<button type="button" class="text-warning border-0 bg-transparent me-2 edit-asset-btn" title="Edit Asset" data-id="' + item.id + '"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                     '<button type="button" class="text-danger border-0 bg-transparent delete-asset-btn" title="Delete Asset" data-id="' + item.id + '"><i class="fa-solid fa-trash"></i></button>' +
+                  '</td>' +
+               '</tr>';
+            }).join("");
+         } else {
+            allBody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No matching assets found.</td></tr>';
          }
-      })();
+
+         attachTableActionListeners();
+      }
+
+      function attachTableActionListeners() {
+         document.querySelectorAll(".view-asset-btn").forEach(function(btn) {
+            btn.onclick = function() {
+               var id = btn.getAttribute("data-id");
+               var found = allAssets.find(function(a) { return a.id === id; });
+               if (found) showAssetDetails(found);
+            };
+         });
+
+         document.querySelectorAll(".edit-asset-btn").forEach(function(btn) {
+            btn.onclick = function() {
+               var id = btn.getAttribute("data-id");
+               var found = allAssets.find(function(a) { return a.id === id; });
+               if (found) openEditModal(found);
+            };
+         });
+
+         document.querySelectorAll(".delete-asset-btn").forEach(function(btn) {
+            btn.onclick = function() {
+               var id = btn.getAttribute("data-id");
+               deleteAsset(id);
+            };
+         });
+      }
+
+      function showAssetDetails(asset) {
+         document.getElementById("assetDetailTitle").textContent = asset.name;
+         document.getElementById("assetDetailBody").innerHTML =
+            '<div class="row g-3">' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Asset ID</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.id) + '</span></div>' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Category</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.category) + '</span></div>' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Serial Number</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.serial || 'N/A') + '</span></div>' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Location</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.location || 'N/A') + '</span></div>' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Condition</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.condition || 'Good') + '</span></div>' +
+            '<div class="col-6"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Assigned To</strong><span class="fw-semibold text-dark">' + escapeHtml(asset.assigned || 'Unassigned') + '</span></div>' +
+            '<div class="col-12 mt-2"><strong class="d-block mb-1 text-uppercase text-muted" style="font-size:11px;">Specifications / Notes</strong><p class="text-dark mb-0" style="font-size:13px;">' + escapeHtml(asset.description || 'None provided.') + '</p></div>' +
+            '</div>';
+
+         var modalEl = document.getElementById("assetDetailModal");
+         var bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+         bsModal.show();
+      }
+
+      function openCreateModal() {
+         var form = document.getElementById("submitAssetForm");
+         if (form) form.reset();
+         document.getElementById("editAssetUuid").value = "";
+         document.getElementById("modalFormTitle").innerHTML = '<i class="fa-solid fa-boxes-stacked me-2 text-danger"></i>Register / Submit New Asset';
+         document.getElementById("modalSubmitText").textContent = "SUBMIT ASSET FOR MANAGEMENT";
+      }
+
+      function openEditModal(asset) {
+         document.getElementById("editAssetUuid").value = asset.id;
+         document.getElementById("newAssetName").value = asset.name || "";
+         document.getElementById("newAssetCategory").value = asset.category || "";
+         document.getElementById("newSerialNumber").value = asset.serial || "";
+         document.getElementById("newLocation").value = asset.location || "";
+         document.getElementById("newCondition").value = asset.condition || "Good";
+         document.getElementById("newAssignedTo").value = (asset.assigned && asset.assigned !== "Unassigned") ? asset.assigned : "";
+         document.getElementById("newAssetDesc").value = asset.description || "";
+
+         document.getElementById("modalFormTitle").innerHTML = '<i class="fa-solid fa-pen-to-square me-2 text-warning"></i>Edit Asset: ' + escapeHtml(asset.id);
+         document.getElementById("modalSubmitText").textContent = "UPDATE ASSET DETAILS";
+
+         var modalEl = document.getElementById("submitAssetModal");
+         var bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+         bsModal.show();
+      }
+
+      async function deleteAsset(id) {
+         if (!confirm("Are you sure you want to delete asset " + id + "?")) return;
+
+         if (window.supabaseClient) {
+            try {
+               await window.supabaseClient.from("company_assets").delete().eq("id", id);
+            } catch (err) {
+               console.error("Supabase delete failed, removing locally.", err);
+            }
+         }
+
+         allAssets = allAssets.filter(function(a) { return a.id !== id; });
+         renderTables();
+         alert("Asset deleted successfully.");
+      }
+
+      async function loadSupabaseAssets() {
+         if (window.supabaseClient) {
+            try {
+               var res = await window.supabaseClient.from("company_assets").select("*").order("id", { ascending: false });
+               if (res.data && res.data.length > 0) {
+                  allAssets = res.data.map(function(item) {
+                     return {
+                        id: item.id || item.asset_id,
+                        name: item.name || item.asset_name,
+                        category: item.category,
+                        serial: item.serial || item.serial_number,
+                        location: item.location,
+                        assigned: item.assigned || item.assigned_to || "Unassigned",
+                        status: item.status || (item.assigned ? "Assigned" : "Available"),
+                        condition: item.condition || "Good",
+                        description: item.description || item.specs
+                     };
+                  });
+               }
+            } catch (e) {
+               console.log("Using built-in asset data fallback.");
+            }
+         }
+         renderTables();
+      }
+
+      function initAssetPage() {
+         renderTables();
+         loadSupabaseAssets();
+
+         var searchInput = document.getElementById("assetSearchInput");
+         var catFilter = document.getElementById("assetCategoryFilter");
+         if (searchInput) searchInput.addEventListener("input", filterAllAssets);
+         if (catFilter) catFilter.addEventListener("change", filterAllAssets);
+
+         var form = document.getElementById("submitAssetForm");
+         if (form) {
+            form.onsubmit = async function(e) {
+               e.preventDefault();
+
+               var editId = document.getElementById("editAssetUuid").value;
+               var assignedVal = document.getElementById("newAssignedTo").value.trim();
+               var statusVal = assignedVal ? "Assigned" : "Available";
+
+               var assetPayload = {
+                  id: editId ? editId : ("AST-2026-0" + Math.floor(100 + Math.random() * 900)),
+                  name: document.getElementById("newAssetName").value,
+                  category: document.getElementById("newAssetCategory").value,
+                  serial: document.getElementById("newSerialNumber").value,
+                  location: document.getElementById("newLocation").value,
+                  condition: document.getElementById("newCondition").value,
+                  assigned: assignedVal || "Unassigned",
+                  status: statusVal,
+                  description: document.getElementById("newAssetDesc").value
+               };
+
+               if (window.supabaseClient) {
+                  try {
+                     if (editId) {
+                        await window.supabaseClient.from("company_assets").update(assetPayload).eq("id", editId);
+                     } else {
+                        await window.supabaseClient.from("company_assets").insert([assetPayload]);
+                     }
+                  } catch (err) {
+                     console.error("Supabase save error:", err);
+                  }
+               }
+
+               if (editId) {
+                  var index = allAssets.findIndex(function(a) { return a.id === editId; });
+                  if (index !== -1) {
+                     allAssets[index] = assetPayload;
+                  }
+               } else {
+                  allAssets.unshift(assetPayload);
+               }
+
+               renderTables();
+
+               var modalEl = document.getElementById("submitAssetModal");
+               var bsModal = bootstrap.Modal.getInstance(modalEl);
+               if (bsModal) bsModal.hide();
+
+               form.reset();
+               alert(editId ? "Asset updated successfully!" : "Asset submitted successfully to the register!");
+            };
+         }
+      }
+
+      document.addEventListener("DOMContentLoaded", initAssetPage);
+      window.onIntranetReady = initAssetPage;
    </script>
 </body>
 

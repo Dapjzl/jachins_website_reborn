@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Admin Dashboard | JACHINS Intranet</title>
+
+    <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+    <link href="../css/custom.css" rel="stylesheet">
+    <link href="intranet.css" rel="stylesheet">
+
+    <style>
+        /* Lazy loading shimmer / pulse animation */
+        @keyframes shimmer {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+            100% { opacity: 0.4; }
+        }
+
+        .lazy-loading {
+            display: inline-block;
+            animation: shimmer 1.2s infinite ease-in-out;
+            color: #adb5bd;
+        }
+
+        .stat-spinner {
+            font-size: 18px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-page="admin-dashboard">
+
+<!-- Shared Header -->
+<div id="header-placeholder"></div>
+
+<div class="sis-intranet-body sis-comman-background">
+
+    <!-- Shared Sidebar -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- Dashboard Main Content -->
+    <main class="sis-intranet-main">
+
+        <!-- Welcome -->
+        <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle sis-m-subtitle-dark">
+                Admin Control Center
+            </span>
+
+            <h2 class="sisf-m-title" style="font-size: 28px;">
+                IT & System Admin Portal,
+                <span class="sisf-e-colored" data-user-first-name>
+                    Administrator
+                </span>
+            </h2>
+
+            <p class="mb-0 text-muted">
+                Manage user database configurations, security permissions, and system gateways across JACHINS Group.
+            </p>
+        </div>
+
+        <!-- Stats with Count-Up & Lazy Loading -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-6 col-lg-3">
+                <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-3 shadow-sm" style="background-color: #f1f3f5;">
+                    <div class="sis-stat-number fw-bold text-dark fs-3" id="adminTotalEmployees">
+                        <span class="lazy-loading"><i class="fa-solid fa-spinner fa-spin stat-spinner"></i></span>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size:13px;">
+                        Registered Employees
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-3 shadow-sm" style="background-color: #f1f3f5;">
+                    <div class="sis-stat-number fw-bold text-dark fs-3" id="adminActiveGateways">
+                        <span class="lazy-loading"><i class="fa-solid fa-spinner fa-spin stat-spinner"></i></span>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size:13px;">
+                        Active Gateways
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-3 shadow-sm" style="background-color: #f1f3f5;">
+                    <div class="sis-stat-number fw-bold text-success fs-3" id="adminDbStatus">
+                        <span class="lazy-loading"><i class="fa-solid fa-spinner fa-spin stat-spinner"></i></span>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size:13px;">
+                        Supabase Database
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="sis-stat-tile sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-3 shadow-sm" style="background-color: #f1f3f5;">
+                    <div class="sis-stat-number fw-bold text-dark fs-3" id="adminBuildVersion">
+                        <span class="lazy-loading"><i class="fa-solid fa-spinner fa-spin stat-spinner"></i></span>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size:13px;">
+                        Intranet Build
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="row g-4">
+
+            <!-- Left Column -->
+            <div class="col-lg-8">
+
+                <!-- Admin Quick Actions -->
+                <div class="sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-4 mb-4 shadow-sm" style="background-color: #f8f9fa;">
+
+                    <h3 class="sisf-e-title sis-comman-title mb-3 text-dark" style="font-size: 18px;">
+                        System Controls & Quick Links
+                    </h3>
+
+                    <div class="row g-3">
+
+                        <div class="col-6 col-md-4">
+                            <a href="employees.html" class="text-decoration-none">
+                                <div class="sis-stat-tile border border-secondary border-opacity-10 sis-radius text-center p-3 h-100" style="background-color: #ffffff;">
+                                    <i class="fa-solid fa-users-gear fs-3 mb-2 sisf-e-main-color"></i>
+                                    <p class="mb-0 text-dark fw-medium" style="font-size:13px;">
+                                        Manage Profiles
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                            <a href="documents.html" class="text-decoration-none">
+                                <div class="sis-stat-tile border border-secondary border-opacity-10 sis-radius text-center p-3 h-100" style="background-color: #ffffff;">
+                                    <i class="fa-solid fa-shield-halved fs-3 mb-2 sisf-e-main-color"></i>
+                                    <p class="mb-0 text-dark fw-medium" style="font-size:13px;">
+                                        Security Logs
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                            <a href="announcements.html" class="text-decoration-none">
+                                <div class="sis-stat-tile border border-secondary border-opacity-10 sis-radius text-center p-3 h-100" style="background-color: #ffffff;">
+                                    <i class="fa-solid fa-bullhorn fs-3 mb-2 sisf-e-main-color"></i>
+                                    <p class="mb-0 text-dark fw-medium" style="font-size:13px;">
+                                        System Broadcast
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Database Employee Directory Table with Lazy Loading -->
+                <div class="sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-4 mb-4 shadow-sm" style="background-color: #f8f9fa;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="sisf-e-title1 sis-comman-title mb-0 text-dark" style="font-size: 18px;">
+                            Employee Roster & Database Roles
+                        </h3>
+                        <a href="employees.html" class="sisf-e-main-color text-decoration-none" style="font-size:13px;">
+                            Full Directory <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                    <div class="table-responsive bg-white rounded border border-secondary border-opacity-10 p-2">
+                        <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>System Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminEmployeeTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <div class="spinner-border spinner-border-sm text-danger me-2" role="status"></div>
+                                        <span class="lazy-loading">Lazy loading active employee database records...</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-4">
+
+                <!-- Profile Card -->
+                <div class="sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-4 mb-4 text-center shadow-sm" style="background-color: #f8f9fa;">
+
+                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center fw-bold sisf-e-main-color border border-secondary border-opacity-10" data-user-avatar style="width:64px;height:64px;font-size:20px; background-color: #ffffff;">
+                        ?
+                    </div>
+
+                    <h3 class="sisf-e-title1 sis-comman-title mb-0 text-dark fw-bold" style="font-size: 18px;" data-user-name>
+                        Administrator
+                    </h3>
+
+                    <p class="sisf-e-main-color mb-1 fw-medium" style="font-size:13px;" data-user-role>
+                        IT Administrator
+                    </p>
+
+                    <p class="text-muted mb-3" style="font-size:12px;">
+                        <span data-user-department>IT & Administration</span>
+                        &middot; ID <span data-user-id>N/A</span>
+                    </p>
+
+                    <a href="dashboard.html" class="btn btn-outline-danger w-100 py-2" style="font-size: 14px;">
+                        Switch to Employee View
+                    </a>
+
+                </div>
+
+                <!-- Admin Action Notes -->
+                <div class="sisf-sis-comman-drop-bg sis-radius border border-secondary border-opacity-10 p-4 mb-4 shadow-sm" style="background-color: #f8f9fa;">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="sisf-e-title1 sis-comman-title mb-0 text-dark" style="font-size:17px;">
+                            IT Admin Notices
+                        </h3>
+                        <span class="badge bg-danger">Priority</span>
+                    </div>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="p-2 border border-secondary border-opacity-10 rounded border-start border-3 border-danger" style="font-size: 13px; background-color: #ffffff;">
+                            <p class="mb-1 text-dark fw-medium">Supabase Auth Rate Limits</p>
+                            <span class="text-muted" style="font-size: 11px;">Monitor test register frequency</span>
+                        </div>
+                        <div class="p-2 border border-secondary border-opacity-10 rounded border-start border-3 border-secondary" style="font-size: 13px; background-color: #ffffff;">
+                            <p class="mb-1 text-dark fw-medium">Department Gateways Synced</p>
+                            <span class="text-muted" style="font-size: 11px;">Database routing active</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- Shared Footer -->
+<div id="footer-placeholder"></div>
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="intranet.js"></script>
+
+<!-- Dynamic Counting & Lazy Loading Controller Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        // Smooth Number Count-Up Animation Function
+        function animateCounter(elementId, targetValue, duration = 1000, prefix = "", suffix = "") {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            if (isNaN(targetValue) || targetValue === 0) {
+                el.textContent = prefix + "0" + suffix;
+                return;
+            }
+
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentCount = Math.floor(progress * targetValue);
+                el.textContent = prefix + currentCount.toLocaleString() + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    el.textContent = prefix + targetValue.toLocaleString() + suffix;
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Simulate lazy loading delay for visual feedback, then fetch real metrics
+        setTimeout(async () => {
+            // Static indicators load
+            document.getElementById('adminActiveGateways').textContent = "5";
+            document.getElementById('adminDbStatus').textContent = "Online";
+            document.getElementById('adminBuildVersion').textContent = "v2.4";
+
+            if (!window.supabaseClient) {
+                animateCounter('adminTotalEmployees', 1);
+                return;
+            }
+
+            try {
+                const client = window.supabaseClient;
+                const { data: employees, error } = await client.from('employees').select('*').order('created_at', { ascending: false });
+
+                const tbody = document.getElementById('adminEmployeeTableBody');
+                
+                if (error) {
+                    throw error;
+                }
+
+                if (employees && employees.length > 0) {
+                    // Trigger count-up animation for total employee count
+                    animateCounter('adminTotalEmployees', employees.length);
+
+                    tbody.innerHTML = '';
+                    employees.forEach(emp => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="fw-bold text-dark">${emp.name || 'Unnamed Employee'}</td>
+                            <td>${emp.email}</td>
+                            <td><span class="badge bg-secondary">${emp.department || 'General'}</span></td>
+                            <td><span class="badge bg-danger">${emp.role || 'employee'}</span></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    animateCounter('adminTotalEmployees', 0);
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-3">No employees found in database.</td></tr>`;
+                }
+            } catch (err) {
+                console.error("Error loading admin dashboard stats:", err);
+                animateCounter('adminTotalEmployees', 0);
+                document.getElementById('adminEmployeeTableBody').innerHTML = `<tr><td colspan="4" class="text-center text-danger py-3">Failed to load employee records from database.</td></tr>`;
+            }
+        }, 400); // 400ms lazy load shimmer preview
+    });
+</script>
+
+</body>
+</html>

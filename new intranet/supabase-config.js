@@ -1,3 +1,4 @@
+
 /**
  * supabase-config.js
  *
@@ -76,6 +77,7 @@
                     {
                         auth: {
                             persistSession: true,
+                            storage: window.sessionStorage, // Tab-isolated storage per browser tab
                             autoRefreshToken: true,
                             detectSessionInUrl: true
                         }
@@ -84,7 +86,7 @@
 
 
             console.log(
-                "JACHINS Supabase client initialized."
+                "JACHINS Supabase client initialized (Tab-Isolated Session Storage)."
             );
 
 

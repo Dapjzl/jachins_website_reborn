@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Personal Notes | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet" media="screen">
+   <link href="intranet.css" rel="stylesheet" media="screen">
+
+   <style>
+      /* Safeguard top bar & container overflow so dropdowns expand properly */
+      #header-placeholder, 
+      .sis-intranet-header, 
+      .sisf-comman-bg-light {
+         overflow: visible !important;
+      }
+      
+      .dropdown-menu {
+         z-index: 1070 !important;
+      }
+
+      /* iPhone Notes App Styling Theme with darkened, high-contrast borders & sections */
+      .ios-notes-container {
+         background-color: #ffffff;
+         border-radius: 12px;
+         border: 1px solid #c7c7cc;
+         overflow: hidden;
+         box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+         display: flex;
+         height: calc(100vh - 220px);
+         min-height: 550px;
+      }
+
+      .ios-sidebar {
+         width: 340px;
+         background-color: #f1f1f6;
+         border-right: 1px solid #c7c7cc;
+         display: flex;
+         flex-direction: column;
+         flex-shrink: 0;
+      }
+
+      .ios-sidebar-header {
+         padding: 16px 20px;
+         border-bottom: 1px solid #c7c7cc;
+         background-color: #eaeaf0;
+      }
+
+      .ios-notes-list {
+         overflow-y: auto;
+         flex-grow: 1;
+         padding: 10px;
+      }
+
+      .ios-note-item {
+         padding: 12px 14px;
+         border-radius: 8px;
+         cursor: pointer;
+         margin-bottom: 6px;
+         transition: background-color 0.15s ease;
+         border: 1px solid #d1d1d6;
+         background-color: #ffffff;
+      }
+
+      .ios-note-item:hover {
+         background-color: #e5e5ea;
+      }
+
+      .ios-note-item.active {
+         background-color: #007aff !important;
+         border-color: #005bb5 !important;
+         color: #fff !important;
+      }
+
+      .ios-note-item.active .ios-note-title,
+      .ios-note-item.active .ios-note-preview,
+      .ios-note-item.active .ios-note-date {
+         color: #fff !important;
+      }
+
+      .ios-note-title {
+         font-weight: 600;
+         font-size: 14px;
+         color: #1c1c1e;
+         margin-bottom: 2px;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
+
+      .ios-note-preview {
+         font-size: 12px;
+         color: #636366;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+      }
+
+      .ios-note-date {
+         font-size: 11px;
+         color: #636366;
+         margin-bottom: 4px;
+      }
+
+      .ios-editor-pane {
+         flex-grow: 1;
+         background-color: #ffffff;
+         display: flex;
+         flex-direction: column;
+         position: relative;
+      }
+
+      .ios-editor-header {
+         padding: 12px 20px;
+         border-bottom: 1px solid #c7c7cc;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         background-color: #f8f8fa;
+      }
+
+      .ios-editor-body {
+         padding: 24px;
+         flex-grow: 1;
+         overflow-y: auto;
+         display: flex;
+         flex-direction: column;
+      }
+
+      .ios-title-input {
+         font-size: 24px;
+         font-weight: 700;
+         border: none;
+         outline: none;
+         width: 100%;
+         color: #1c1c1e;
+         margin-bottom: 12px;
+         background: transparent;
+      }
+
+      .ios-textarea-input {
+         flex-grow: 1;
+         border: none;
+         outline: none;
+         resize: none;
+         font-size: 15px;
+         color: #2c2c2e;
+         background: transparent;
+         line-height: 1.6;
+         width: 100%;
+         min-height: 300px;
+      }
+
+      .ios-empty-state {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         height: 100%;
+         color: #636366;
+         text-align: center;
+         padding: 20px;
+      }
+   </style>
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true">
+
+   <!-- Header Container Placeholder -->
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <!-- Sidebar Container Placeholder -->
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <!-- Page Title Header Start -->
+         <div class="sisf-sis-section-title sis-section-title mb-3">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Private Vault</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Personal <span class="sisf-e-colored">Notes</span></h2>
+            <p class="mb-0">Securely store your personal details, reminders, and private checklists. Strictly private to your account.</p>
+         </div>
+         <!-- Page Title Header End -->
+
+         <!-- Status Alerts Start -->
+         <div id="activity-error-alert" class="sis-login-error is-visible mb-3 d-none">
+            <i class="fa-solid fa-circle-exclamation pe-2"></i><span id="error-message-text">An error occurred.</span>
+         </div>
+
+         <div id="activity-success-alert" class="sisf-sis-comman-drop-bg sis-radius p-3 mb-3 d-none" style="border-left:4px solid #28a745;">
+            <i class="fa-solid fa-circle-check pe-2" style="color:#28a745;"></i><span id="success-message-text">Note saved successfully.</span>
+         </div>
+         <!-- Status Alerts End -->
+
+         <!-- iPhone Notes Layout Container -->
+         <div class="ios-notes-container">
+            
+            <!-- Left Sidebar List -->
+            <div class="ios-sidebar">
+               <div class="ios-sidebar-header d-flex align-items-center justify-content-between">
+                  <h5 class="fw-bold mb-0 text-dark" style="font-size: 16px;">Notes</h5>
+                  <button type="button" id="btn-new-note" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold" style="background-color: #007aff; border: none;">
+                     <i class="fa-solid fa-pen-to-square me-1"></i> New Note
+                  </button>
+               </div>
+               
+               <div class="px-3 py-2 bg-white border-bottom">
+                  <input type="text" id="notes-search" class="form-control form-control-sm border bg-light" placeholder="Search notes...">
+               </div>
+
+               <div class="ios-notes-list" id="notes-list-container">
+                  <div class="text-center text-muted py-5 small">Loading notes...</div>
+               </div>
+            </div>
+
+            <!-- Right Editor Panel -->
+            <div class="ios-editor-pane" id="editor-pane">
+               <!-- Shown when a note is selected -->
+               <div id="active-note-editor" class="d-none h-100 d-flex flex-column">
+                  <div class="ios-editor-header">
+                     <span id="note-saved-status" class="fw-semibold text-secondary" style="font-size: 12px;">Saved</span>
+                     
+                     <div class="d-flex align-items-center gap-2">
+                        <!-- Save Button -->
+                        <button type="button" id="btn-save-note" class="btn btn-sm btn-success px-3 fw-bold">
+                           <i class="fa-solid fa-floppy-disk me-1"></i> Save
+                        </button>
+                        <!-- Download / Export Button -->
+                        <button type="button" id="btn-download-note" class="btn btn-sm btn-outline-secondary px-3" title="Download Note as Text">
+                           <i class="fa-solid fa-download me-1"></i> Download
+                        </button>
+                        <!-- Delete Button -->
+                        <button type="button" id="btn-delete-note" class="btn btn-sm btn-outline-danger" title="Delete Note">
+                           <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                     </div>
+                  </div>
+                  <div class="ios-editor-body">
+                     <input type="text" id="edit-note-title" class="ios-title-input" placeholder="Title">
+                     <textarea id="edit-note-content" class="ios-textarea-input" placeholder="Start typing your personal details or notes here..."></textarea>
+                  </div>
+               </div>
+
+               <!-- Shown when no note is selected -->
+               <div id="no-note-selected" class="ios-empty-state">
+                  <i class="fa-regular fa-note-sticky fa-3x mb-3 text-secondary opacity-50"></i>
+                  <h5 class="fw-bold text-dark">No Note Selected</h5>
+                  <p class="small text-muted">Choose a note from the sidebar or click "New Note" to start writing your personal details.</p>
+               </div>
+            </div>
+
+         </div>
+
+      </main>
+
+   </div>
+
+   <!-- Footer Container Placeholder -->
+   <div id="footer-placeholder"></div>
+
+   <script src="../js/jquery-3.7.1.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="intranet.js"></script>
+
+   <script>
+   var sbClient = window.IntranetAuth && typeof window.IntranetAuth.getClient === 'function'
+      ? window.IntranetAuth.getClient()
+      : window.supabaseClient;
+
+   document.addEventListener("DOMContentLoaded", function () {
+      "use strict";
+
+      let loadedNotes = [];
+      let activeNoteId = null;
+      let autoSaveTimer = null;
+
+      const errorAlert = document.getElementById("activity-error-alert");
+      const errorMessageText = document.getElementById("error-message-text");
+      const successAlert = document.getElementById("activity-success-alert");
+      const successMessageText = document.getElementById("success-message-text");
+
+      const notesListContainer = document.getElementById("notes-list-container");
+      const activeNoteEditor = document.getElementById("active-note-editor");
+      const noNoteSelected = document.getElementById("no-note-selected");
+      const editNoteTitle = document.getElementById("edit-note-title");
+      const editNoteContent = document.getElementById("edit-note-content");
+      const noteSavedStatus = document.getElementById("note-saved-status");
+      const btnNewNote = document.getElementById("btn-new-note");
+      const btnSaveNote = document.getElementById("btn-save-note");
+      const btnDownloadNote = document.getElementById("btn-download-note");
+      const btnDeleteNote = document.getElementById("btn-delete-note");
+      const notesSearch = document.getElementById("notes-search");
+
+      function showError(msg) {
+         if (errorMessageText && errorAlert) {
+            errorMessageText.textContent = msg;
+            errorAlert.classList.remove("d-none");
+            if (successAlert) successAlert.classList.add("d-none");
+         }
+      }
+
+      function showSuccess(msg) {
+         if (successMessageText && successAlert) {
+            successMessageText.textContent = msg;
+            successAlert.classList.remove("d-none");
+            if (errorAlert) errorAlert.classList.add("d-none");
+         }
+      }
+
+      function escapeHtml(str) {
+         return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      function formatDate(dateStr, timeStr) {
+         if (!dateStr) return '';
+         const date = new Date(dateStr + (timeStr ? 'T' + timeStr : ''));
+         if (isNaN(date.getTime())) return dateStr;
+         const today = new Date();
+         if (date.toDateString() === today.toDateString()) {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+         }
+         return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      // 1. FETCH USER NOTES FROM SUPABASE
+      async function loadUserNotes(searchQuery = "") {
+         if (!sbClient) return;
+
+         const { data: { user } } = await sbClient.auth.getUser();
+
+         if (!user) {
+            notesListContainer.innerHTML = '<div class="text-center text-warning fw-bold py-4 px-2 small">Please log in to view your personal notes.</div>';
+            return;
+         }
+
+         let query = sbClient
+            .from("activity_logs")
+            .select("*")
+            .eq("user_id", user.id)
+            .or("is_deleted.is.null,is_deleted.eq.false")
+            .order("activity_date", { ascending: false, nullsFirst: false })
+            .order("activity_time", { ascending: false, nullsFirst: false });
+
+         const { data: notes, error } = await query;
+
+         if (error) {
+            showError("Failed to fetch notes: " + error.message);
+            notesListContainer.innerHTML = `<div class="text-center text-danger py-4 small">${escapeHtml(error.message)}</div>`;
+            return;
+         }
+
+         loadedNotes = notes || [];
+         
+         let filteredNotes = loadedNotes;
+         if (searchQuery.trim() !== "") {
+            const q = searchQuery.toLowerCase();
+            filteredNotes = loadedNotes.filter(n => 
+               (n.title && n.title.toLowerCase().includes(q)) || 
+               (n.description && n.description.toLowerCase().includes(q))
+            );
+         }
+
+         renderNotesList(filteredNotes);
+      }
+
+      function renderNotesList(notesToRender) {
+         notesListContainer.innerHTML = "";
+
+         if (notesToRender.length === 0) {
+            notesListContainer.innerHTML = '<div class="text-center py-5 text-muted small">No notes found. Create your first personal note!</div>';
+            return;
+         }
+
+         notesToRender.forEach((note) => {
+            const item = document.createElement("div");
+            item.className = `ios-note-item ${activeNoteId === note.id ? 'active' : ''}`;
+            item.setAttribute('data-id', note.id);
+
+            const titleText = note.title ? note.title : "New Note";
+            const previewText = note.description ? note.description : "No additional text";
+            const dateText = formatDate(note.activity_date, note.activity_time);
+
+            item.innerHTML = `
+               <div class="ios-note-title">${escapeHtml(titleText)}</div>
+               <div class="d-flex justify-content-between align-items-center">
+                  <span class="ios-note-preview">${escapeHtml(previewText)}</span>
+               </div>
+               <div class="ios-note-date">${dateText}</div>
+            `;
+
+            item.addEventListener('click', () => {
+               selectNote(note.id);
+            });
+
+            notesListContainer.appendChild(item);
+         });
+      }
+
+      function selectNote(id) {
+         activeNoteId = id;
+         const note = loadedNotes.find(n => n.id === id);
+
+         if (note) {
+            editNoteTitle.value = note.title || '';
+            editNoteContent.value = note.description || '';
+            
+            noNoteSelected.classList.add("d-none");
+            activeNoteEditor.classList.remove("d-none");
+            noteSavedStatus.textContent = "Saved";
+
+            document.querySelectorAll('.ios-note-item').forEach(el => {
+               if (el.getAttribute('data-id') === id) {
+                  el.classList.add('active');
+               } else {
+                  el.classList.remove('active');
+               }
+            });
+         }
+      }
+
+      // 2. CREATE NEW NOTE
+      async function createNewNote() {
+         if (!sbClient) return;
+         const { data: { user } } = await sbClient.auth.getUser();
+         if (!user) {
+            showError("You must be logged in to create notes.");
+            return;
+         }
+
+         const now = new Date();
+         const todayDateStr = now.toISOString().split('T')[0];
+         const timeStr = now.toTimeString().split(' ')[0].substring(0,5);
+
+         const payload = {
+            user_id: user.id,
+            title: "New Personal Note",
+            description: "",
+            activity_date: todayDateStr,
+            activity_time: timeStr,
+            is_deleted: false
+         };
+
+         const { data, error } = await sbClient.from("activity_logs").insert([payload]).select();
+
+         if (error) {
+            showError("Failed to create note: " + error.message);
+         } else if (data && data.length > 0) {
+            await loadUserNotes(notesSearch.value);
+            selectNote(data[0].id);
+            editNoteTitle.focus();
+            editNoteTitle.select();
+         }
+      }
+
+      // 3. SAVE NOTE FUNCTION (Explicit Manual Save + Auto-Save)
+      async function saveCurrentNote() {
+         if (!activeNoteId) return;
+
+         const { data: { user } } = await sbClient.auth.getUser();
+         if (!user) return;
+
+         noteSavedStatus.textContent = "Saving...";
+         const updatedTitle = editNoteTitle.value.trim() || "Untitled Note";
+         const updatedDesc = editNoteContent.value.trim();
+
+         const { error } = await sbClient
+            .from("activity_logs")
+            .update({
+               title: updatedTitle,
+               description: updatedDesc
+            })
+            .eq('id', activeNoteId)
+            .eq('user_id', user.id);
+
+         if (error) {
+            noteSavedStatus.textContent = "Error saving";
+            showError("Failed to save note: " + error.message);
+         } else {
+            noteSavedStatus.textContent = "Saved";
+            showSuccess("Note saved successfully.");
+            
+            const noteObj = loadedNotes.find(n => n.id === activeNoteId);
+            if (noteObj) {
+               noteObj.title = updatedTitle;
+               noteObj.description = updatedDesc;
+            }
+            renderNotesList(loadedNotes);
+         }
+      }
+
+      function triggerAutoSave() {
+         noteSavedStatus.textContent = "Unsaved changes...";
+         if (autoSaveTimer) clearTimeout(autoSaveTimer);
+
+         autoSaveTimer = setTimeout(async () => {
+            await saveCurrentNote();
+         }, 800);
+      }
+
+      editNoteTitle.addEventListener('input', triggerAutoSave);
+      editNoteContent.addEventListener('input', triggerAutoSave);
+
+      if (btnSaveNote) {
+         btnSaveNote.addEventListener('click', saveCurrentNote);
+      }
+
+      // 4. DOWNLOAD NOTE AS TEXT FILE
+      if (btnDownloadNote) {
+         btnDownloadNote.addEventListener('click', function() {
+            if (!activeNoteId) return;
+            const title = editNoteTitle.value.trim() || "Personal Note";
+            const content = editNoteContent.value;
+            const fileContent = `${title}\n${'='.repeat(title.length)}\n\n${content}`;
+            
+            const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showSuccess("Note downloaded successfully.");
+         });
+      }
+
+      // 5. DELETE NOTE
+      if (btnDeleteNote) {
+         btnDeleteNote.addEventListener('click', async function() {
+            if (!activeNoteId) return;
+
+            if (confirm("Are you sure you want to delete this personal note?")) {
+               const { error } = await sbClient
+                  .from("activity_logs")
+                  .update({ is_deleted: true })
+                  .eq('id', activeNoteId);
+
+               if (error) {
+                  showError("Failed to delete note: " + error.message);
+               } else {
+                  showSuccess("Note deleted successfully.");
+                  activeNoteId = null;
+                  activeNoteEditor.classList.add("d-none");
+                  noNoteSelected.classList.remove("d-none");
+                  loadUserNotes(notesSearch.value);
+               }
+            }
+         });
+      }
+
+      if (btnNewNote) {
+         btnNewNote.addEventListener('click', createNewNote);
+      }
+
+      if (notesSearch) {
+         notesSearch.addEventListener('input', function() {
+            loadUserNotes(this.value);
+         });
+      }
+
+      loadUserNotes();
+   });
+   </script>
+</body>
+
+</html>

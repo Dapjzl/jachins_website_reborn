@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#a30e2d">
+  <title>JACHINS Messenger | Workspaces</title>
+
+  <!-- JACHINS Intranet Core Styles & Assets -->
+  <link rel="stylesheet" href="../css/custom.css">
+  <link rel="stylesheet" href="intranet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --jachins-red: #a30e2d;
+      --jachins-red-dark: #790a21;
+      --jachins-red-light: #fef2f4;
+      --jachins-ink: #111827;
+      --jachins-muted: #6b7280;
+      --jachins-border: #e5e7eb;
+      --jachins-bg: #f3f4f6;
+      --jachins-green: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Plus Jakarta Sans", sans-serif; background: var(--jachins-bg); color: var(--jachins-ink); }
+
+    .jm-shell { max-width: 1720px; margin: 0 auto; padding: 16px; }
+
+    /* Layout Structure */
+    .jm-layout { 
+      height: min(840px, calc(100vh - 100px)); 
+      min-height: 600px; 
+      display: grid; 
+      grid-template-columns: 340px minmax(0, 1fr); 
+      background: #ffffff; 
+      border: 1px solid var(--jachins-border); 
+      border-radius: 16px; 
+      overflow: hidden; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    }
+
+    /* Sidebar Styling */
+    .jm-sidebar { border-right: 1px solid var(--jachins-border); display: flex; flex-direction: column; background: #ffffff; }
+    .jm-sidebar-header { padding: 16px 18px 12px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; justify-content: space-between; }
+    .jm-my-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 8px; border-radius: 10px; transition: background .15s; }
+    .jm-my-profile:hover { background: var(--jachins-red-light); }
+    .jm-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--jachins-red); color: white; display: grid; place-items: center; font-weight: 700; font-size: 14px; position: relative; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08); }
+    .jm-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .jm-avatar.group { background: var(--jachins-red); color: white; border-radius: 12px; }
+
+    .jm-search-wrap { padding: 12px 18px; display: flex; gap: 8px; align-items: center; }
+    .jm-search { position: relative; flex: 1; }
+    .jm-search i { position: absolute; left: 12px; top: 11px; color: #9ca3af; font-size: 13px; }
+    .jm-search input { width: 100%; border: 1px solid var(--jachins-border); background: #f9fafb; border-radius: 10px; outline: none; padding: 9px 12px 9px 34px; font-size: 12px; }
+
+    .jm-tabs { display: flex; gap: 4px; padding: 0 18px 10px; justify-content: space-between; align-items: center; }
+    .jm-tab-group { display: flex; gap: 4px; }
+    .jm-tab { border: 0; background: transparent; color: var(--jachins-muted); border-radius: 8px; padding: 6px 10px; font-size: 11px; font-weight: 700; }
+    .jm-tab.active { color: var(--jachins-red); background: var(--jachins-red-light); }
+
+    .jm-conversation-list { flex: 1; overflow-y: auto; padding: 0 10px 10px; }
+    .jm-conversation { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border: 0; border-radius: 12px; width: 100%; text-align: left; background: transparent; transition: background .15s; cursor: pointer; margin-bottom: 2px; }
+    .jm-conversation:hover { background: #f9fafb; }
+    .jm-conversation.active { background: var(--jachins-red-light); }
+    .jm-conv-name { font-size: 12px; font-weight: 700; color: #1f2937; display: flex; justify-content: space-between; align-items: center; }
+    .jm-conv-preview { font-size: 11px; color: var(--jachins-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+
+    /* Main Chat View */
+    .jm-main { display: flex; min-width: 0; flex-direction: column; position: relative; background: #f8fafc; }
+    .jm-chat-header { height: 68px; border-bottom: 1px solid var(--jachins-border); display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #ffffff; cursor: pointer; }
+    .jm-chat-person { display: flex; align-items: center; gap: 12px; }
+    .jm-chat-person h3 { margin: 0; font-size: 14px; font-weight: 800; color: #111827; }
+    .jm-chat-person p { margin: 2px 0 0; font-size: 11px; color: var(--jachins-muted); }
+    .jm-status-dot { display: inline-block; width: 8px; height: 8px; background: var(--jachins-green); border-radius: 50%; margin-right: 6px; }
+
+    .jm-btn-icon { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--jachins-border); background: white; color: #374151; display: inline-grid; place-items: center; font-size: 13px; transition: .15s; cursor: pointer; }
+    .jm-btn-icon:hover { background: #f3f4f6; color: var(--jachins-red); }
+
+    /* Chat Messages Body */
+    .jm-chat-body { flex: 1; min-height: 0; overflow-y: auto; padding: 20px; background: #efeae2; background-image: radial-gradient(#00000008 1px, transparent 0); background-size: 16px 16px; }
+    .jm-message-row { display: flex; margin: 12px 0; align-items: flex-end; gap: 8px; }
+    .jm-message-row.mine { justify-content: flex-end; }
+    .jm-message-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--jachins-red); color: white; font-size: 11px; font-weight: 700; display: grid; place-items: center; overflow: hidden; flex-shrink: 0; }
+    .jm-message-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .jm-message-content { max-width: min(75%, 520px); }
+    .jm-sender-title { font-size: 10px; font-weight: 700; color: #4b5563; margin-bottom: 3px; margin-left: 2px; }
+    .jm-bubble-wrap { position: relative; display: flex; align-items: center; gap: 6px; }
+    .jm-message-row.mine .jm-bubble-wrap { flex-direction: row-reverse; }
+    
+    .jm-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.45; background: #ffffff; color: #1f2937; box-shadow: 0 1px 2px rgba(0,0,0,0.08); border-top-left-radius: 2px; position: relative; }
+    .jm-message-row.mine .jm-bubble { background: #d9fdd3; color: #111827; border-top-left-radius: 14px; border-top-right-radius: 2px; }
+    .jm-message-meta { display: flex; gap: 6px; justify-content: flex-end; margin-top: 3px; font-size: 9px; color: #6b7280; align-items: center; }
+
+    /* Action buttons on message hover */
+    .jm-msg-actions { opacity: 0; display: flex; align-items: center; gap: 4px; transition: opacity .15s; }
+    .jm-message-row:hover .jm-msg-actions { opacity: 1; }
+    
+    .jm-action-icon-btn { background: transparent; border: 0; color: #9ca3af; font-size: 11px; padding: 2px; cursor: pointer; transition: color .15s; }
+    .jm-action-icon-btn:hover { color: #ef4444; }
+    .jm-action-icon-btn.liked { color: #ef4444; }
+
+    .jm-like-badge { display: inline-flex; align-items: center; gap: 3px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1px 6px; font-size: 10px; color: #ef4444; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-top: 2px; }
+
+    /* Composer */
+    .jm-composer-wrap { padding: 12px 20px; background: #ffffff; border-top: 1px solid var(--jachins-border); }
+    .jm-composer { display: flex; align-items: center; gap: 10px; background: #f9fafb; border: 1px solid var(--jachins-border); border-radius: 12px; padding: 6px 12px; }
+    .jm-composer textarea { resize: none; border: 0; outline: 0; background: transparent; flex: 1; min-height: 24px; max-height: 100px; font-size: 13px; }
+    .jm-send-btn { width: 36px; height: 36px; border-radius: 10px; border: 0; background: var(--jachins-red); color: white; display: grid; place-items: center; font-size: 14px; }
+
+    /* Right Side Drawer for Profile & Group Info */
+    .jm-info-drawer { position: absolute; right: 0; top: 68px; bottom: 0; width: 320px; background: white; border-left: 1px solid var(--jachins-border); transform: translateX(100%); transition: transform .25s ease; z-index: 100; display: flex; flex-direction: column; overflow-y: auto; }
+    .jm-info-drawer.open { transform: translateX(0); box-shadow: -10px 0 30px rgba(0,0,0,0.05); }
+    .jm-drawer-header { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+
+    .jm-quote-box { background: var(--jachins-red-light); border-left: 3px solid var(--jachins-red); border-radius: 8px; padding: 10px 12px; font-style: italic; font-size: 12px; color: #4b5563; margin-top: 8px; }
+
+    /* Call Overlay */
+    .jm-call-overlay { display: none; position: fixed; z-index: 3000; inset: 0; background: rgba(15, 23, 42, 0.96); color: white; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+    .jm-call-overlay.open { display: flex; }
+    .jm-call-stage { text-align: center; width: min(800px, 90%); }
+    .jm-call-video-stage { position: relative; width: 100%; height: 420px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 20px; display: none; }
+    .jm-call-video-stage.active { display: block; }
+    .jm-call-remote { width: 100%; height: 100%; object-fit: cover; }
+    .jm-call-local { position: absolute; right: 12px; bottom: 12px; width: 130px; height: 90px; border-radius: 10px; object-fit: cover; border: 2px solid white; background: #222; }
+
+    @media (max-width: 768px) {
+      .jm-layout { display: block; height: calc(100dvh - 80px); }
+      .jm-sidebar { height: 100%; }
+      .jm-main { display: none; height: 100%; }
+      .jm-layout.chat-open .jm-sidebar { display: none; }
+      .jm-layout.chat-open .jm-main { display: flex; }
+    }
+  </style>
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-page="chat">
+
+  <!-- Shared Intranet Components -->
+  <div id="header-placeholder"></div>
+
+  <div class="sis-intranet-body sis-comman-background">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="sis-intranet-main">
+      <div class="jm-shell p-0">
+        <section class="jm-layout" id="messengerLayout">
+          
+          <!-- LEFT SIDEBAR -->
+          <aside class="jm-sidebar">
+            <div class="jm-sidebar-header">
+              <div class="jm-my-profile" id="myProfileBtn" title="Manage Profile Picture">
+                <div class="jm-avatar" id="mySidebarAvatar">U</div>
+                <div>
+                  <strong style="font-size: 12px;" id="myProfileName">My Profile</strong>
+                  <div style="font-size: 10px; color: var(--jachins-muted);"><i class="fa-solid fa-camera me-1"></i>Edit Photo & Status</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="jm-search-wrap">
+              <div class="jm-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="conversationSearch" type="search" placeholder="Search chats or colleagues..." autocomplete="off">
+              </div>
+              <button class="jm-btn-icon" id="createGroupBtn" title="Create New Group Workspace"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <div class="jm-tabs">
+              <div class="jm-tab-group">
+                <button class="jm-tab active" data-filter="all">All</button>
+                <button class="jm-tab" data-filter="groups">Groups</button>
+                <button class="jm-tab" data-filter="people">Directory</button>
+              </div>
+              <button class="jm-tab" data-filter="history"><i class="fa-solid fa-clock-rotate-left"></i> Calls</button>
+            </div>
+
+            <div class="jm-conversation-list" id="conversationList">
+              <div class="text-center text-muted py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading directory...</div>
+            </div>
+          </aside>
+
+          <!-- MAIN CHAT AREA -->
+          <section class="jm-main">
+            <header class="jm-chat-header" id="chatHeaderClickable" title="Click to view details">
+              <div class="jm-chat-person">
+                <button class="btn btn-sm btn-light d-md-none me-2" id="mobileBackBtn"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="jm-avatar group" id="chatAvatar"><i class="fa-solid fa-users"></i></div>
+                <div>
+                  <h3 id="chatTitle">JACHINS Company Chat</h3>
+                  <p id="chatSubtitle"><span class="jm-status-dot"></span>Company-wide conversation</p>
+                </div>
+              </div>
+              <div class="d-flex gap-2" onclick="event.stopPropagation();">
+                <button class="jm-btn-icon" id="toggleInfoBtn" title="View Details"><i class="fa-solid fa-circle-info"></i></button>
+                <button class="jm-btn-icon" id="audioCallBtn" onclick="window.startCall(false)" title="Voice Call"><i class="fa-solid fa-phone"></i></button>
+                <button class="jm-btn-icon" id="videoCallBtn" onclick="window.startCall(true)" title="Video Call"><i class="fa-solid fa-video"></i></button>
+                <button class="jm-btn-icon text-danger" id="clearChatBtn" title="Clear Chat History"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
+            </header>
+
+            <!-- Chat Messages Window -->
+            <div class="jm-chat-body" id="chatBody"></div>
+
+            <!-- Composer Form -->
+            <div class="jm-composer-wrap">
+              <form id="messageForm" class="jm-composer">
+                <label class="text-muted px-2" style="cursor: pointer;" title="Attach Image">
+                  <i class="fa-solid fa-paperclip"></i>
+                  <input type="file" id="mediaInput" accept="image/*" style="display: none;">
+                </label>
+                <textarea id="messageInput" rows="1" placeholder="Type a message..."></textarea>
+                <button type="submit" class="jm-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+              </form>
+            </div>
+
+            <!-- RIGHT SLIDE-OUT DRAWER: Employee Bio / Group Details -->
+            <div class="jm-info-drawer" id="infoDrawer">
+              <div class="jm-drawer-header">
+                <strong style="font-size: 13px;" id="drawerTitle">Info & Description</strong>
+                <button class="btn-close btn-sm" id="closeDrawerBtn"></button>
+              </div>
+              <div class="p-3 text-center" id="drawerContent">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </section>
+
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <!-- PROFILE PICTURE & QUOTE EDIT MODAL -->
+  <div class="modal fade" id="avatarModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h6 class="modal-title fw-bold">Edit Profile & Quote</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center pt-3">
+          <div class="jm-avatar mx-auto mb-3" id="modalAvatarPreview" style="width: 80px; height: 80px; font-size: 28px;">U</div>
+          
+          <div class="mb-3 text-start">
+            <label class="form-label text-muted small mb-1 fw-bold">Status Quote / Description</label>
+            <input type="text" id="myQuoteInput" class="form-control form-control-sm" placeholder="Write a quote or bio...">
+            <button class="btn btn-sm btn-primary w-100 mt-2" id="saveQuoteBtn">Save Quote</button>
+          </div>
+
+          <hr class="my-3">
+
+          <div class="d-grid gap-2">
+            <label class="btn btn-sm btn-outline-secondary">
+              <i class="fa-solid fa-upload me-1"></i> Upload New Photo
+              <input type="file" id="avatarFileInput" accept="image/*" style="display:none;">
+            </label>
+            <button class="btn btn-sm btn-outline-danger" id="deleteAvatarBtn"><i class="fa-solid fa-trash me-1"></i> Delete Photo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALL OVERLAY -->
+  <div class="jm-call-overlay" id="callOverlay">
+    <div class="jm-call-stage">
+      <div class="jm-call-video-stage" id="callVideoStage">
+        <video class="jm-call-remote" id="remoteVideo" autoplay playsinline></video>
+        <video class="jm-call-local" id="localVideo" autoplay muted playsinline></video>
+      </div>
+      <div class="jm-avatar mx-auto mb-3" id="callAvatarIcon" style="width: 80px; height: 80px; font-size: 30px;"><i class="fa-solid fa-user"></i></div>
+      <h4 id="callName" class="fw-bold mb-1">Calling...</h4>
+      <p id="callStatus" class="text-white-50 small mb-2">Connecting WebRTC...</p>
+      <div id="callTimer" class="badge bg-secondary mb-3" style="display:none;">00:00</div>
+
+      <div id="incomingActions" style="display:none; margin-bottom: 15px;">
+        <button class="btn btn-success me-2 px-4" id="acceptCallBtn"><i class="fa-solid fa-phone me-1"></i> Accept</button>
+        <button class="btn btn-danger px-4" id="declineCallBtn"><i class="fa-solid fa-phone-slash me-1"></i> Decline</button>
+      </div>
+
+      <div class="d-flex justify-content-center gap-3">
+        <button class="btn btn-secondary rounded-circle" id="muteMicBtn" style="width: 50px; height: 50px;"><i class="fa-solid fa-microphone"></i></button>
+        <button class="btn btn-secondary rounded-circle" id="toggleCamBtn" style="width: 50px; height: 50px;"><i class="fa-solid fa-video"></i></button>
+        <button class="btn btn-danger rounded-circle" id="hangupCallBtn" style="width: 50px; height: 50px;"><i class="fa-solid fa-phone-slash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="intranet.js"></script>
+
+  <script>
+  (() => {
+    "use strict";
+
+    const CONFIG = { 
+      companyId: "general", 
+      rtcConfig: { 
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" },
+          { urls: "stun:stun1.l.google.com:19302" },
+          { urls: "stun:stun2.l.google.com:19302" }
+        ] 
+      } 
+    };
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+
+    let supabaseClient = null;
+    let currentUser = null;
+    let myEmployeeProfile = null;
+    let employees = [];
+    let customGroups = [];
+    let conversations = [];
+    let selectedConv = null;
+    let messagesCache = {};
+    let callHistory = JSON.parse(localStorage.getItem("jachins_call_history") || "[]");
+
+    let signalingChannel = null;
+    let peerConnection = null;
+    let localStream = null;
+    let activeCallPeerId = null;
+    let callTimerInterval = null;
+    let callSeconds = 0;
+    let avatarModal = null;
+
+    function getClient() { return window.supabaseClient || window.supabase; }
+
+    async function initPage() {
+      supabaseClient = getClient();
+      if (!supabaseClient) return;
+
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) { window.location.href = "login.html"; return; }
+      currentUser = user;
+
+      // Fetch employees & custom groups
+      const [empRes, groupRes] = await Promise.all([
+        supabaseClient.from("employees").select("*"),
+        supabaseClient.from("groups").select("*")
+      ]);
+
+      const allEmps = empRes.data || [];
+      customGroups = groupRes.data || [];
+
+      myEmployeeProfile = allEmps.find(e => String(e.auth_user_id || e.user_id || e.id) === String(currentUser.id));
+      employees = allEmps.filter(e => String(e.auth_user_id || e.user_id || e.id) !== String(currentUser.id));
+
+      inheritTopBarProfile();
+      updateMyAvatarUI();
+      buildConversationsList();
+      selectConversation("general");
+      setupRealtimeListeners();
+
+      avatarModal = new bootstrap.Modal($('#avatarModal'));
+
+      // Event Listeners
+      $("#myProfileBtn").addEventListener("click", () => avatarModal.show());
+      $("#saveQuoteBtn").addEventListener("click", saveMyQuote);
+      $("#avatarFileInput").addEventListener("change", (e) => uploadProfilePicture(e.target.files[0]));
+      $("#deleteAvatarBtn").addEventListener("click", deleteProfilePicture);
+      window.addEventListener("intranet:profile-avatar-updated", (event) => {
+        if (!currentUser || event.detail?.userId !== currentUser.id) return;
+        if (myEmployeeProfile) {
+          myEmployeeProfile.avatar_url = null;
+          myEmployeeProfile.photo_url = null;
+          myEmployeeProfile.image_url = null;
+        }
+        updateMyAvatarUI();
+        renderMessagesFeed();
+      });
+      $("#createGroupBtn").addEventListener("click", promptCreateGroup);
+
+      $("#messageForm").addEventListener("submit", (e) => { e.preventDefault(); sendMessage($("#messageInput").value); });
+      $("#mediaInput").addEventListener("change", (e) => { if (e.target.files[0]) uploadAndSendMedia(e.target.files[0]); });
+      $("#conversationSearch").addEventListener("input", (e) => filterConversations(e.target.value));
+
+      $$(".jm-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+          $$(".jm-tab").forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          const filter = tab.dataset.filter;
+          if (filter === "history") renderCallHistoryView();
+          else filterConversations($("#conversationSearch").value, filter);
+        });
+      });
+
+      $("#chatHeaderClickable").addEventListener("click", openInfoDrawer);
+      $("#toggleInfoBtn").addEventListener("click", openInfoDrawer);
+      $("#closeDrawerBtn").addEventListener("click", () => $("#infoDrawer").classList.remove("open"));
+
+      $("#mobileBackBtn").addEventListener("click", () => $("#messengerLayout").classList.remove("chat-open"));
+      $("#clearChatBtn").addEventListener("click", clearCurrentChat);
+
+      $("#hangupCallBtn").addEventListener("click", () => hangUpCall(true));
+      $("#declineCallBtn").addEventListener("click", () => hangUpCall(true));
+      $("#muteMicBtn").addEventListener("click", toggleMicrophone);
+      $("#toggleCamBtn").addEventListener("click", toggleCamera);
+    }
+
+    function inheritTopBarProfile() {
+      const topBarAvatarImg = document.querySelector("#header-placeholder img, .sis-user-profile img, .user-avatar img");
+      const topBarText = document.querySelector("#header-placeholder .user-name, .sis-user-name, [data-user-name]");
+
+      let inheritedAvatar = topBarAvatarImg ? topBarAvatarImg.src : null;
+      let inheritedName = topBarText ? topBarText.textContent.trim() : null;
+
+      if (!myEmployeeProfile) {
+        myEmployeeProfile = { auth_user_id: currentUser.id };
+      }
+
+      if (inheritedName && (!myEmployeeProfile.full_name || myEmployeeProfile.full_name === "Loading...")) {
+        myEmployeeProfile.full_name = inheritedName;
+      }
+      if (inheritedAvatar && !myEmployeeProfile.avatar_url) {
+        myEmployeeProfile.avatar_url = inheritedAvatar;
+      }
+    }
+
+    function updateMyAvatarUI() {
+      let name = myEmployeeProfile?.full_name || myEmployeeProfile?.name;
+      if (!name || name === "Loading...") {
+        name = currentUser.email ? currentUser.email.split('@')[0] : "User";
+      }
+      const quote = myEmployeeProfile?.bio || "No quote set yet.";
+      
+      $("#myProfileName").textContent = name;
+      $("#myQuoteInput").value = quote;
+
+      const avatarUrl = myEmployeeProfile?.avatar_url;
+      renderAvatarElement($("#mySidebarAvatar"), avatarUrl, name);
+      renderAvatarElement($("#modalAvatarPreview"), avatarUrl, name);
+    }
+
+    async function saveMyQuote() {
+      const newQuote = $("#myQuoteInput").value.trim();
+      try {
+        await supabaseClient.from("employees").update({ bio: newQuote }).eq("auth_user_id", currentUser.id);
+        if (myEmployeeProfile) myEmployeeProfile.bio = newQuote;
+        alert("Quote updated successfully!");
+        avatarModal.hide();
+      } catch (err) {
+        alert("Failed to update quote.");
+      }
+    }
+
+    function renderAvatarElement(el, url, name) {
+      if (url) {
+        el.innerHTML = `<img src="${url}">`;
+      } else {
+        el.textContent = name
+          ? name.trim().split(/\s+/).map(part => part.charAt(0)).join('').slice(0, 2).toUpperCase()
+          : 'U';
+      }
+    }
+
+    async function uploadProfilePicture(file) {
+      if (!file) return;
+      try {
+        const filePath = `avatar_${currentUser.id}_${Date.now()}.png`;
+        const { error: uploadErr } = await supabaseClient.storage.from("avatars").upload(filePath, file);
+        if (uploadErr) throw uploadErr;
+
+        const { data: { publicUrl } } = supabaseClient.storage.from("avatars").getPublicUrl(filePath);
+
+        await supabaseClient.from("employees").update({ avatar_url: publicUrl }).eq("auth_user_id", currentUser.id);
+
+        if (myEmployeeProfile) myEmployeeProfile.avatar_url = publicUrl;
+        updateMyAvatarUI();
+        avatarModal.hide();
+        renderMessagesFeed();
+      } catch (err) {
+        alert("Could not upload profile picture. Ensure the 'avatars' storage bucket is created in Supabase.");
+      }
+    }
+
+    async function deleteProfilePicture() {
+      try {
+        const { data, error } = await supabaseClient
+          .from("employees")
+          .update({ avatar_url: null, photo_url: null, image_url: null })
+          .eq("auth_user_id", currentUser.id)
+          .select("id")
+          .maybeSingle();
+        if (error) throw error;
+        if (!data) throw new Error("No employee profile was updated.");
+
+        if (myEmployeeProfile) {
+          myEmployeeProfile.avatar_url = null;
+          myEmployeeProfile.photo_url = null;
+          myEmployeeProfile.image_url = null;
+        }
+        updateMyAvatarUI();
+        window.dispatchEvent(new CustomEvent("intranet:profile-avatar-updated", {
+          detail: { userId: currentUser.id }
+        }));
+        avatarModal.hide();
+        renderMessagesFeed();
+      } catch (err) {
+        console.error("Error removing profile picture:", err);
+        alert("Error removing profile picture.");
+      }
+    }
+
+    async function promptCreateGroup() {
+      const groupName = prompt("Enter new group workspace name:");
+      if (!groupName || !groupName.trim()) return;
+
+      const groupId = `group_${Date.now()}`;
+      const newGroupObj = { id: groupId, name: groupName.trim(), created_by: currentUser.id };
+
+      const { error } = await supabaseClient.from("groups").insert(newGroupObj);
+      if (error) {
+        alert("Failed to create group. Ensure the 'groups' table is created in Supabase.");
+        return;
+      }
+
+      customGroups.push(newGroupObj);
+      buildConversationsList();
+      selectConversation(groupId);
+
+      signalingChannel.send({
+        type: "broadcast",
+        event: "group-created",
+        payload: newGroupObj
+      });
+    }
+
+    window.deleteCustomGroup = async function(groupId, event) {
+      event.stopPropagation();
+      if (groupId === "general") {
+        alert("The JACHINS Company Chat is permanent and cannot be deleted.");
+        return;
+      }
+
+      if (!confirm("Are you sure you want to delete this group?")) return;
+
+      await supabaseClient.from("groups").delete().eq("id", groupId);
+      customGroups = customGroups.filter(g => g.id !== groupId);
+      
+      buildConversationsList();
+      selectConversation("general");
+
+      signalingChannel.send({
+        type: "broadcast",
+        event: "group-deleted",
+        payload: { groupId }
+      });
+    };
+
+    function buildConversationsList() {
+      conversations = [
+        { id: "general", type: "group", name: "JACHINS Company Chat", preview: `${employees.length + 1} staff members`, icon: "fa-users", protected: true }
+      ];
+
+      customGroups.forEach(g => {
+        conversations.push({
+          id: g.id,
+          type: "group",
+          name: g.name,
+          preview: "Custom Group Workspace",
+          icon: "fa-hashtag",
+          protected: false
+        });
+      });
+
+      employees.forEach(emp => {
+        const empId = String(emp.auth_user_id || emp.user_id || emp.id);
+        const name = (emp.full_name && emp.full_name !== "Loading...") ? emp.full_name : (emp.name || emp.email?.split("@")[0] || "Colleague");
+        conversations.push({
+          id: directId(currentUser.id, empId),
+          peerId: empId,
+          type: "direct",
+          name: name,
+          preview: emp.department || emp.job_title || "JACHINS Staff",
+          avatar: emp.avatar_url
+        });
+      });
+
+      renderSidebarList(conversations);
+    }
+
+    function directId(uid1, uid2) { return [String(uid1), String(uid2)].sort().join(":"); }
+
+    function renderSidebarList(list) {
+      const container = $("#conversationList");
+      container.innerHTML = list.map(c => `
+        <div class="jm-conversation ${selectedConv?.id === c.id ? 'active' : ''}" data-id="${c.id}" style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; gap:12px; align-items:center; flex:1; min-width:0;" onclick="window.selectConvById('${c.id}')">
+            <div class="jm-avatar ${c.type === 'group' ? 'group' : ''}">
+              ${c.icon ? `<i class="fa-solid ${c.icon}"></i>` : (c.avatar ? `<img src="${c.avatar}">` : c.name.charAt(0).toUpperCase())}
+            </div>
+            <div class="jm-conv-body" style="flex:1; min-width:0;">
+              <div class="jm-conv-name"><span>${c.name}</span></div>
+              <div class="jm-conv-preview">${c.preview}</div>
+            </div>
+          </div>
+          ${c.type === 'group' && !c.protected ? `
+            <button class="btn btn-sm text-danger p-1" onclick="window.deleteCustomGroup('${c.id}', event)" title="Delete Group">
+              <i class="fa-solid fa-trash-can" style="font-size: 11px;"></i>
+            </button>` : ''}
+        </div>
+      `).join("");
+    }
+
+    window.selectConvById = function(id) {
+      selectConversation(id);
+      $("#messengerLayout").classList.add("chat-open");
+    };
+
+    function openInfoDrawer() {
+      const drawer = $("#infoDrawer");
+      const content = $("#drawerContent");
+
+      if (selectedConv.type === "group") {
+        $("#drawerTitle").textContent = selectedConv.protected ? "Company Workspace" : "Group Workspace";
+        
+        const membersHtml = [myEmployeeProfile, ...employees].filter(Boolean).map(e => {
+          let displayName = e.full_name || e.name;
+          if (!displayName || displayName === "Loading...") {
+            displayName = e.email ? e.email.split('@')[0] : "Colleague";
+          }
+          return `
+            <div class="d-flex align-items-center gap-2 py-1">
+              <div class="jm-avatar" style="width: 28px; height: 28px; font-size: 11px;">
+                ${e.avatar_url ? `<img src="${e.avatar_url}">` : displayName.charAt(0).toUpperCase()}
+              </div>
+              <div style="font-size:12px;">${displayName}</div>
+            </div>
+          `;
+        }).join("");
+
+        content.innerHTML = `
+          <div class="jm-avatar group mx-auto mb-3" style="width: 70px; height: 70px; font-size: 28px;">
+            <i class="fa-solid ${selectedConv.protected ? 'fa-users' : 'fa-hashtag'}"></i>
+          </div>
+          <h5 class="fw-bold mb-1">${selectedConv.name}</h5>
+          <p class="text-muted small">${selectedConv.protected ? 'Official company-wide chat for team communication.' : 'Custom group workspace.'}</p>
+          <div class="badge bg-light text-dark p-2 w-100 mb-3"><i class="fa-solid fa-user-check me-1"></i> ${employees.length + 1} Active Members</div>
+          
+          <div class="text-start border-top pt-3">
+            <strong class="d-block mb-2 small text-uppercase text-muted">Members List</strong>
+            ${membersHtml}
+          </div>
+        `;
+      } else {
+        const peerEmp = employees.find(e => String(e.auth_user_id || e.user_id || e.id) === String(selectedConv.peerId));
+        let name = peerEmp?.full_name || peerEmp?.name;
+        if (!name || name === "Loading...") {
+          name = peerEmp?.email ? peerEmp.email.split('@')[0] : selectedConv.name;
+        }
+        
+        const dept = peerEmp?.department || "Staff";
+        const title = peerEmp?.job_title || "Employee";
+        const email = peerEmp?.email || "N/A";
+        const quote = peerEmp?.bio || "No status quote set yet.";
+
+        $("#drawerTitle").textContent = "Colleague Profile";
+        content.innerHTML = `
+          <div class="jm-avatar mx-auto mb-3" style="width: 75px; height: 75px; font-size: 28px;">
+            ${peerEmp?.avatar_url ? `<img src="${peerEmp.avatar_url}">` : name.charAt(0).toUpperCase()}
+          </div>
+          <h5 class="fw-bold mb-1">${name}</h5>
+          <p class="text-muted small mb-2">${title} · ${dept}</p>
+
+          <div class="jm-quote-box text-start mb-3">
+            <i class="fa-solid fa-quote-left text-muted me-1"></i>
+            "${quote}"
+          </div>
+
+          <div class="text-start border-top pt-3" style="font-size: 12px;">
+            <div class="mb-2"><strong>Email:</strong> ${email}</div>
+            <div class="mb-2"><strong>Department:</strong> ${dept}</div>
+            <div class="mb-2"><strong>Status:</strong> <span class="text-success"><i class="fa-solid fa-circle-dot"></i> Active</span></div>
+          </div>
+        `;
+      }
+
+      drawer.classList.add("open");
+    }
+
+    function renderCallHistoryView() {
+      const container = $("#conversationList");
+      if (callHistory.length === 0) {
+        container.innerHTML = `<div class="text-center text-muted py-4" style="font-size:12px;">No call history.</div>`;
+        return;
+      }
+      container.innerHTML = callHistory.map(h => `
+        <div class="p-2 border-bottom" style="font-size:11px;">
+          <strong>${h.peerName}</strong>
+          <div class="text-muted">${h.type} · ${h.status}</div>
+        </div>
+      `).join("");
+    }
+
+    function filterConversations(term, filterType = $(".jm-tab.active").dataset.filter) {
+      term = term.toLowerCase();
+      let filtered = conversations.filter(c => c.name.toLowerCase().includes(term));
+      if (filterType === "groups") filtered = filtered.filter(c => c.type === "group");
+      if (filterType === "people") filtered = filtered.filter(c => c.type === "direct");
+      renderSidebarList(filtered);
+    }
+
+    async function selectConversation(id) {
+      selectedConv = conversations.find(c => c.id === id);
+      if (!selectedConv) return;
+
+      $("#chatTitle").textContent = selectedConv.name;
+      $("#chatSubtitle").innerHTML = selectedConv.type === "group" 
+        ? `<span class="jm-status-dot"></span>${selectedConv.protected ? (employees.length + 1) + ' Company Members' : 'Custom Group Workspace'}` 
+        : `<span class="jm-status-dot"></span>${selectedConv.preview}`;
+
+      const avatarEl = $("#chatAvatar");
+      if (selectedConv.type === "group") {
+        avatarEl.className = "jm-avatar group";
+        avatarEl.innerHTML = `<i class="fa-solid ${selectedConv.protected ? 'fa-users' : 'fa-hashtag'}"></i>`;
+      } else {
+        avatarEl.className = "jm-avatar";
+        renderAvatarElement(avatarEl, selectedConv.avatar, selectedConv.name);
+      }
+
+      renderSidebarList(conversations);
+      $("#infoDrawer").classList.remove("open");
+      await loadMessagesForCurrent();
+    }
+
+    async function loadMessagesForCurrent() {
+      const body = $("#chatBody");
+      body.innerHTML = `<div class="text-center text-muted py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading messages...</div>`;
+
+      try {
+        let query = supabaseClient.from("messages").select("*").order("created_at", { ascending: true });
+        
+        if (selectedConv.type === "group") {
+          query = query.eq("conversation_id", selectedConv.id).is("recipient_id", null);
+        } else {
+          const peerId = selectedConv.peerId;
+          query = query.or(`and(sender_id.eq.${currentUser.id},recipient_id.eq.${peerId}),and(sender_id.eq.${peerId},recipient_id.eq.${currentUser.id})`);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        messagesCache[selectedConv.id] = data || [];
+        renderMessagesFeed();
+      } catch (err) {
+        messagesCache[selectedConv.id] = [];
+        renderMessagesFeed();
+      }
+    }
+
+    function renderMessagesFeed() {
+      const body = $("#chatBody");
+      const list = messagesCache[selectedConv.id] || [];
+
+      if (list.length === 0) {
+        body.innerHTML = `<div class="text-center text-muted my-auto py-5"><small>No messages yet in ${selectedConv.name}. Say hello!</small></div>`;
+        return;
+      }
+
+      body.innerHTML = list.map(m => {
+        const mine = String(m.sender_id) === String(currentUser.id);
+        const senderObj = mine ? myEmployeeProfile : employees.find(e => String(e.auth_user_id || e.user_id || e.id) === String(m.sender_id));
+        
+        let senderName = mine ? "You" : (senderObj?.full_name || senderObj?.name);
+        if (!senderName || senderName === "Loading...") {
+          senderName = senderObj?.email ? senderObj.email.split('@')[0] : "Colleague";
+        }
+        
+        const senderAvatar = senderObj?.avatar_url;
+
+        const likesList = m.likes || [];
+        const likedByMe = likesList.includes(currentUser.id);
+
+        let contentHtml = escapeHtml(m.content);
+        if (m.media_url) contentHtml += `<br><img src="${m.media_url}" style="max-width:100%; border-radius:8px; margin-top:6px;">`;
+
+        return `
+          <div class="jm-message-row ${mine ? 'mine' : ''}">
+            ${!mine ? `
+              <div class="jm-message-avatar">
+                ${senderAvatar ? `<img src="${senderAvatar}">` : senderName.charAt(0).toUpperCase()}
+              </div>` : ''}
+            
+            <div class="jm-message-content">
+              ${!mine && selectedConv.type === 'group' ? `<div class="jm-sender-title">${senderName}</div>` : ''}
+              
+              <div class="jm-bubble-wrap">
+                <div class="jm-bubble">
+                  ${contentHtml}
+                  ${likesList.length > 0 ? `
+                    <div class="jm-like-badge">
+                      <i class="fa-solid fa-heart"></i> ${likesList.length}
+                    </div>` : ''}
+                </div>
+
+                <div class="jm-msg-actions">
+                  <button class="jm-action-icon-btn ${likedByMe ? 'liked' : ''}" onclick="window.toggleLikeMessage('${m.id}')" title="Like Message">
+                    <i class="${likedByMe ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                  </button>
+
+                  ${mine ? `
+                    <button class="jm-action-icon-btn" onclick="window.deleteSingleMessage('${m.id}')" title="Delete Message">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+
+              <div class="jm-message-meta">
+                <span>${new Date(m.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+      body.scrollTop = body.scrollHeight;
+    }
+
+    async function sendMessage(text, mediaUrl = null) {
+      if (!text.trim() && !mediaUrl) return;
+
+      const payload = {
+        sender_id: currentUser.id,
+        content: text.trim() || (mediaUrl ? "Shared an image" : ""),
+        created_at: new Date().toISOString(),
+        likes: []
+      };
+      if (mediaUrl) payload.media_url = mediaUrl;
+
+      if (selectedConv.type === "group") {
+        payload.conversation_id = selectedConv.id;
+        payload.recipient_id = null;
+      } else {
+        payload.recipient_id = selectedConv.peerId;
+        payload.conversation_id = selectedConv.id;
+      }
+
+      $("#messageInput").value = "";
+
+      const { data, error } = await supabaseClient.from("messages").insert(payload).select().single();
+      if (error) return;
+
+      if (data) {
+        if (!messagesCache[selectedConv.id]) messagesCache[selectedConv.id] = [];
+        messagesCache[selectedConv.id].push(data);
+        renderMessagesFeed();
+
+        signalingChannel.send({ 
+          type: "broadcast", 
+          event: "new-message", 
+          payload: { ...data, targetConvId: selectedConv.id } 
+        });
+      }
+    }
+
+    window.toggleLikeMessage = async function(msgId) {
+      const msgList = messagesCache[selectedConv.id] || [];
+      const msg = msgList.find(m => m.id === msgId);
+      if (!msg) return;
+
+      let likes = msg.likes || [];
+      const userIndex = likes.indexOf(currentUser.id);
+
+      if (userIndex >= 0) {
+        likes.splice(userIndex, 1);
+      } else {
+        likes.push(currentUser.id);
+      }
+
+      msg.likes = likes;
+      renderMessagesFeed();
+
+      await supabaseClient.from("messages").update({ likes }).eq("id", msgId);
+
+      signalingChannel.send({
+        type: "broadcast",
+        event: "like-message",
+        payload: { msgId, likes, convId: selectedConv.id }
+      });
+    };
+
+    window.deleteSingleMessage = async function(msgId) {
+      const msgList = messagesCache[selectedConv.id] || [];
+      const msg = msgList.find(m => m.id === msgId);
+
+      if (!msg || String(msg.sender_id) !== String(currentUser.id)) {
+        alert("You can only delete your own messages.");
+        return;
+      }
+
+      if (!confirm("Delete this message?")) return;
+      await supabaseClient.from("messages").delete().eq("id", msgId);
+      
+      messagesCache[selectedConv.id] = msgList.filter(m => m.id !== msgId);
+      renderMessagesFeed();
+      
+      signalingChannel.send({ 
+        type: "broadcast", 
+        event: "delete-message", 
+        payload: { msgId, convId: selectedConv.id } 
+      });
+    };
+
+    async function clearCurrentChat() {
+      if (!confirm(`Clear history in ${selectedConv.name}?`)) return;
+      let query = supabaseClient.from("messages").delete();
+      if (selectedConv.type === "group") query = query.eq("conversation_id", selectedConv.id).is("recipient_id", null);
+      else {
+        const peerId = selectedConv.peerId;
+        query = query.or(`and(sender_id.eq.${currentUser.id},recipient_id.eq.${peerId}),and(sender_id.eq.${peerId},recipient_id.eq.${currentUser.id})`);
+      }
+      await query;
+      messagesCache[selectedConv.id] = [];
+      renderMessagesFeed();
+      signalingChannel.send({ type: "broadcast", event: "clear-chat", payload: { convId: selectedConv.id } });
+    }
+
+    async function uploadAndSendMedia(file) {
+      const fileName = `chat_${Date.now()}_${file.name}`;
+      const { error } = await supabaseClient.storage.from("chat-attachments").upload(fileName, file);
+      if (error) return alert("Storage error. Check chat-attachments bucket.");
+      const { data: { publicUrl } } = supabaseClient.storage.from("chat-attachments").getPublicUrl(fileName);
+      await sendMessage("", publicUrl);
+    }
+
+    function setupRealtimeListeners() {
+      signalingChannel = supabaseClient.channel("jachins-global-messenger", { config: { broadcast: { self: false } } })
+      .on("broadcast", { event: "new-message" }, ({ payload }) => {
+        let targetConvId = payload.targetConvId || "general";
+        if (!payload.targetConvId && payload.recipient_id) {
+          const peerId = String(payload.sender_id) === String(currentUser.id) ? payload.recipient_id : payload.sender_id;
+          targetConvId = directId(currentUser.id, peerId);
+        }
+        if (!messagesCache[targetConvId]) messagesCache[targetConvId] = [];
+        if (!messagesCache[targetConvId].some(e => e.id === payload.id)) messagesCache[targetConvId].push(payload);
+        if (selectedConv && selectedConv.id === targetConvId) renderMessagesFeed();
+      })
+      .on("broadcast", { event: "group-created" }, ({ payload }) => {
+        if (!customGroups.some(g => g.id === payload.id)) {
+          customGroups.push(payload);
+          buildConversationsList();
+        }
+      })
+      .on("broadcast", { event: "group-deleted" }, ({ payload }) => {
+        customGroups = customGroups.filter(g => g.id !== payload.groupId);
+        buildConversationsList();
+        if (selectedConv && selectedConv.id === payload.groupId) {
+          selectConversation("general");
+        }
+      })
+      .on("broadcast", { event: "like-message" }, ({ payload }) => {
+        if (messagesCache[payload.convId]) {
+          const m = messagesCache[payload.convId].find(item => item.id === payload.msgId);
+          if (m) m.likes = payload.likes;
+          if (selectedConv && selectedConv.id === payload.convId) renderMessagesFeed();
+        }
+      })
+      .on("broadcast", { event: "delete-message" }, ({ payload }) => {
+        if (messagesCache[payload.convId]) {
+          messagesCache[payload.convId] = messagesCache[payload.convId].filter(m => m.id !== payload.msgId);
+          if (selectedConv && selectedConv.id === payload.convId) renderMessagesFeed();
+        }
+      })
+      .on("broadcast", { event: "clear-chat" }, ({ payload }) => {
+        messagesCache[payload.convId] = [];
+        if (selectedConv && selectedConv.id === payload.convId) renderMessagesFeed();
+      })
+      .on("broadcast", { event: "call-signal" }, async ({ payload }) => {
+        const isForMe = String(payload.to) === String(currentUser.id) || payload.to === "general" || payload.to === selectedConv?.id;
+        if (!isForMe || String(payload.from) === String(currentUser.id)) return;
+
+        activeCallPeerId = payload.from;
+        const peerEmp = employees.find(e => String(e.auth_user_id || e.user_id || e.id) === String(payload.from));
+
+        if (payload.type === "offer") {
+          $("#callName").textContent = peerEmp ? (peerEmp.full_name || peerEmp.name) : "Incoming Call";
+          $("#callStatus").textContent = "Incoming call...";
+          $("#incomingActions").style.display = "block";
+          if (payload.isVideo) $("#callVideoStage").classList.add("active");
+          $("#callOverlay").classList.add("open");
+          window.incomingOffer = payload.offer;
+        } else if (payload.type === "answer") {
+          if (peerConnection && peerConnection.signalingState !== "closed") {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(payload.answer));
+            startCallTimer();
+          }
+        } else if (payload.type === "ice-candidate") {
+          if (peerConnection && payload.candidate) {
+            await peerConnection.addIceCandidate(new RTCIceCandidate(payload.candidate)).catch(() => {});
+          }
+        } else if (payload.type === "hangup") {
+          hangUpCall(false);
+        }
+      })
+      .subscribe();
+
+      $("#acceptCallBtn").addEventListener("click", async () => {
+        $("#incomingActions").style.display = "none";
+        try {
+          localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+          $("#localVideo").srcObject = localStream;
+
+          peerConnection = new RTCPeerConnection(CONFIG.rtcConfig);
+          localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+          peerConnection.ontrack = (e) => { $("#remoteVideo").srcObject = e.streams[0]; };
+          peerConnection.onicecandidate = (e) => {
+            if (e.candidate) sendCallSignal({ type: "ice-candidate", candidate: e.candidate, to: activeCallPeerId });
+          };
+
+          await peerConnection.setRemoteDescription(new RTCSessionDescription(window.incomingOffer));
+          const answer = await peerConnection.createAnswer();
+          await peerConnection.setLocalDescription(answer);
+          sendCallSignal({ type: "answer", answer, to: activeCallPeerId });
+          startCallTimer();
+        } catch (err) {
+          alert("Could not initialize local camera/microphone.");
+          hangUpCall(true);
+        }
+      });
+    }
+
+    async function startCall(isVideo) {
+      activeCallPeerId = selectedConv.id;
+      $("#callName").textContent = selectedConv.name;
+      if (isVideo) $("#callVideoStage").classList.add("active");
+      else $("#callVideoStage").classList.remove("active");
+      
+      $("#incomingActions").style.display = "none";
+      $("#callOverlay").classList.add("open");
+      $("#callStatus").textContent = "Accessing media devices...";
+
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: isVideo });
+        if (isVideo) $("#localVideo").srcObject = localStream;
+
+        peerConnection = new RTCPeerConnection(CONFIG.rtcConfig);
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        peerConnection.ontrack = (event) => { 
+          if (isVideo) $("#remoteVideo").srcObject = event.streams[0]; 
+        };
+
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+            sendCallSignal({ type: "ice-candidate", candidate: event.candidate, to: activeCallPeerId });
+          }
+        };
+
+        $("#callStatus").textContent = "Connecting WebRTC...";
+
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        sendCallSignal({ type: "offer", offer, to: activeCallPeerId, isVideo });
+      } catch (err) {
+        console.error("Call start error:", err);
+        alert("Camera or Microphone access failed. Ensure site permissions are allowed in your browser.");
+        hangUpCall(true);
+      }
+    }
+
+    window.startCall = startCall;
+
+    function startCallTimer() {
+      $("#callStatus").textContent = "Call connected";
+      $("#callTimer").style.display = "inline-block";
+      callSeconds = 0;
+      clearInterval(callTimerInterval);
+      callTimerInterval = setInterval(() => {
+        callSeconds++;
+        const mins = String(Math.floor(callSeconds / 60)).padStart(2, '0');
+        const secs = String(callSeconds % 60).padStart(2, '0');
+        $("#callTimer").textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function toggleMicrophone() {
+      if (!localStream) return;
+      const audioTrack = localStream.getAudioTracks()[0];
+      if (audioTrack) audioTrack.enabled = !audioTrack.enabled;
+    }
+
+    function toggleCamera() {
+      if (!localStream) return;
+      const videoTrack = localStream.getVideoTracks()[0];
+      if (videoTrack) videoTrack.enabled = !videoTrack.enabled;
+    }
+
+    function sendCallSignal(data) {
+      data.from = currentUser.id;
+      signalingChannel.send({ type: "broadcast", event: "call-signal", payload: data });
+    }
+
+    function hangUpCall(sendSignalRemote = true) {
+      if (sendSignalRemote && activeCallPeerId) sendCallSignal({ type: "hangup", to: activeCallPeerId });
+      if (localStream) localStream.getTracks().forEach(t => t.stop());
+      if (peerConnection) peerConnection.close();
+      clearInterval(callTimerInterval);
+      peerConnection = null; localStream = null; activeCallPeerId = null;
+      $("#callOverlay").classList.remove("open");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    document.addEventListener("DOMContentLoaded", initPage);
+    window.onIntranetReady = initPage;
+  })();
+  </script>
+</body>
+</html>

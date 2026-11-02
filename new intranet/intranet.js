@@ -1,17 +1,27 @@
 /**
- * JACHINS Intranet Authentication Manager
+ * JACHINS Intranet Authentication & Realtime Manager
  *
  * Login page:
- *     index.html
+ *    index.html
  *
  * Protected pages:
- *     dashboard.html
- *     employees.html
- *     etc.
+ *    dashboard.html
+ *    ceo-finances.html
+ *    employees.html
+ *    etc.
  */
 
 (function () {
     "use strict";
+
+    // ⚠️ AUTHORIZED MANAGEMENT EMAIL CONFIGURATIONS ⚠️
+    const AUTHORIZED_CEO_EMAIL = "abimbola@jachinsgroup.com"; 
+    const AUTHORIZED_HR_EMAILS = [
+        // "hr@jachinsgroup.com" // Add authorized HR emails here
+    ];
+    const AUTHORIZED_ADMIN_EMAILS = [
+        // "it-admin@jachinsgroup.com" // Add authorized IT Admin emails here
+    ];
 
     let cachedProfile = null;
     let timersStarted = false;
@@ -155,6 +165,29 @@
         ).toUpperCase() || "?";
     }
 
+    function normalizeRole(role) {
+        const clean = String(role || "").trim().toLowerCase();
+        // Strict mapping whitelist to avoid any blank or broken string leaking privileges
+        if (clean === "ceo" || clean === "executive") return "ceo";
+        if (clean === "admin" || clean === "it") return "admin";
+        if (clean === "hr") return "hr";
+        return "employee"; // Default fallback for all standard staff
+    }
+
+    function getDashboardForRole(role) {
+        const cleanRole = normalizeRole(role);
+        if (cleanRole === "ceo") {
+            return "executive-dashboard.html";
+        }
+        if (cleanRole === "admin") {
+            return "admin-dashboard.html";
+        }
+        if (cleanRole === "hr") {
+            return "hr-dashboard.html";
+        }
+        return "dashboard.html"; // General employee default
+    }
+
 
     /* =========================================================
        PROFILE
@@ -171,235 +204,137 @@
             return null;
         }
 
-        /*
-         * Use cached profile only when the auth_user_id matches.
-         */
+        if (!authUserId) {
+            cachedProfile = null;
+            console.error("Cannot validate an employee profile without the authenticated user ID.");
+            return null;
+        }
 
         if (
             cachedProfile &&
-            authUserId &&
             cachedProfile.auth_user_id === authUserId
         ) {
+            cachedProfile.role = normalizeRole(cachedProfile.role);
             return cachedProfile;
         }
+        cachedProfile = null;
 
         const sb = getClient();
 
         if (!sb) {
-
             console.error(
                 "Cannot load employee profile: Supabase unavailable."
             );
-
             return null;
         }
 
 
         /* =====================================================
-           STEP 1
-           Search by auth_user_id
+           STEP 1: Search by auth_user_id
            ===================================================== */
 
         if (authUserId) {
 
             try {
 
-                console.log(
-                    "Looking for employee using auth_user_id:",
-                    authUserId
-                );
-
                 const result = await sb
                     .from("employees")
                     .select(
-                        "id, auth_user_id, employee_id, email, name, role, department"
+                        "id, auth_user_id, employee_id, email, name, role, department, avatar_url"
                     )
                     .eq("auth_user_id", authUserId)
                     .maybeSingle();
 
-                if (result.error) {
-
-                    console.error(
-                        "Employee lookup by auth_user_id failed:",
-                        result.error
-                    );
-
-                } else if (result.data) {
-
+                if (result.data) {
+                    result.data.role = normalizeRole(result.data.role);
                     cachedProfile = result.data;
-
-                    console.log(
-                        "Employee profile FOUND by auth_user_id:",
-                        cachedProfile
-                    );
-
                     return cachedProfile;
                 }
 
             } catch (error) {
-
-                console.error(
-                    "Unexpected auth_user_id profile lookup error:",
-                    error
-                );
+                console.error("Unexpected auth_user_id profile lookup error:", error);
             }
         }
 
 
         /* =====================================================
-           STEP 2
-           Search by email
+           STEP 2: Search by email
            ===================================================== */
 
         if (userEmail) {
 
             try {
 
-                const cleanEmail =
-                    String(userEmail)
-                        .trim()
-                        .toLowerCase();
-
-                console.log(
-                    "Looking for employee using email:",
-                    cleanEmail
-                );
+                const cleanEmail = String(userEmail).trim().toLowerCase();
 
                 const result = await sb
                     .from("employees")
                     .select(
-                        "id, auth_user_id, employee_id, email, name, role, department"
+                        "id, auth_user_id, employee_id, email, name, role, department, avatar_url"
                     )
                     .ilike("email", cleanEmail)
                     .maybeSingle();
 
-                if (result.error) {
+                if (result.data) {
 
-                    console.error(
-                        "Employee lookup by email failed:",
-                        result.error
-                    );
+                    if (!result.data.auth_user_id) {
+                        await sb
+                            .from("employees")
+                            .update({ auth_user_id: authUserId })
+                            .eq("id", result.data.id)
+                            .is("auth_user_id", null);
 
-                } else if (result.data) {
-
-                    cachedProfile = result.data;
-
-                    console.log(
-                        "Employee profile FOUND by email:",
-                        cachedProfile
-                    );
-
-                    /*
-                     * If the employee row has no auth_user_id,
-                     * attempt to connect it.
-                     */
-
-                    if (
-                        authUserId &&
-                        !result.data.auth_user_id
-                    ) {
-
-                        try {
-
-                            const updateResult = await sb
-                                .from("employees")
-                                .update({
-                                    auth_user_id: authUserId
-                                })
-                                .eq("id", result.data.id);
-
-                            if (updateResult.error) {
-
-                                console.warn(
-                                    "Employee found, but auth_user_id could not be linked:",
-                                    updateResult.error
-                                );
-
-                            } else {
-
-                                cachedProfile.auth_user_id =
-                                    authUserId;
-
-                                console.log(
-                                    "Employee auth_user_id successfully linked."
-                                );
-                            }
-
-                        } catch (linkError) {
-
-                            console.warn(
-                                "Error linking auth_user_id:",
-                                linkError
-                            );
-                        }
+                        result.data.auth_user_id = authUserId;
                     }
 
+                    result.data.role = normalizeRole(result.data.role);
+                    cachedProfile = result.data;
                     return cachedProfile;
                 }
 
             } catch (error) {
-
-                console.error(
-                    "Unexpected email profile lookup error:",
-                    error
-                );
+                console.error("Unexpected email profile lookup error:", error);
             }
         }
-
-
-        /* =====================================================
-           NOTHING FOUND
-           ===================================================== */
-
-        console.error(
-            "NO EMPLOYEE PROFILE FOUND.",
-            {
-                authUserId: authUserId || null,
-                email: userEmail || null
-            }
-        );
 
         return null;
     }
 
 
     /* =========================================================
-       LOGIN
+       LOGIN (STRICT PORTAL GATEWAY VALIDATION LOGIC)
        ========================================================= */
 
-    async function login(email, password) {
+    async function login(email, password, portalType = 'general') {
 
         const sb = getClient();
 
         if (!sb || !sb.auth) {
-
-            throw new Error(
-                "Supabase authentication is not available."
-            );
+            throw new Error("Supabase authentication is not available.");
         }
 
-        const cleanEmail =
-            String(email || "")
-                .trim()
-                .toLowerCase();
+        const cleanEmail = String(email || "").trim().toLowerCase();
 
         if (!cleanEmail || !password) {
-
-            throw new Error(
-                "Please enter your email and password."
-            );
+            throw new Error("Please enter your email and password.");
         }
 
-        console.log(
-            "Attempting Supabase login:",
-            cleanEmail
-        );
-
-
         /* =====================================================
-           SUPABASE AUTHENTICATION
+           1. PRE-AUTHENTICATION PORTAL GATES (Strict Gatekeeping)
            ===================================================== */
+        if (portalType === 'ceo' && cleanEmail !== AUTHORIZED_CEO_EMAIL.toLowerCase()) {
+            throw new Error("ACCESS DENIED: Only the Chief Executive Officer is authorized to sign into the Executive Portal.");
+        }
 
+        if (portalType === 'admin' && AUTHORIZED_ADMIN_EMAILS.length > 0 && !AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail)) {
+            throw new Error("ACCESS DENIED: Unauthorized account for IT & Administration Gateway.");
+        }
+
+        if (portalType === 'hr' && AUTHORIZED_HR_EMAILS.length > 0 && !AUTHORIZED_HR_EMAILS.includes(cleanEmail)) {
+            throw new Error("ACCESS DENIED: Unauthorized account for Human Resources Portal.");
+        }
+
+        // Authenticate with Supabase Auth
         const {
             data: authData,
             error: authError
@@ -409,93 +344,65 @@
         });
 
         if (authError) {
-
-            console.error(
-                "Supabase authentication failed:",
-                authError
-            );
-
             throw authError;
         }
 
-        if (
-            !authData ||
-            !authData.user
-        ) {
-
-            throw new Error(
-                "Authentication succeeded but Supabase did not return a user."
-            );
+        if (!authData || !authData.user) {
+            throw new Error("Authentication succeeded but Supabase did not return a user.");
         }
 
         const user = authData.user;
+        cachedProfile = null;
 
-        console.log(
-            "AUTHENTICATED USER:",
-            {
-                id: user.id,
-                email: user.email
-            }
-        );
-
-
-        /* =====================================================
-           EMPLOYEE PROFILE
-           ===================================================== */
-
-        const profile = await loadProfile(
-            user.id,
-            user.email
-        );
-
+        // 2. Fetch employee profile and determine role from database
+        const profile = await loadProfile(user.id, user.email);
 
         if (!profile) {
-
-            const profileError = new Error(
-                "Your account is authenticated, but the employee profile could not be loaded."
-            );
-
-            profileError.code =
-                "EMPLOYEE_PROFILE_NOT_FOUND";
-
+            await sb.auth.signOut();
+            const profileError = new Error("Your account is authenticated, but the employee profile could not be found.");
+            profileError.code = "EMPLOYEE_PROFILE_NOT_FOUND";
             throw profileError;
         }
 
+        const role = normalizeRole(profile.role); // 'ceo', 'admin', 'hr', or 'employee'
 
         /* =====================================================
-           VERIFY PROFILE BELONGS TO AUTH USER
+           3. STRICT TWO-WAY PORTAL & ROLE CROSS-VALIDATION
            ===================================================== */
 
-        if (
-            profile.auth_user_id &&
-            profile.auth_user_id !== user.id
-        ) {
-
-            console.error(
-                "Employee profile belongs to a different auth user.",
-                {
-                    profileAuthUserId:
-                        profile.auth_user_id,
-
-                    authenticatedUserId:
-                        user.id
-                }
-            );
-
-            const mismatchError = new Error(
-                "Your employee profile is linked to a different authentication account."
-            );
-
-            mismatchError.code =
-                "EMPLOYEE_AUTH_USER_MISMATCH";
-
-            throw mismatchError;
+        // RULE A: If a General Employee tries to log into ANY management/executive portal -> BLOCK
+        if (role === 'employee' && (portalType === 'ceo' || portalType === 'admin' || portalType === 'hr')) {
+            await sb.auth.signOut();
+            throw new Error("ACCESS DENIED: General staff accounts cannot access administrative or executive portals.");
         }
 
+        // RULE B: If a Management/Executive account tries to log into the General Staff portal -> BLOCK
+        if (portalType === 'general' && (role === 'ceo' || role === 'admin' || role === 'hr')) {
+            await sb.auth.signOut();
+            throw new Error("ACCESS DENIED: Management and administrative accounts must use their designated portals.");
+        }
 
-        /* =====================================================
-           CREATE SESSION PAYLOAD
-           ===================================================== */
+        // RULE C: Portal-Specific Gateway Enforcement
+        if (portalType === 'ceo' && role !== 'ceo') {
+            await sb.auth.signOut();
+            throw new Error("SECURITY VIOLATION: Non-executive account unauthorized for the CEO workspace.");
+        }
+
+        if (portalType === 'admin' && role !== 'admin') {
+            await sb.auth.signOut();
+            throw new Error("ACCESS DENIED: This account does not possess IT Administrator privileges.");
+        }
+
+        if (portalType === 'hr' && role !== 'hr') {
+            await sb.auth.signOut();
+            throw new Error("ACCESS DENIED: This account does not possess HR privileges.");
+        }
+
+        // Verify profile belongs to auth user
+        if (profile.auth_user_id !== user.id) {
+            await sb.auth.signOut();
+            throw new Error("Your employee profile is linked to a different authentication account.");
+        }
 
         const sessionPayload = {
             user: user,
@@ -503,39 +410,60 @@
             profile: profile
         };
 
-
-        /* =====================================================
-           SAVE SESSION
-           ===================================================== */
-
         try {
-
             window.sessionStorage.setItem(
                 "intranet_session",
                 JSON.stringify(sessionPayload)
             );
-
         } catch (error) {
-
-            console.warn(
-                "Could not save intranet session:",
-                error
-            );
+            console.warn("Could not save intranet session:", error);
         }
 
-
-        console.log(
-            "LOGIN COMPLETED SUCCESSFULLY:",
-            {
-                authUserId: user.id,
-                employeeRowId: profile.id,
-                employeeId: profile.employee_id,
-                name: profile.name,
-                role: profile.role
-            }
-        );
-
         return sessionPayload;
+    }
+
+
+    /* =========================================================
+       NEW EMPLOYEE ACCOUNT REGISTRATION
+       ========================================================= */
+
+    async function registerEmployee(email, password, fullName, department) {
+        const sb = getClient();
+        if (!sb) throw new Error("Database connection unavailable.");
+
+        const cleanEmail = String(email || "").trim().toLowerCase();
+
+        if (cleanEmail === AUTHORIZED_CEO_EMAIL.toLowerCase()) {
+            throw new Error("This email is strictly reserved for Executive CEO Access.");
+        }
+
+        const { data, error } = await sb.auth.signUp({
+            email: cleanEmail,
+            password: password,
+            options: {
+                data: {
+                    full_name: fullName,
+                    department: department
+                }
+            }
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+            const empCode = "JAC-" + Math.floor(1000 + Math.random() * 9000);
+
+            await sb.from("employees").insert({
+                auth_user_id: data.user.id,
+                employee_id: empCode,
+                email: cleanEmail,
+                name: fullName,
+                role: "employee",
+                department: department || "General Operations"
+            });
+        }
+
+        return data;
     }
 
 
@@ -546,249 +474,144 @@
     function populateUserUI(profile, user) {
 
         if (!profile && !user) {
-            if (cachedProfile) {
-                profile = cachedProfile;
-            } else {
-                try {
-                    const saved = window.sessionStorage.getItem("intranet_session");
-                    if (saved) {
-                        const parsed = JSON.parse(saved);
-                        profile = parsed.profile;
-                        user = parsed.user;
-                    }
-                } catch (e) {
-                    console.warn("Unable to parse session storage for profile hydration:", e);
-                }
-            }
-        }
-
-        if (!profile && !user) {
             return;
         }
 
-        const metadata =
-            (user && user.user_metadata) || {};
+        const metadata = (user && user.user_metadata) || {};
 
         const fullName =
             (profile && profile.name) ||
             metadata.full_name ||
             metadata.name ||
             (
-                user &&
-                user.email
-                    ? user.email
-                        .split("@")[0]
-                        .replace(/[._]/g, " ")
-                        .replace(/\b\w/g, function (letter) {
-                            return letter.toUpperCase();
-                        })
+                user && user.email
+                    ? user.email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, function (letter) {
+                        return letter.toUpperCase();
+                    })
                     : "Employee"
             );
 
-        const firstName =
-            metadata.first_name ||
-            fullName
-                .trim()
-                .split(/\s+/)[0] ||
-            "Employee";
+        const firstName = metadata.first_name || fullName.trim().split(/\s+/)[0] || "Employee";
+        const email = (user && user.email) || (profile && profile.email) || "";
+        const role = normalizeRole(profile && profile.role);
+        const department = (profile && profile.department) || metadata.department || "JACHINS Group";
+        const employeeId = (profile && profile.employee_id) || metadata.employee_id || "N/A";
+        const initials = initialsOf(fullName);
+        const avatarUrl = (profile && (profile.avatar_url || profile.photo_url || profile.image_url)) || null;
 
-        const email =
-            (user && user.email) ||
-            (profile && profile.email) ||
-            "";
+        document.querySelectorAll("[data-user-name]").forEach(function (element) {
+            if (element.textContent !== fullName) element.textContent = fullName;
+        });
 
-        const role =
-            (profile && profile.role) ||
-            metadata.role ||
-            "Staff Member";
+        document.querySelectorAll("[data-user-first-name]").forEach(function (element) {
+            if (element.textContent !== firstName) element.textContent = firstName;
+        });
 
-        const department =
-            (profile && profile.department) ||
-            metadata.department ||
-            "JACHINS Group";
+        document.querySelectorAll("[data-user-email]").forEach(function (element) {
+            if (element.textContent !== email) element.textContent = email;
+        });
 
-        const employeeId =
-            (profile && profile.employee_id) ||
-            metadata.employee_id ||
-            "N/A";
+        document.querySelectorAll("[data-user-avatar]").forEach(function (element) {
+            if (avatarUrl && avatarUrl.trim() !== "") {
+                element.innerHTML = '<img src="' + avatarUrl + '" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">';
+            } else {
+                if (element.textContent !== initials) element.textContent = initials;
+            }
+        });
 
-        const initials =
-            initialsOf(fullName);
+        document.querySelectorAll("[data-user-role]").forEach(function (element) {
+            let displayRole = 'Staff Member';
+            if (role === 'ceo') displayRole = 'Chief Executive Officer';
+            else if (role === 'admin') displayRole = 'IT Administrator';
+            else if (role === 'hr') displayRole = 'Human Resources Manager';
+            if (element.textContent !== displayRole) element.textContent = displayRole;
+        });
 
+        document.querySelectorAll("[data-user-department]").forEach(function (element) {
+            if (element.textContent !== department) element.textContent = department;
+        });
 
-        document
-            .querySelectorAll("[data-user-name]")
-            .forEach(function (element) {
-                element.textContent = fullName;
+        document.querySelectorAll("[data-user-id]").forEach(function (element) {
+            if (element.textContent !== employeeId) element.textContent = employeeId;
+        });
+
+        // Unhide Admin sidebar elements if user is Admin
+        if (role === "admin") {
+            document.querySelectorAll(".sis-admin-only-hidden").forEach(function (el) {
+                el.classList.remove("sis-admin-only-hidden");
             });
+        }
 
+        const roleDashboard = getDashboardForRole(role);
 
-        document
-            .querySelectorAll("[data-user-first-name]")
-            .forEach(function (element) {
-                element.textContent = firstName;
+        const navDash = document.getElementById("navDashboardLink");
+        if (navDash) {
+            navDash.setAttribute("href", roleDashboard);
+        }
+
+        document.querySelectorAll('a[href="dashboard.html"], [data-home-link="true"]').forEach(function (link) {
+            link.setAttribute("href", roleDashboard);
+        });
+
+        // Dynamic link rerouting for CEO (Finances, Requisitions, and Asset Management)
+        if (role === "ceo") {
+            document.querySelectorAll('a[href="finances.html"]').forEach(function (link) {
+                link.setAttribute("href", "ceo-finances.html");
             });
-
-
-        document
-            .querySelectorAll("[data-user-email]")
-            .forEach(function (element) {
-                element.textContent = email;
+            document.querySelectorAll('a[href="requisition.html"], a[href="item-requisition.html"]').forEach(function (link) {
+                link.setAttribute("href", "ceo-item-requisitions.html");
             });
-
-
-        document
-            .querySelectorAll("[data-user-avatar]")
-            .forEach(function (element) {
-                element.textContent = initials;
+            document.querySelectorAll('a[href="assets.html"]').forEach(function (link) {
+                link.setAttribute("href", "ceo-assets.html");
             });
-
-
-        document
-            .querySelectorAll("[data-user-role]")
-            .forEach(function (element) {
-                element.textContent = role;
-            });
-
-
-        document
-            .querySelectorAll("[data-user-department]")
-            .forEach(function (element) {
-                element.textContent = department;
-            });
-
-
-        document
-            .querySelectorAll("[data-user-id]")
-            .forEach(function (element) {
-                element.textContent = employeeId;
-            });
-
-
-        const welcomeFirst = document.getElementById("welcomeFirstName");
-        const profileName = document.getElementById("profileName");
-        const profileRole = document.getElementById("profileRole");
-        const profileDept = document.getElementById("profileDepartment");
-        const profileId = document.getElementById("profileEmployeeId");
-        const profileInitials = document.getElementById("profileInitials");
-
-        if (welcomeFirst) welcomeFirst.textContent = firstName;
-        if (profileName) profileName.textContent = fullName;
-        if (profileRole) profileRole.textContent = role;
-        if (profileDept) profileDept.textContent = department;
-        if (profileId) profileId.textContent = employeeId;
-        if (profileInitials) profileInitials.textContent = initials;
-
-
-        const isAdmin =
-            String(role)
-                .trim()
-                .toLowerCase() === "admin";
-
-
-        document
-            .querySelectorAll(".sis-admin-only-hidden")
-            .forEach(function (element) {
-
-                if (isAdmin) {
-                    element.classList.remove(
-                        "sis-admin-only-hidden"
-                    );
-                } else {
-                    element.classList.add(
-                        "sis-admin-only-hidden"
-                    );
-                }
-
-            });
+        }
     }
 
 
     /* =========================================================
-       PROTECTED PAGE
+       PROTECTED PAGE & SECURITY GUARDS
        ========================================================= */
 
     async function protectPage() {
 
         const body = document.body;
 
-        if (
-            !body ||
-            body.getAttribute("data-protected") !== "true"
-        ) {
+        if (!body || body.getAttribute("data-protected") !== "true") {
             return null;
         }
 
         try {
+            const session = await getSession();
 
-            const session =
-                await getSession();
-
-
-            if (
-                !session ||
-                !session.user
-            ) {
-
-                console.warn(
-                    "No authenticated session. Redirecting to index.html."
-                );
-
-                window.location.replace(
-                    "index.html"
-                );
-
+            if (!session || !session.user) {
+                window.location.replace("index.html");
                 return null;
             }
 
-
-            const profile =
-                await loadProfile(
-                    session.user.id,
-                    session.user.email
-                );
-
+            const profile = await loadProfile(session.user.id, session.user.email);
 
             if (!profile) {
-
-                console.error(
-                    "Authenticated user has no employee profile."
-                );
-
-                window.location.replace(
-                    "index.html?reason=profile"
-                );
-
+                window.location.replace("index.html?reason=profile");
                 return null;
             }
 
+            const role = normalizeRole(profile.role);
+            const isCeoPage = window.location.pathname.includes("ceo-finances") || window.location.pathname.includes("ceo-item-requisitions") || window.location.pathname.includes("ceo-assets") || window.location.pathname.includes("executive-dashboard") || body.getAttribute("data-ceo-only") === "true";
 
-            if (
-                body.getAttribute("data-admin") === "true"
-            ) {
+            if (isCeoPage && role !== "ceo") {
+                window.location.replace(getDashboardForRole(role));
+                return null;
+            }
 
-                const isAdmin =
-                    String(profile.role || "")
-                        .toLowerCase() === "admin";
-
-                if (!isAdmin) {
-
-                    window.location.replace(
-                        "dashboard.html"
-                    );
-
+            if (body.getAttribute("data-page") === "admin-dashboard" || body.getAttribute("data-admin") === "true") {
+                if (role !== "admin") {
+                    window.location.replace(getDashboardForRole(role));
                     return null;
                 }
             }
 
-
-            populateUserUI(
-                profile,
-                session.user
-            );
-
+            populateUserUI(profile, session.user);
             startAutoLogoutTimers();
-
 
             return {
                 session: session,
@@ -797,16 +620,7 @@
             };
 
         } catch (error) {
-
-            console.error(
-                "protectPage error:",
-                error
-            );
-
-            window.location.replace(
-                "index.html"
-            );
-
+            window.location.replace("index.html");
             return null;
         }
     }
@@ -818,291 +632,67 @@
 
     async function logout(reason) {
 
-        if (logoutInProgress) {
-            return;
-        }
-
+        if (logoutInProgress) return;
         logoutInProgress = true;
 
         try {
-
             const sb = getClient();
-
-            if (sb && sb.auth) {
-                await sb.auth.signOut();
-            }
-
+            if (sb && sb.auth) await sb.auth.signOut();
         } catch (error) {
-
-            console.error(
-                "Supabase logout error:",
-                error
-            );
-
+            console.error("Logout error:", error);
         } finally {
-
             cachedProfile = null;
-
             try {
-
                 window.sessionStorage.clear();
-
-                window.localStorage.removeItem(
-                    "intranet_session"
-                );
-
-            } catch (error) {
-
-                console.warn(
-                    "Could not clear browser storage:",
-                    error
-                );
-            }
-
-            const query =
-                reason
-                    ? "?reason=" +
-                      encodeURIComponent(reason)
-                    : "";
+                window.localStorage.removeItem("intranet_session");
+            } catch (error) {}
 
             window.location.replace(
-                "index.html" + query
+                "index.html" + (reason ? "?reason=" + encodeURIComponent(reason) : "")
             );
         }
     }
-
-
-    /* =========================================================
-       LOGOUT BUTTONS
-       ========================================================= */
 
     function wireLogout() {
-
-        document
-            .querySelectorAll("[data-logout]")
-            .forEach(function (element) {
-
-                if (
-                    element.dataset.authLogoutWired === "true"
-                ) {
-                    return;
-                }
-
-                element.dataset.authLogoutWired =
-                    "true";
-
-                element.addEventListener(
-                    "click",
-                    function (event) {
-
-                        event.preventDefault();
-
-                        logout();
-
-                    }
-                );
+        document.querySelectorAll("[data-logout]").forEach(function (element) {
+            if (element.dataset.authLogoutWired === "true") return;
+            element.dataset.authLogoutWired = "true";
+            element.addEventListener("click", function (event) {
+                event.preventDefault();
+                logout();
             });
+        });
     }
-
-
-    /* =========================================================
-       AUTOMATIC LOGOUT
-       ========================================================= */
 
     function startAutoLogoutTimers() {
-
-        if (timersStarted) {
-            return;
-        }
-
+        if (timersStarted) return;
         timersStarted = true;
 
-        [
-            "mousemove",
-            "keydown",
-            "click",
-            "scroll",
-            "touchstart"
-        ].forEach(function (eventName) {
-
-            document.addEventListener(
-                eventName,
-                function () {
-                    lastActivity = Date.now();
-                },
-                {
-                    passive: true
-                }
-            );
-
+        ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(function (eventName) {
+            document.addEventListener(eventName, function () {
+                lastActivity = Date.now();
+            }, { passive: true });
         });
 
-
-        window.setInterval(
-            function () {
-
-                if (
-                    Date.now() -
-                    lastActivity >
-                    INACTIVITY_LIMIT_MS
-                ) {
-
-                    logout("timeout");
-                }
-
-            },
-            30 * 1000
-        );
-
-
-        document.addEventListener(
-            "visibilitychange",
-            function () {
-
-                if (document.hidden) {
-
-                    hiddenAt = Date.now();
-
-                } else {
-
-                    if (
-                        hiddenAt &&
-                        Date.now() - hiddenAt >
-                        AWAY_LIMIT_MS
-                    ) {
-
-                        logout("timeout");
-
-                        return;
-                    }
-
-                    hiddenAt = null;
-                }
-
+        window.setInterval(function () {
+            if (Date.now() - lastActivity > INACTIVITY_LIMIT_MS) {
+                logout("timeout");
             }
-        );
+        }, 30 * 1000);
     }
 
-
-    /* =========================================================
-       AUTH STATE CHANGES
-       ========================================================= */
-
-    function listenAuthStateChanges() {
-
-        const sb = getClient();
-
-        if (!sb || !sb.auth) {
-            return;
+    function clearProfileAvatar(authUserId, user) {
+        if (!cachedProfile || cachedProfile.auth_user_id !== authUserId) {
+            cachedProfile = null;
+            return false;
         }
 
-        sb.auth.onAuthStateChange(
-            async function (event, session) {
-
-                const isProtected =
-                    document.body &&
-                    document.body.getAttribute(
-                        "data-protected"
-                    ) === "true";
-
-
-                if (event === "SIGNED_OUT") {
-
-                    if (isProtected) {
-
-                        window.location.replace(
-                            "index.html"
-                        );
-                    }
-
-                    return;
-                }
-
-
-                if (
-                    event === "SIGNED_IN" ||
-                    event === "TOKEN_REFRESHED" ||
-                    event === "USER_UPDATED"
-                ) {
-
-                    if (
-                        session &&
-                        session.user &&
-                        isProtected
-                    ) {
-
-                        try {
-
-                            const profile =
-                                await loadProfile(
-                                    session.user.id,
-                                    session.user.email
-                                );
-
-                            if (profile) {
-
-                                populateUserUI(
-                                    profile,
-                                    session.user
-                                );
-                            }
-
-                        } catch (error) {
-
-                            console.error(
-                                "Auth state profile update error:",
-                                error
-                            );
-                        }
-                    }
-                }
-
-            }
-        );
+        cachedProfile.avatar_url = null;
+        cachedProfile.photo_url = null;
+        cachedProfile.image_url = null;
+        populateUserUI(cachedProfile, user);
+        return true;
     }
-
-
-    /* =========================================================
-       COMPONENT LOADER & DOM INITIALIZATION
-       ========================================================= */
-
-    async function loadPartial(containerId, filePath) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        try {
-            const response = await fetch(filePath);
-            if (!response.ok) throw new Error(`HTTP ${response.status} when fetching ${filePath}`);
-            const html = await response.text();
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Error loading component:', error);
-        }
-    }
-
-    async function loadAllComponents() {
-        await Promise.all([
-            loadPartial('header-placeholder', 'header.html'),
-            loadPartial('sidebar-placeholder', 'sidebar.html'),
-            loadPartial('footer-placeholder', 'footer.html')
-        ]);
-
-        const yearEl = document.querySelector('[data-footer-year]');
-        if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-        const currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
-        const activeLink = document.querySelector(`.sis-sidebar-nav a[href="${currentPage}"]`);
-        if (activeLink) activeLink.parentElement.classList.add('active');
-
-        populateUserUI();
-        wireLogout();
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        loadAllComponents();
-        protectPage();
-        listenAuthStateChanges();
-    });
 
 
     /* =========================================================
@@ -1110,25 +700,188 @@
        ========================================================= */
 
     window.IntranetAuth = {
-
         login: login,
-
+        registerEmployee: registerEmployee,
         getSession: getSession,
-
         loadProfile: loadProfile,
-
+        getDashboardForRole: getDashboardForRole,
         populateUserUI: populateUserUI,
-
+        clearProfileAvatar: clearProfileAvatar,
         protectPage: protectPage,
-
         wireLogout: wireLogout,
-
         logout: logout,
-
         doLogout: logout,
-
         startAutoLogoutTimers: startAutoLogoutTimers
-
     };
 
 })();
+
+/* =========================================================
+   INTRANET PAGE LOADER & REAL-TIME PERSISTENCE OBSERVER
+   ========================================================= */
+(function () {
+    "use strict";
+
+    async function loadPartial(id, file) {
+        const placeholder = document.getElementById(id);
+        if (!placeholder) return;
+
+        try {
+            const response = await fetch(file, { cache: "no-cache" });
+            if (!response.ok) throw new Error(`${file} returned ${response.status}`);
+            placeholder.innerHTML = await response.text();
+        } catch (error) {
+            console.error(`Unable to load ${file}:`, error);
+        }
+    }
+
+    async function initializeIntranetPage() {
+        const body = document.body;
+        if (!body) return;
+
+        await Promise.all([
+            loadPartial("header-placeholder", "header.html"),
+            loadPartial("sidebar-placeholder", "sidebar.html"),
+            loadPartial("footer-placeholder", "footer.html")
+        ]);
+
+        if (window.IntranetAuth) {
+            await window.IntranetAuth.protectPage();
+            window.IntranetAuth.wireLogout();
+        }
+
+        body.classList.add("is-ready");
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeIntranetPage, { once: true });
+    } else {
+        initializeIntranetPage();
+    }
+})();
+
+/* =========================================================
+   GLOBAL CHANGE PHOTO MODAL HANDLER FOR HEADER
+   ========================================================= */
+window.openHeaderAvatarModal = async function(e) {
+    if (e) e.preventDefault();
+
+    const modalEl = document.getElementById("headerAvatarModal");
+    if (!modalEl) {
+        alert("Header avatar modal element not found.");
+        return;
+    }
+
+    const client = window.supabaseClient || window.supabase;
+    if (!client || !client.auth) return;
+
+    let modalInstance = null;
+    if (typeof bootstrap !== "undefined" && bootstrap.Modal) {
+        modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    }
+
+    try {
+        const authResult = await client.auth.getUser();
+        if (authResult.error) throw authResult.error;
+        const user = authResult.data && authResult.data.user;
+        if (!user) throw new Error("No authenticated user available.");
+
+        const profile = window.IntranetAuth
+            ? await window.IntranetAuth.loadProfile(user.id, user.email)
+            : null;
+        const name = (profile && profile.name) || (user.user_metadata && user.user_metadata.full_name) || "Employee";
+        const initials = name.trim().split(/\s+/).map(p => p.charAt(0)).join("").slice(0, 2).toUpperCase() || "?";
+        const avatarUrl = profile && (profile.avatar_url || profile.photo_url || profile.image_url);
+        const preview = document.getElementById("headerModalPreview");
+        const removeButton = document.getElementById("removePhotoBtn");
+
+        if (preview) {
+            preview.innerHTML = avatarUrl
+                ? '<img src="' + avatarUrl + '" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%">'
+                : initials;
+        }
+
+        if (removeButton) {
+            removeButton.onclick = async function(event) {
+                event.preventDefault();
+                if (removeButton.disabled) return;
+                removeButton.disabled = true;
+
+                try {
+                    await client
+                        .from("employees")
+                        .update({ avatar_url: null, photo_url: null, image_url: null })
+                        .eq("auth_user_id", user.id);
+
+                    window.IntranetAuth && window.IntranetAuth.clearProfileAvatar(user.id, user);
+                    if (preview) preview.textContent = initials;
+
+                    if (modalInstance) modalInstance.hide();
+                    else {
+                        modalEl.classList.remove("show");
+                        modalEl.style.display = "none";
+                    }
+                } catch (error) {
+                    alert("Failed to remove photo. Please try again.");
+                } finally {
+                    removeButton.disabled = false;
+                }
+            };
+        }
+
+        if (modalInstance) modalInstance.show();
+        else {
+            modalEl.classList.add("show");
+            modalEl.style.display = "block";
+        }
+    } catch (error) {
+        alert("Unable to load profile photo modal.");
+    }
+};
+
+/* =========================================================
+   REALTIME & NOTIFICATIONS
+   ========================================================= */
+function playIntranetChime() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [659.25, 987.77]; 
+        notes.forEach((freq, index) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime + (index * 0.12));
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + (index * 0.12) + 0.6);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime + (index * 0.12));
+            osc.stop(audioCtx.currentTime + (index * 0.12) + 0.6);
+        });
+    } catch (e) {}
+}
+
+function showNotificationToast(title, message, iconClass = "fa-bell text-warning") {
+    let container = document.getElementById("toast-notification-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toast-notification-container";
+        container.style.cssText = "position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;";
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast show shadow-lg border-0 rounded-3 bg-dark text-white";
+    toast.style.cssText = "min-width: 300px; animation: slideIn 0.3s ease;";
+    toast.innerHTML = `
+        <div class="toast-header bg-dark text-white border-bottom border-secondary d-flex justify-content-between align-items-center p-2">
+            <strong class="me-auto"><i class="fa-solid ${iconClass} me-2"></i> ${title}</strong>
+            <small class="text-muted">Just now</small>
+            <button type="button" class="btn-close btn-close-white ms-2" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+        <div class="toast-body p-3 fs-6">${message}</div>
+    `;
+    container.appendChild(toast);
+    playIntranetChime();
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 5000);
+}

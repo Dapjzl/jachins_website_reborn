@@ -2004,7 +2004,8 @@ i::before {
 }
 
 .sisf-sustainable-icon-image img {
-	min-width: 50px;
+	/* min-width: 50px; */
+	height: 100px;
 }
 
 .sisf-sis-bottom-border {
@@ -9201,3 +9202,76 @@ input[type="text"]:focus,
   color: #a94442 !important;
 }
 
+/* =========================================
+   IMAGE BLACK & WHITE → COLOR HOVER EFFECT
+   ========================================= */
+
+/* Images that should start in grayscale */
+/* .sis-image-anime img,
+.sisf-sis-e-technology-list img {
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.5s ease;
+} */
+
+/* Restore full color when hovered */
+/* .sis-image-anime:hover img,
+.sisf-sis-e-technology-list:hover img {
+    filter: grayscale(0%);
+} */
+
+/* Optional subtle zoom — similar modern image hover effects */
+.sis-image-anime:hover img,
+.sisf-sis-e-technology-list:hover img {
+    transform: scale(1.03);
+}
+
+/* Prevent the zoom from spilling outside rounded image containers */
+.sis-image-anime,
+.sisf-sis-e-technology-list {
+    overflow: hidden;
+}
+/* Keep HR image hover zoom without changing its colors. */
+figure img[src*="hr.png"] {
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Color + subtle scale on hover */
+figure:hover img[src*="hr.png"] {
+    transform: scale(1.03);
+}
+
+/* Ensure image stays cleanly inside the wrapper */
+figure {
+    overflow: hidden;
+}
+/* Keep non-project images in color while retaining the subtle hover zoom. */
+.sis-image-anime img,
+.sisf-sis-e-technology-list img,
+.sis-reveal img {
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Subtle zoom on hover */
+.sis-image-anime:hover img,
+.sisf-sis-e-technology-list:hover img,
+.sis-reveal:hover img {
+    transform: scale(1.03);
+}
+
+/* Prevent zoom overflowing container rounded corners */
+.sis-image-anime,
+.sisf-sis-e-technology-list,
+.sis-reveal {
+    overflow: hidden;
+}
+
+/* Preserve the grayscale hover treatment only for project cards. */
+#projects .sis-image-anime img,
+#projects .sisf-sis-e-technology-list img {
+    filter: grayscale(100%);
+}
+
+#projects .sis-image-anime:hover img,
+#projects .sisf-sis-e-technology-list:hover img {
+    filter: grayscale(0%);
+}

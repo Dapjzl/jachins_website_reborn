@@ -7,25 +7,111 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="robots" content="noindex, nofollow">
    <title>Announcements | JACHINS Intranet</title>
-   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
-   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
    <link rel="preconnect" href="https://fonts.googleapis.com/">
    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-   <link href="../css/custom.css" rel="stylesheet" media="screen">
-   <link href="intranet.css" rel="stylesheet" media="screen">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+   <style>
+      .ann-card {
+         transition: all 0.2s ease-in-out;
+         border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ann-card:hover {
+         border-color: rgba(220, 53, 69, 0.4);
+         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      .ann-search-wrapper {
+         position: relative;
+         background: #ffffff;
+         border: 1px solid #cbd5e1;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         padding: 0 4px 0 14px;
+         transition: all 0.2s ease;
+      }
+      .ann-search-wrapper:focus-within {
+         border-color: #dc3545;
+         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+      }
+      .ann-search-wrapper > i {
+         color: #94a3b8;
+         margin-right: 10px;
+      }
+      .ann-search-input {
+         border: none !important;
+         background: transparent !important;
+         box-shadow: none !important;
+         padding: 10px 0 !important;
+         color: #1e293b !important;
+         width: 100%;
+      }
+      .ann-search-input:focus {
+         outline: none !important;
+      }
+      .btn-search-action {
+         background: #dc3545;
+         color: #fff;
+         border: none;
+         border-radius: 6px;
+         padding: 8px 16px;
+         font-weight: 500;
+         transition: background 0.2s;
+      }
+      .btn-search-action:hover {
+         background: #bb2d3b;
+      }
+      .ann-filter-select {
+         background-color: #ffffff !important;
+         border: 1px solid #cbd5e1 !important;
+         color: #1e293b !important;
+         border-radius: 8px;
+         padding: 10px 14px;
+         font-weight: 500;
+         transition: all 0.2s ease;
+      }
+      .ann-filter-select:focus {
+         border-color: #dc3545 !important;
+         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+      }
+      .ann-details-box {
+         background: rgba(0, 0, 0, 0.02);
+         border-left: 3px solid #dc3545;
+         border-radius: 0 6px 6px 0;
+         padding: 10px 14px;
+         margin-top: 10px;
+      }
+      .ann-details-box summary {
+         font-weight: 600;
+      }
+      .btn-action-tool {
+         background: transparent;
+         border: 1px solid #cbd5e1;
+         color: #475569;
+         font-size: 12px;
+         padding: 4px 10px;
+         border-radius: 6px;
+         transition: all 0.2s;
+      }
+      .btn-action-tool:hover, .btn-action-tool.active {
+         background: #dc3545;
+         color: #fff;
+         border-color: #dc3545;
+      }
+   </style>
 </head>
 
-<body class="sisf-comman-bg-light">
+<body class="sisf-comman-bg-light" data-protected="true" data-page="announcements">
 
-   <!-- Header Container Placeholder -->
    <div id="header-placeholder"></div>
 
    <div class="sis-intranet-body sis-comman-background">
 
-      <!-- Sidebar Container Placeholder -->
       <div id="sidebar-placeholder"></div>
 
       <main class="sis-intranet-main">
@@ -33,12 +119,13 @@
          <div class="sisf-sis-section-title sis-section-title mb-4">
             <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
             <h2 class="sisf-m-title" style="font-size: 28px;">Company <span class="sisf-e-colored">Announcements</span></h2>
-            <p class="mb-0">Company-wide news, policy updates, and events. Pinned items appear first.</p>
+            <p class="mb-0">Company-wide news, policy updates, and events. Pinned items appear first. (Page 1)</p>
          </div>
 
-         <div class="row g-2 mb-4">
-            <div class="col-auto">
-               <select id="annDeptFilter" class="form-select" style="min-width:200px;">
+         <!-- FILTERS & FUNCTIONAL SEARCH BAR ROW -->
+         <div class="row g-3 mb-4 align-items-center">
+            <div class="col-12 col-md-4">
+               <select id="annDeptFilter" class="form-select ann-filter-select">
                   <option value="all">All Departments</option>
                   <option value="HSE">HSE</option>
                   <option value="Administration">Administration</option>
@@ -47,119 +134,251 @@
                   <option value="Operations">Operations</option>
                </select>
             </div>
+            <div class="col-12 col-md-8">
+               <div class="d-flex gap-2">
+                  <div class="ann-search-wrapper flex-grow-1">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                     <input type="text" id="annSearchInput" class="form-control ann-search-input" placeholder="Search announcements by title or content...">
+                  </div>
+                  <button id="annSearchBtn" type="button" class="btn-search-action d-flex align-items-center gap-2">
+                     <i class="fa-solid fa-magnifying-glass"></i> Search
+                  </button>
+               </div>
+            </div>
          </div>
 
+         <!-- ANNOUNCEMENTS LIST CONTAINER (5 ITEMS) -->
          <div class="d-flex flex-column gap-3" id="annList">
 
-            <!-- Pinned -->
-            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="HSE">
+            <!-- Item 1 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="HSE">
                <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
                   <div>
                      <span class="sis-badge-pill sis-badge-pinned me-2"><i class="fa-solid fa-thumbtack me-1"></i>Pinned</span>
-                     <span class="sis-badge-pill sis-badge-dept">HSE</span>
+                     <span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-shield-halved me-1"></i>HSE</span>
                   </div>
-                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">15 Aug 2026</span>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 15 Aug 2026</span>
                </div>
-               <h3 class="sisf-e-title1 sis-comman-title mb-2">Updated HSE Policy — Effective 1 September</h3>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Updated HSE Policy — Effective 1 September</h3>
                <p class="mb-2">A revised HSE Policy (v3) takes effect on 1 September 2026, introducing updated permit-to-work procedures and mandatory refresher training for all site personnel.</p>
-               <details>
+               
+               <details class="ann-details-box mb-3">
                   <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
-                  <p class="mt-2 mb-0">All employees working on or visiting project sites must complete the updated HSE induction module via the JETS learning portal before 1 September 2026. Site supervisors are responsible for confirming crew completion. The full policy document is available on the <a href="documents.html" class="sisf-e-main-color">Documents</a> page under Policies. Questions should be directed to the HSE desk or your line manager.</p>
+                  <p class="mt-2 mb-0 text-secondary small">All employees working on or visiting project sites must complete the updated HSE induction module via the JETS learning portal before 1 September 2026. Site supervisors are responsible for confirming crew completion. The full policy document is available on the <a href="documents.html" class="sisf-e-main-color">Documents</a> page under Policies.</p>
                </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-shield-halved me-1 text-danger"></i> Mandatory Compliance Update</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-1')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
             </div>
 
-            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Administration">
+            <!-- Item 2 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Administration">
                <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                     <span class="sis-badge-pill sis-badge-dept">Administration</span>
-                  </div>
-                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">12 Aug 2026</span>
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-building-user me-1"></i>Administration</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 12 Aug 2026</span>
                </div>
-               <h3 class="sisf-e-title1 sis-comman-title mb-2">Q3 Town Hall — Friday, 10:00 AM</h3>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Q3 Town Hall — Friday, 10:00 AM</h3>
                <p class="mb-2">Join the Managing Director and department heads for the Q3 company town hall covering project wins, upcoming tenders, and an open Q&amp;A session.</p>
-               <details>
+               
+               <details class="ann-details-box mb-3">
                   <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
-                  <p class="mt-2 mb-0">The town hall will hold in the main conference room at HQ with a virtual dial-in option for site-based staff. An agenda will be circulated by the Business Development team ahead of the meeting. Attendance is strongly encouraged for all department leads.</p>
+                  <p class="mt-2 mb-0 text-secondary small">The town hall will hold in the main conference room at HQ with a virtual dial-in option for site-based staff. Attendance is strongly encouraged for all department leads.</p>
                </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-users me-1 text-info"></i> Company-wide Event</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-2')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
             </div>
 
-            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Human Resources">
+            <!-- Item 3 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Human Resources">
                <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                     <span class="sis-badge-pill sis-badge-dept">Human Resources</span>
-                  </div>
-                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">8 Aug 2026</span>
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-user-tie me-1"></i>Human Resources</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 8 Aug 2026</span>
                </div>
-               <h3 class="sisf-e-title1 sis-comman-title mb-2">New JETS Training Cohort Now Open for Registration</h3>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">New JETS Training Cohort Now Open for Registration</h3>
                <p class="mb-2">Registration is now open for the next JACHINS Engineering Training School (JETS) cohort, covering competency modules for field operations and asset integrity.</p>
-               <details>
+               
+               <details class="ann-details-box mb-3">
                   <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
-                  <p class="mt-2 mb-0">Employees interested in enrolling should speak with their line manager and submit an interest form to the HR Training &amp; Development team by 29 August. Priority will be given to roles with upcoming site assignments. Sponsorship details are outlined in the Benefits Overview on the HR page.</p>
+                  <p class="mt-2 mb-0 text-secondary small">Employees interested in enrolling should speak with their line manager and submit an interest form to the HR Training &amp; Development team by 29 August.</p>
                </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-graduation-cap me-1 text-warning"></i> Career Development</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-3')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
             </div>
 
-            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="IT">
+            <!-- Item 4 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="IT">
                <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                     <span class="sis-badge-pill sis-badge-dept">IT</span>
-                  </div>
-                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">4 Aug 2026</span>
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-laptop-code me-1"></i>IT</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 4 Aug 2026</span>
                </div>
-               <h3 class="sisf-e-title1 sis-comman-title mb-2">Scheduled Email &amp; Intranet Maintenance — Saturday Night</h3>
-               <p class="mb-2">IT will perform scheduled maintenance on company email and the intranet portal this Saturday from 11:00 PM to 2:00 AM. Brief interruptions to access should be expected.</p>
-               <details>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Scheduled Email &amp; Intranet Maintenance — Saturday Night</h3>
+               <p class="mb-2">IT will perform scheduled maintenance on company email and the intranet portal this Saturday from 11:00 PM to 2:00 AM.</p>
+               
+               <details class="ann-details-box mb-3">
                   <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
-                  <p class="mt-2 mb-0">No action is required from employees. If access issues persist after 3:00 AM, please contact the IT helpdesk. This maintenance window supports the security patching schedule covered in the recent Network &amp; Cybersecurity policy update.</p>
+                  <p class="mt-2 mb-0 text-secondary small">No action is required from employees. If access issues persist after 3:00 AM, please contact the IT helpdesk.</p>
                </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-server me-1 text-primary"></i> System Maintenance</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-4')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
             </div>
 
-            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item" data-dept="Operations">
+            <!-- Item 5 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Operations">
                <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
-                  <div>
-                     <span class="sis-badge-pill sis-badge-dept">Operations</span>
-                  </div>
-                  <span style="font-size:12px; color: rgba(255,255,255,0.55);">29 Jul 2026</span>
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-gears me-1"></i>Operations</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 29 Jul 2026</span>
                </div>
-               <h3 class="sisf-e-title1 sis-comman-title mb-2">EFE EPF Facility — Mechanical Completion Milestone Reached</h3>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">EFE EPF Facility — Mechanical Completion Milestone Reached</h3>
                <p class="mb-2">The project team has achieved mechanical completion on the EFE EPF compression system, a key milestone ahead of commissioning activities.</p>
-               <details>
+               
+               <details class="ann-details-box mb-3">
                   <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
-                  <p class="mt-2 mb-0">Congratulations to the site operations and QA/QC teams for delivering this milestone safely and on schedule. Commissioning support requirements will be communicated by the Operations Manager in the coming weeks. Photos and project details are available on request from the Business Development team.</p>
+                  <p class="mt-2 mb-0 text-secondary small">Congratulations to the site operations and QA/QC teams for delivering this milestone safely and on schedule.</p>
                </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-industry me-1 text-success"></i> Milestone Update</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-5')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
             </div>
 
          </div>
 
-         <p id="annNoResults" class="text-center mt-4 d-none" style="color: rgba(255,255,255,0.6);">No announcements match this filter.</p>
+         <!-- NO RESULTS FALLBACK -->
+         <p id="annNoResults" class="text-center mt-4 d-none py-5" style="color: #64748b;">
+            <i class="fa-regular fa-folder-open fs-2 mb-2 d-block"></i>
+            No announcements match your filter or search criteria.
+         </p>
+
+         <!-- PAGINATION LINKED TO SEPARATE FILES -->
+         <nav aria-label="Announcements Pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+               <li class="page-item disabled">
+                  <span class="page-link">Previous</span>
+               </li>
+               <li class="page-item active" aria-current="page">
+                  <span class="page-link bg-danger border-danger text-white">1</span>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements-2.html">2</a>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements-3.html">3</a>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements-2.html">Next</a>
+               </li>
+            </ul>
+         </nav>
 
       </main>
-
    </div>
 
-   <!-- Footer Container Placeholder -->
    <div id="footer-placeholder"></div>
 
-   <script src="../js/jquery-3.7.1.min.js"></script>
-   <script src="../js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
    <script src="intranet.js"></script>
    <script>
-      (function () {
-         "use strict";
+      // Standalone execution or inside intranet loader hook
+      function initAnnouncementsSearch() {
          var deptFilter = document.getElementById("annDeptFilter");
-         var items = Array.prototype.slice.call(document.querySelectorAll(".ann-item"));
+         var searchInput = document.getElementById("annSearchInput");
+         var searchBtn = document.getElementById("annSearchBtn");
+         var items = document.querySelectorAll(".ann-item");
          var noResults = document.getElementById("annNoResults");
 
-         deptFilter.addEventListener("change", function () {
-            var dept = deptFilter.value;
-            var visible = 0;
+         if (!deptFilter || !searchInput || !items.length) return;
+
+         function performSearch() {
+            var selectedDept = deptFilter.value;
+            var query = searchInput.value.toLowerCase().trim();
+            var visibleCount = 0;
+
             items.forEach(function (item) {
-               var show = dept === "all" || dept === item.getAttribute("data-dept");
-               item.classList.toggle("d-none", !show);
-               if (show) visible++;
+               var itemDept = item.getAttribute("data-dept");
+               var textContent = item.textContent.toLowerCase();
+
+               var matchesDept = (selectedDept === "all" || itemDept === selectedDept);
+               var matchesQuery = (query === "" || textContent.includes(query));
+
+               if (matchesDept && matchesQuery) {
+                  item.style.display = "";
+                  visibleCount++;
+               } else {
+                  item.style.display = "none";
+               }
             });
-            noResults.classList.toggle("d-none", visible !== 0);
+
+            if (visibleCount === 0) {
+               noResults.classList.remove("d-none");
+            } else {
+               noResults.classList.add("d-none");
+            }
+         }
+
+         // Event bindings
+         deptFilter.addEventListener("change", performSearch);
+         searchBtn.addEventListener("click", performSearch);
+         searchInput.addEventListener("keyup", function (e) {
+            performSearch();
+            if (e.key === "Enter") {
+               e.preventDefault();
+            }
          });
-      })();
+      }
+
+      // Run immediately and also bind to intranet ready callback if present
+      document.addEventListener("DOMContentLoaded", initAnnouncementsSearch);
+      if (window.onIntranetReady) {
+         var oldReady = window.onIntranetReady;
+         window.onIntranetReady = function () {
+            oldReady();
+            initAnnouncementsSearch();
+         };
+      }
+
+      function toggleBookmark(btn, id) {
+         btn.classList.toggle("active");
+         var isSaved = btn.classList.contains("active");
+         btn.innerHTML = isSaved ? '<i class="fa-solid fa-bookmark me-1"></i> Saved' : '<i class="fa-regular fa-bookmark me-1"></i> Save';
+      }
+
+      function markAsRead(btn) {
+         btn.classList.add("active", "bg-success", "border-success");
+         btn.style.borderColor = "#198754";
+         btn.style.backgroundColor = "#198754";
+         btn.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> Acknowledged';
+         btn.disabled = true;
+      }
    </script>
 </body>
 

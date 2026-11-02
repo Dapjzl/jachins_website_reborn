@@ -2,1035 +2,706 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#060f1f">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Employee Portal Login | JACHINS Group Intranet</title>
 
-    <meta
-        name="robots"
-        content="noindex, nofollow"
-    >
+    <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
 
-    <title>
-        Employee Login | JACHINS Intranet
-    </title>
-
-
-    <link
-        rel="shortcut icon"
-        type="image/png"
-        href="../images/jachins_logo.png"
-    >
-
-
-    <!-- Bootstrap -->
-    <link
-        href="../css/bootstrap.min.css"
-        rel="stylesheet"
-        media="screen"
-    >
-
-
-    <!-- Font Awesome -->
-    <link
-        href="../css/all.min.css"
-        rel="stylesheet"
-        media="screen"
-    >
-
+    <!-- Bootstrap & Font Awesome -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../css/all.min.css" rel="stylesheet" media="screen">
 
     <!-- Google Fonts -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-        rel="stylesheet"
-    >
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Existing project styles -->
-
-    <link
-        href="../css/custom.css"
-        rel="stylesheet"
-        media="screen"
-    >
-
-    <link
-        href="intranet.css"
-        rel="stylesheet"
-        media="screen"
-    >
-
+    <link href="../css/custom.css" rel="stylesheet" media="screen">
+    <link href="intranet.css" rel="stylesheet" media="screen">
 
     <style>
+        :root {
+            --navy-950: #040914;
+            --navy-900: #081428;
+            --navy-800: #0f2242;
+            
+            /* JACHINS Brand Dynamic Palette */
+            --brand-blue: #2563eb;
+            --brand-blue-soft: #93c5fd;
+            --brand-red: #e11d48;
+            --brand-red-soft: #fca5a5;
+            --brand-green: #059669;
+            --brand-green-soft: #34d399;
+            --brand-cream: #fef08a;
 
-        .sis-login-card {
-            position: relative;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger: #f87171;
+            --ease: cubic-bezier(.2, .8, .2, 1);
         }
 
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
 
-        .sis-login-error {
-
-            display: none;
-
-            margin-bottom: 20px;
-
-            padding: 12px 15px;
-
-            border-radius: 8px;
-
-            background: rgba(220, 53, 69, 0.12);
-
-            border: 1px solid rgba(220, 53, 69, 0.35);
-
-            color: #ffb3bb;
-
-            text-align: left;
-
-            font-size: 14px;
+        body.jl-body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 700px at 15% -10%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
+                radial-gradient(900px 600px at 85% 110%, rgba(225, 29, 72, 0.18) 0%, transparent 55%),
+                radial-gradient(800px 500px at 50% 50%, rgba(5, 150, 105, 0.12) 0%, transparent 60%),
+                linear-gradient(160deg, var(--navy-900), var(--navy-950));
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* Balanced Ambient Glow Orbs & Grid */
+        .jl-ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .jl-orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.45; will-change: transform; }
+        .jl-orb.o1 { width: 500px; height: 500px; background: radial-gradient(circle, var(--brand-blue), transparent 70%); top: -140px; left: -120px; animation: drift1 24s ease-in-out infinite alternate; }
+        .jl-orb.o2 { width: 460px; height: 460px; background: radial-gradient(circle, var(--brand-red), transparent 70%); bottom: -140px; right: -100px; animation: drift2 28s ease-in-out infinite alternate; }
+        .jl-orb.o3 { width: 380px; height: 380px; background: radial-gradient(circle, var(--brand-green), transparent 70%); top: 40%; left: 50%; opacity: 0.3; animation: drift3 32s ease-in-out infinite alternate; }
+        
+        @keyframes drift1 { to { transform: translate(140px, 80px) scale(1.08); } }
+        @keyframes drift2 { to { transform: translate(-160px, -70px) scale(1.05); } }
+        @keyframes drift3 { to { transform: translate(-180px, 50px) scale(0.92); } }
 
-        .sis-login-error.show {
-            display: block;
+        .jl-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
         }
 
-
-        .sis-login-success {
-
-            display: none;
-
-            margin-bottom: 20px;
-
-            padding: 12px 15px;
-
-            border-radius: 8px;
-
-            background: rgba(25, 135, 84, 0.15);
-
-            border: 1px solid rgba(25, 135, 84, 0.35);
-
-            color: #b7f0d1;
-
-            text-align: left;
-
-            font-size: 14px;
-        }
-
-
-        .sis-login-success.show {
-            display: block;
-        }
-
-
-        .sis-password-field {
-            position: relative;
-        }
-
-
-        .sis-password-field .form-control {
-            padding-right: 48px;
-        }
-
-
-        .sis-password-toggle {
-
-            position: absolute;
-
-            top: 50%;
-
-            right: 12px;
-
-            transform: translateY(-50%);
-
-            border: 0;
-
-            background: transparent;
-
-            color: #777;
-
-            cursor: pointer;
-
-            padding: 5px;
-
-            z-index: 5;
-        }
-
-
-        .sis-password-toggle:hover {
-            color: #333;
-        }
-
-
-        .sis-password-toggle:focus {
-            outline: none;
-        }
-
-
-        #loginButton:disabled {
-
-            opacity: 0.7;
-
-            cursor: not-allowed;
-        }
-
-
-        #loginButton .login-spinner {
-            display: none;
-        }
-
-
-        #loginButton.loading .login-text {
-            display: none;
-        }
-
-
-        #loginButton.loading .login-spinner {
-
-            display: inline-flex;
-
+        /* Layout Shell */
+        .jl-shell {
+            position: relative; z-index: 1;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
             align-items: center;
-
-            gap: 8px;
+            gap: 48px;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 40px 24px;
         }
 
-    </style>
+        .jl-hero { padding-right: 10px; }
+        
+        /* Larger Desktop Hero Logo */
+        .jl-hero-logo { 
+            height: 98px; 
+            width: auto; 
+            object-fit: contain; 
+            margin-bottom: 28px; 
+            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
+        }
 
+        .jl-hero h1 { 
+            font-size: clamp(28px, 3.8vw, 42px); 
+            line-height: 1.18; 
+            font-weight: 800; 
+            letter-spacing: -0.02em; 
+            margin: 0 0 16px; 
+            color: #ffffff; 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .time-icon {
+            color: var(--brand-cream);
+            font-size: 0.85em;
+            filter: drop-shadow(0 2px 8px rgba(254, 240, 138, 0.4));
+        }
+
+        .jl-hero p { color: var(--text-muted); font-size: 15px; line-height: 1.65; max-width: 44ch; margin: 0 0 28px; }
+
+        .jl-status {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 8px 16px; border-radius: 999px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px); font-size: 13px; font-weight: 600; color: var(--brand-cream);
+        }
+        .jl-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-green-soft); box-shadow: 0 0 0 0 rgba(52,211,153,.6); animation: pulse 2s infinite; }
+        @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(52,211,153,0); } 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); } }
+
+        .jl-clock { margin-top: 24px; color: var(--text-muted); font-size: 13.5px; font-weight: 500; }
+        .jl-clock strong { color: var(--brand-cream); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        /* Solid Enterprise Glass Card */
+        .jl-card {
+            position: relative;
+            width: 100%; max-width: 450px; margin-left: auto;
+            padding: 38px 34px 30px;
+            border-radius: 22px;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Subtle Top Multi-Brand Accent Ribbon */
+        .jl-card::before {
+            content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 3px; border-radius: 3px 3px 0 0;
+            background: linear-gradient(90deg, var(--brand-blue), var(--brand-red), var(--brand-green));
+        }
+
+        /* Larger Mobile Card Logo */
+        .jl-card-logo { 
+            display: none; 
+            height: 56px; 
+            width: auto;
+            object-fit: contain;
+            margin: 0 auto 18px; 
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+        }
+
+        .jl-title { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 4px; color: #ffffff; }
+        .jl-sub { margin: 0 0 22px; font-size: 13.5px; color: var(--text-muted); }
+
+        /* Alerts */
+        .jl-alert {
+            display: none; align-items: flex-start; gap: 10px;
+            margin-bottom: 16px; padding: 12px 14px; border-radius: 12px;
+            font-size: 13px; line-height: 1.4;
+        }
+        .jl-alert.show { display: flex; }
+        .jl-alert.error { background: rgba(225, 29, 72, 0.15); border: 1px solid rgba(225, 29, 72, 0.4); color: #fca5a5; }
+        .jl-alert.success { background: rgba(5, 150, 105, 0.15); border: 1px solid rgba(5, 150, 105, 0.4); color: #a7f3d0; }
+
+        /* Fields & Input Styling */
+        .jl-field { margin-bottom: 16px; position: relative; }
+        .jl-label { display: block; font-size: 12.5px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; letter-spacing: 0.2px; }
+
+        .jl-input-wrap { position: relative; }
+        .jl-input-wrap > .jl-ico { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px; pointer-events: none; transition: color .2s; }
+        
+        .jl-input {
+            width: 100%; height: 48px;
+            padding: 0 44px 0 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(15, 23, 42, 0.8) !important;
+            color: #ffffff !important; font: inherit; font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        
+        .jl-input::placeholder { color: #64748b; }
+        .jl-input:hover { border-color: rgba(255,255,255,0.25); }
+        .jl-input:focus { outline: none; background: #0f172a !important; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); }
+        .jl-input-wrap:focus-within > .jl-ico { color: var(--brand-blue-soft); }
+
+        /* Chrome/Edge Autofill Yellow Background Reset */
+        .jl-input:-webkit-autofill,
+        .jl-input:-webkit-autofill:hover, 
+        .jl-input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #ffffff !important;
+            -webkit-box-shadow: 0 0 0px 1000px #0f172a inset !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .jl-hint { display: none; margin-top: 5px; font-size: 11.5px; color: var(--danger); }
+        .jl-field.invalid .jl-hint { display: block; }
+
+        .jl-eye {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent;
+            color: #64748b; cursor: pointer; transition: color .2s;
+        }
+        .jl-eye:hover { color: #ffffff; }
+
+        /* Custom Portal Dropdown */
+        .jl-select { position: relative; }
+        .jl-select-btn {
+            width: 100%; min-height: 48px; padding: 6px 14px;
+            display: flex; align-items: center; gap: 12px; text-align: left;
+            border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(15, 23, 42, 0.8); color: #ffffff; font: inherit; cursor: pointer;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .jl-select-btn:hover { border-color: rgba(255,255,255,0.25); }
+        .jl-select-btn:focus-visible, .jl-select.open .jl-select-btn { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); }
+        
+        .jl-opt-ico {
+            flex: 0 0 32px; width: 32px; height: 32px; border-radius: 8px;
+            display: grid; place-items: center; font-size: 13px; color: #fff;
+            background: linear-gradient(135deg, var(--c1, #2563eb), var(--c2, #1d4ed8));
+        }
+        .jl-opt-text { flex: 1; min-width: 0; }
+        .jl-opt-name { display: block; font-size: 13.5px; font-weight: 600; line-height: 1.2; color: #ffffff; }
+        .jl-opt-desc { display: block; font-size: 11px; color: var(--text-muted); line-height: 1.25; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .jl-placeholder .jl-opt-name { color: #64748b; font-weight: 500; }
+        .jl-caret { color: #64748b; font-size: 10px; transition: transform .2s var(--ease); }
+        .jl-select.open .jl-caret { transform: rotate(180deg); }
+
+        .jl-menu {
+            position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 6px);
+            padding: 6px; margin: 0; list-style: none;
+            border-radius: 14px;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+            opacity: 0; visibility: hidden; transform: translateY(-6px);
+            transition: opacity .2s, transform .2s var(--ease), visibility .2s;
+        }
+        .jl-select.open .jl-menu { opacity: 1; visibility: visible; transform: none; }
+        .jl-menu li {
+            display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; cursor: pointer;
+            transition: background .15s;
+        }
+        .jl-menu li:hover, .jl-menu li.active { background: rgba(255,255,255,0.08); }
+        .jl-menu li[aria-selected="true"] { background: rgba(37,99,235,0.25); }
+        .jl-menu li .jl-tick { color: var(--brand-green-soft); font-size: 12px; opacity: 0; margin-left: auto; }
+        .jl-menu li[aria-selected="true"] .jl-tick { opacity: 1; }
+
+        /* Row / Remember / Links */
+        .jl-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 2px 0 20px; flex-wrap: wrap; }
+        .jl-check { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: #cbd5e1; cursor: pointer; user-select: none; }
+        .jl-check input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .jl-box { width: 17px; height: 17px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.25); background: rgba(15,23,42,0.8); display: grid; place-items: center; transition: all .2s; }
+        .jl-box i { font-size: 9px; color: #fff; transform: scale(0); transition: transform .2s var(--ease); }
+        .jl-check input:checked + .jl-box { background: var(--brand-blue); border-color: var(--brand-blue); }
+        .jl-check input:checked + .jl-box i { transform: scale(1); }
+
+        .jl-link { color: var(--brand-blue-soft) !important; text-decoration: none; font-weight: 600; transition: color .2s; }
+        .jl-link:hover { color: #ffffff !important; text-decoration: underline; }
+
+        /* Submit Button */
+        .jl-btn {
+            position: relative; overflow: hidden;
+            width: 100%; height: 48px; border: 0; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            font: inherit; font-size: 14.5px; font-weight: 700; color: #ffffff; cursor: pointer;
+            background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-green) 100%);
+            box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.4);
+            transition: transform .2s var(--ease), box-shadow .2s;
+        }
+        .jl-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 25px -4px rgba(5, 150, 105, 0.5); }
+        .jl-btn:disabled { opacity: .7; cursor: not-allowed; }
+        #loginButton .login-spinner { display: none; }
+        #loginButton.loading .login-text { display: none; }
+        #loginButton.loading .login-spinner { display: inline-flex; align-items: center; gap: 8px; }
+
+        /* High Contrast Footer Text */
+        .jl-foot { 
+            margin-top: 22px; 
+            padding-top: 18px; 
+            border-top: 1px solid rgba(255,255,255,0.12); 
+            text-align: center; 
+            font-size: 13px; 
+            color: #cbd5e1 !important; 
+        }
+        .jl-foot p { margin: 0 0 6px; color: #cbd5e1 !important; }
+        .jl-foot .small-links { margin-top: 10px; font-size: 12.5px; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 960px) {
+            .jl-shell { grid-template-columns: 1fr; gap: 0; padding: 20px 16px; }
+            .jl-hero { display: none; }
+            .jl-card { margin: 0 auto; }
+            .jl-card-logo { display: block; }
+            .jl-title, .jl-sub { text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .jl-card { padding: 28px 18px 22px; border-radius: 18px; }
+            .jl-opt-desc { white-space: normal; }
+        }
+    </style>
 </head>
 
-
-<body>
-
-    <div class="sis-login-section sis-primary-background">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-12">
-
-                    <div
-                        class="sis-login-card sisf-sis-comman-drop-bg sis-radius text-center"
-                    >
-
-
-                        <!-- Logo -->
-
-                        <a
-                            href="index.html"
-                            class="d-inline-block"
-                        >
-
-                            <img
-                                src="../images/jachins_logo.png"
-                                alt="JACHINS Development Limited"
-                                class="sis-login-logo"
-                            >
-
-                        </a>
-
-
-                        <!-- Title -->
-
-                        <div class="sis-section-title mb-4">
-
-                            <span class="sisf-m-subtitle text-white">
-                                Employee Portal
-                            </span>
-
-
-                            <h2
-                                class="sisf-m-title text-white"
-                                style="font-size: 26px;"
-                            >
-
-                                Sign in to the
-
-                                <span class="sisf-e-colored">
-                                    Intranet
-                                </span>
-
-                            </h2>
-
-                        </div>
-
-
-                        <!-- Login error -->
-
-                        <div
-                            id="loginError"
-                            class="sis-login-error"
-                            role="alert"
-                            aria-live="polite"
-                        >
-
-                            <i
-                                class="fa-solid fa-circle-exclamation pe-2"
-                            ></i>
-
-                            <span id="loginErrorMessage"></span>
-
-                        </div>
-
-
-                        <!-- Login success -->
-
-                        <div
-                            id="loginSuccess"
-                            class="sis-login-success"
-                            role="status"
-                            aria-live="polite"
-                        >
-
-                            <i
-                                class="fa-solid fa-circle-check pe-2"
-                            ></i>
-
-                            <span id="loginSuccessMessage"></span>
-
-                        </div>
-
-
-                        <!-- Login form -->
-
-                        <form
-                            id="loginForm"
-                            class="text-start"
-                            novalidate
-                        >
-
-
-                            <!-- Email -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    for="employeeEmail"
-                                    class="form-label"
-                                >
-                                    Email Address
-                                </label>
-
-
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="employeeEmail"
-                                    name="email"
-                                    autocomplete="username"
-                                    placeholder="you@jachinsgroup.com"
-                                    required
-                                    autofocus
-                                >
-
-                            </div>
-
-
-                            <!-- Password -->
-
-                            <div class="mb-2">
-
-                                <label
-                                    for="password"
-                                    class="form-label"
-                                >
-                                    Password
-                                </label>
-
-
-                                <div class="sis-password-field">
-
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        id="password"
-                                        name="password"
-                                        autocomplete="current-password"
-                                        placeholder="Enter your password"
-                                        required
-                                    >
-
-
-                                    <button
-                                        type="button"
-                                        class="sis-password-toggle"
-                                        id="passwordToggle"
-                                        aria-label="Show password"
-                                        aria-pressed="false"
-                                    >
-
-                                        <i
-                                            class="fa-solid fa-eye"
-                                            id="passwordToggleIcon"
-                                        ></i>
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- Remember me / Forgot password -->
-
-                            <div
-                                class="d-flex align-items-center justify-content-between mb-4 mt-3"
-                            >
-
-                                <div class="form-check">
-
-                                    <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        id="rememberMe"
-                                        name="rememberMe"
-                                    >
-
-
-                                    <label
-                                        class="form-check-label"
-                                        for="rememberMe"
-                                    >
-                                        Remember me
-                                    </label>
-
-                                </div>
-
-
-                                <a
-                                    href="forgot-password.html"
-                                    class="sisf-e-main-color"
-                                    style="font-size: 14px;"
-                                >
-                                    Forgot password?
-                                </a>
-
-                            </div>
-
-
-                            <!-- Login button -->
-
-                            <button
-                                type="submit"
-                                id="loginButton"
-                                class="sis-btn-default"
-                                style="width:100%; justify-content:center; border:none;"
-                            >
-
-                                <span class="login-text">
-                                    Login
-                                </span>
-
-
-                                <span class="login-spinner">
-
-                                    <i
-                                        class="fa-solid fa-spinner fa-spin"
-                                    ></i>
-
-                                    Signing in...
-
-                                </span>
-
-                            </button>
-
-
-                        </form>
-
-
-                        <!-- Support -->
-
-                        <p
-                            class="mt-4 mb-0"
-                            style="font-size: 13px; color: rgba(255,255,255,0.5);"
-                        >
-
-                            Having trouble signing in?
-
-                            Contact
-
-                            <a
-                                href="mailto:it-support@jachinsgroup.com"
-                                class="sisf-e-main-color"
-                            >
-                                IT Support
-                            </a>.
-
-                        </p>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
+<body class="jl-body">
+
+    <!-- Balanced Ambient Glow Orbs & Grid -->
+    <div class="jl-ambient" aria-hidden="true">
+        <div class="jl-grid"></div>
+        <div class="jl-orb o1"></div>
+        <div class="jl-orb o2"></div>
+        <div class="jl-orb o3"></div>
     </div>
 
+    <main class="jl-shell">
 
-    <!-- =========================================================
-         SCRIPTS
-         ========================================================= -->
+        <!-- Hero Intro Section (Desktop) -->
+        <section class="jl-hero">
+            <a href="index.html">
+                <img src="../images/jachins_logo.png" alt="JACHINS Group" class="jl-hero-logo">
+            </a>
+            
+            <h1>
+                <i class="fa-solid fa-mug-hot time-icon" id="greetingIcon"></i>
+                <span id="greetingText">Good morning. Welcome to the JACHINS workspace</span>
+            </h1>
+            
+            <p>One secure enterprise platform for your team's dashboards, financial records, and operational tools. Select your portal gateway and sign in.</p>
+            <div class="jl-status"><span class="jl-pulse"></span> Secure Enterprise Connection Active</div>
+            <div class="jl-clock" id="clock" aria-hidden="true"></div>
+        </section>
 
+        <!-- Glass Login Card -->
+        <section class="jl-card" id="loginCard" aria-labelledby="cardTitle">
 
-    <!-- jQuery -->
+            <a href="index.html" class="d-block text-center">
+                <img src="../images/jachins_logo.png" alt="JACHINS Group" class="jl-card-logo">
+            </a>
 
+            <h2 class="jl-title" id="cardTitle">Sign in to your account</h2>
+            <p class="jl-sub">Enter your JACHINS corporate credentials.</p>
+
+            <!-- Error Alert -->
+            <div id="loginError" class="jl-alert error" role="alert" aria-live="polite">
+                <i class="fa-solid fa-circle-exclamation mt-1"></i>
+                <span id="loginErrorMessage"></span>
+            </div>
+
+            <!-- Success Alert -->
+            <div id="loginSuccess" class="jl-alert success" role="status" aria-live="polite">
+                <i class="fa-solid fa-circle-check mt-1"></i>
+                <span id="loginSuccessMessage"></span>
+            </div>
+
+            <form id="loginForm" novalidate>
+
+                <!-- Email Field -->
+                <div class="jl-field" id="fieldEmail">
+                    <label for="employeeEmail" class="jl-label">Email Address</label>
+                    <div class="jl-input-wrap">
+                        <i class="fa-regular fa-envelope jl-ico"></i>
+                        <input type="email" class="jl-input" id="employeeEmail" name="email"
+                               autocomplete="username" placeholder="name@jachinsgroup.com" required autofocus>
+                    </div>
+                    <div class="jl-hint" id="hintEmail">Please enter a valid work email address.</div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="jl-field" id="fieldPassword">
+                    <label for="password" class="jl-label">Password</label>
+                    <div class="jl-input-wrap">
+                        <i class="fa-solid fa-lock jl-ico"></i>
+                        <input type="password" class="jl-input" id="password" name="password"
+                               autocomplete="current-password" placeholder="Enter your password" required>
+                        <button type="button" class="jl-eye" id="passwordToggle" aria-label="Show password" aria-pressed="false">
+                            <i class="fa-solid fa-eye" id="passwordToggleIcon"></i>
+                        </button>
+                    </div>
+                    <div class="jl-hint" id="hintPassword">Please enter your password.</div>
+                </div>
+
+                <!-- Portal Dropdown (Drives hidden native select) -->
+                <div class="jl-field" id="fieldDepartment">
+                    <label class="jl-label" id="portalLabel">Portal Gateway</label>
+
+                    <select id="loginDepartment" required hidden tabindex="-1" aria-hidden="true">
+                        <option value="" selected disabled>Select portal</option>
+                        <option value="General">General Staff Portal</option>
+                        <option value="Executive">Executive / CEO Suite</option>
+                        <option value="IT">IT &amp; Administration Gateway</option>
+                        <option value="HR">Human Resources Portal</option>
+                    </select>
+
+                    <div class="jl-select" id="portalSelect">
+                        <button type="button" class="jl-select-btn jl-placeholder" id="portalBtn"
+                                aria-haspopup="listbox" aria-expanded="false" aria-labelledby="portalLabel portalBtn">
+                            <span class="jl-opt-ico" id="portalBtnIcon" style="--c1:#2563eb;--c2:#1d4ed8"><i class="fa-solid fa-door-open"></i></span>
+                            <span class="jl-opt-text">
+                                <span class="jl-opt-name" id="portalBtnName">Select portal gateway...</span>
+                                <span class="jl-opt-desc" id="portalBtnDesc">Choose your destination workspace</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-down jl-caret"></i>
+                        </button>
+
+                        <ul class="jl-menu" id="portalMenu" role="listbox" aria-labelledby="portalLabel" tabindex="-1">
+                            <li role="option" data-value="General" aria-selected="false">
+                                <span class="jl-opt-ico" style="--c1:#2563eb;--c2:#1d4ed8"><i class="fa-solid fa-users"></i></span>
+                                <span class="jl-opt-text"><span class="jl-opt-name">General Staff Portal</span><span class="jl-opt-desc">Dashboard, requests &amp; company feed</span></span>
+                                <i class="fa-solid fa-check jl-tick"></i>
+                            </li>
+                            <li role="option" data-value="Executive" aria-selected="false">
+                                <span class="jl-opt-ico" style="--c1:#e11d48;--c2:#be123c"><i class="fa-solid fa-crown"></i></span>
+                                <span class="jl-opt-text"><span class="jl-opt-name">Executive / CEO Suite</span><span class="jl-opt-desc">Financial disbursements &amp; governance</span></span>
+                                <i class="fa-solid fa-check jl-tick"></i>
+                            </li>
+                            <li role="option" data-value="IT" aria-selected="false">
+                                <span class="jl-opt-ico" style="--c1:#0284c7;--c2:#0369a1"><i class="fa-solid fa-server"></i></span>
+                                <span class="jl-opt-text"><span class="jl-opt-name">IT &amp; Administration Gateway</span><span class="jl-opt-desc">System configurations &amp; controls</span></span>
+                                <i class="fa-solid fa-check jl-tick"></i>
+                            </li>
+                            <li role="option" data-value="HR" aria-selected="false">
+                                <span class="jl-opt-ico" style="--c1:#059669;--c2:#047857"><i class="fa-solid fa-user-group"></i></span>
+                                <span class="jl-opt-text"><span class="jl-opt-name">Human Resources Portal</span><span class="jl-opt-desc">Staff directory, leave &amp; personnel</span></span>
+                                <i class="fa-solid fa-check jl-tick"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="jl-row">
+                    <label class="jl-check" for="rememberMe">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span class="jl-box"><i class="fa-solid fa-check"></i></span>
+                        Remember me
+                    </label>
+                    <a href="forgot-password.html" class="jl-link" style="font-size: 12.5px;">Forgot password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="loginButton" class="jl-btn">
+                    <span class="login-text"><i class="fa-solid fa-shield-halved me-2"></i> Authenticate &amp; Enter</span>
+                    <span class="login-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Verifying credentials...</span>
+                </button>
+
+                <!-- Footer with High Contrast Text -->
+                <div class="jl-foot">
+                    <p>Need an intranet account? <a href="register.html" class="jl-link">Sign up</a></p>
+                    <p>Having trouble? Contact <a href="mailto:it-support@jachinsgroup.com" class="jl-link">IT Support</a>.</p>
+                    <div class="small-links"><a href="../index.html" class="jl-link"><i class="fa-solid fa-arrow-left me-1"></i> Back to main website</a></div>
+                </div>
+
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Scripts -->
     <script src="../js/jquery-3.7.1.min.js"></script>
-
-
-    <!-- Bootstrap -->
-
     <script src="../js/bootstrap.min.js"></script>
-
-
-    <!-- Supabase -->
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.js"></script>
-
-
-    <!-- Supabase configuration -->
-
     <script src="supabase-config.js"></script>
-
-
-    <!-- Authentication -->
-
     <script src="auth.js"></script>
-
-
-    <!-- Intranet controller -->
-
     <script src="intranet.js"></script>
 
-
-    <!-- =========================================================
-         LOGIN PAGE CONTROLLER
-         ========================================================= -->
-
+    <!-- Page Controller & Role-Based Routing Script -->
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.getElementById("loginForm");
+            const emailInput = document.getElementById("employeeEmail");
+            const passwordInput = document.getElementById("password");
+            const departmentInput = document.getElementById("loginDepartment");
+            const rememberMe = document.getElementById("rememberMe");
+            const loginButton = document.getElementById("loginButton");
+            const loginError = document.getElementById("loginError");
+            const loginErrorMessage = document.getElementById("loginErrorMessage");
+            const loginSuccess = document.getElementById("loginSuccess");
+            const loginSuccessMessage = document.getElementById("loginSuccessMessage");
+            const passwordToggle = document.getElementById("passwordToggle");
+            const passwordToggleIcon = document.getElementById("passwordToggleIcon");
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+            if (!loginForm) return;
 
-                const loginForm =
-                    document.getElementById(
-                        "loginForm"
-                    );
+            /* Time-Based Live Greeting & Icons */
+            const greetingText = document.getElementById("greetingText");
+            const greetingIcon = document.getElementById("greetingIcon");
+            const clock = document.getElementById("clock");
 
+            function tick() {
+                const now = new Date();
+                const h = now.getHours();
+                
+                let part = "Good morning";
+                let iconClass = "fa-solid fa-mug-hot";
 
-                const emailInput =
-                    document.getElementById(
-                        "employeeEmail"
-                    );
+                if (h >= 12 && h < 17) {
+                    part = "Good afternoon";
+                    iconClass = "fa-solid fa-sun";
+                } else if (h >= 17 || h < 5) {
+                    part = "Good evening";
+                    iconClass = "fa-solid fa-moon";
+                }
 
+                if (greetingText) greetingText.textContent = part + ". Welcome to the JACHINS workspace";
+                if (greetingIcon) greetingIcon.className = iconClass + " time-icon";
 
-                const passwordInput =
-                    document.getElementById(
-                        "password"
-                    );
+                if (clock) {
+                    clock.innerHTML = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) +
+                        " &nbsp;|&nbsp; <strong>" + now.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) + "</strong>";
+                }
+            }
+            tick();
+            setInterval(tick, 30000);
 
+            /* Custom Portal Dropdown Functionality */
+            const sel = document.getElementById("portalSelect");
+            const selBtn = document.getElementById("portalBtn");
+            const menu = document.getElementById("portalMenu");
+            const items = Array.prototype.slice.call(menu.querySelectorAll("li"));
+            const btnName = document.getElementById("portalBtnName");
+            const btnDesc = document.getElementById("portalBtnDesc");
+            const btnIcon = document.getElementById("portalBtnIcon");
 
-                const rememberMe =
-                    document.getElementById(
-                        "rememberMe"
-                    );
+            function selectOption(li) {
+                const val = li.getAttribute("data-value");
+                const name = li.querySelector(".jl-opt-name").textContent;
+                const desc = li.querySelector(".jl-opt-desc").textContent;
+                const icoHtml = li.querySelector(".jl-opt-ico").innerHTML;
+                const icoBg = li.querySelector(".jl-opt-ico").getAttribute("style");
 
+                departmentInput.value = val;
+                btnName.textContent = name;
+                btnDesc.textContent = desc;
+                btnIcon.innerHTML = icoHtml;
+                btnIcon.setAttribute("style", icoBg);
+                selBtn.classList.remove("jl-placeholder");
 
-                const loginButton =
-                    document.getElementById(
-                        "loginButton"
-                    );
+                items.forEach(function (x) { x.setAttribute("aria-selected", "false"); });
+                li.setAttribute("aria-selected", "true");
+                sel.classList.remove("open");
+                selBtn.setAttribute("aria-expanded", "false");
+            }
 
+            selBtn.addEventListener("click", function () {
+                if (sel.classList.contains("open")) {
+                    sel.classList.remove("open");
+                    selBtn.setAttribute("aria-expanded", "false");
+                } else {
+                    sel.classList.add("open");
+                    selBtn.setAttribute("aria-expanded", "true");
+                }
+            });
 
-                const loginError =
-                    document.getElementById(
-                        "loginError"
-                    );
+            items.forEach(function (li) {
+                li.addEventListener("click", function () { selectOption(li); });
+            });
 
+            document.addEventListener("click", function (e) {
+                if (!sel.contains(e.target)) {
+                    sel.classList.remove("open");
+                    selBtn.setAttribute("aria-expanded", "false");
+                }
+            });
 
-                const loginErrorMessage =
-                    document.getElementById(
-                        "loginErrorMessage"
-                    );
+            /* Remember Email */
+            const rememberedEmail = localStorage.getItem("jachins_login_email");
+            if (rememberedEmail && emailInput) {
+                emailInput.value = rememberedEmail;
+                if (rememberMe) rememberMe.checked = true;
+            }
 
+            function showError(message) {
+                if (!loginError || !loginErrorMessage) return;
+                hideSuccess();
+                loginErrorMessage.textContent = message;
+                loginError.classList.add("show");
+            }
 
-                const loginSuccess =
-                    document.getElementById(
-                        "loginSuccess"
-                    );
+            function hideError() {
+                if (loginError) loginError.classList.remove("show");
+                if (loginErrorMessage) loginErrorMessage.textContent = "";
+            }
 
+            function showSuccess(message) {
+                if (!loginSuccess || !loginSuccessMessage) return;
+                hideError();
+                loginSuccessMessage.textContent = message;
+                loginSuccess.classList.add("show");
+            }
 
-                const loginSuccessMessage =
-                    document.getElementById(
-                        "loginSuccessMessage"
-                    );
+            function hideSuccess() {
+                if (loginSuccess) loginSuccess.classList.remove("show");
+                if (loginSuccessMessage) loginSuccessMessage.textContent = "";
+            }
 
+            function setLoading(loading) {
+                if (!loginButton) return;
+                loginButton.disabled = loading;
+                if (loading) {
+                    loginButton.classList.add("loading");
+                } else {
+                    loginButton.classList.remove("loading");
+                }
+            }
 
-                const passwordToggle =
-                    document.getElementById(
-                        "passwordToggle"
-                    );
+            /* Password Toggle */
+            if (passwordToggle && passwordInput) {
+                passwordToggle.addEventListener("click", function () {
+                    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                    passwordInput.setAttribute("type", type);
+                    passwordToggle.setAttribute("aria-pressed", type === "text");
+                    passwordToggleIcon.className = type === "text" ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+                });
+            }
 
+            /* Form Submit Handler with Strict Portal Routing */
+            loginForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                hideError();
+                hideSuccess();
 
-                const passwordToggleIcon =
-                    document.getElementById(
-                        "passwordToggleIcon"
-                    );
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                const portal = departmentInput.value; // 'General', 'Executive', 'IT', or 'HR'
 
-
-                if (!loginForm) {
+                if (!email || !password) {
+                    showError("Please enter both your work email and password.");
                     return;
                 }
 
+                if (!portal) {
+                    showError("Please select a portal gateway from the dropdown.");
+                    return;
+                }
 
-                /* =================================================
-                   PASSWORD SHOW / HIDE
-                   ================================================= */
+                setLoading(true);
 
-                if (
-                    passwordToggle &&
-                    passwordInput
-                ) {
+                try {
+                    // Map dropdown selection to portal type expected by intranet.js
+                    let portalType = 'general';
+                    if (portal === 'Executive') portalType = 'ceo';
+                    else if (portal === 'IT') portalType = 'admin';
+                    else if (portal === 'HR') portalType = 'hr';
 
-                    passwordToggle.addEventListener(
-                        "click",
-                        function () {
-
-                            const isPassword =
-                                passwordInput.type ===
-                                "password";
-
-
-                            passwordInput.type =
-                                isPassword
-                                    ? "text"
-                                    : "password";
-
-
-                            if (passwordToggleIcon) {
-
-                                passwordToggleIcon.className =
-                                    isPassword
-                                        ? "fa-solid fa-eye-slash"
-                                        : "fa-solid fa-eye";
-                            }
-
-
-                            passwordToggle.setAttribute(
-                                "aria-label",
-                                isPassword
-                                    ? "Hide password"
-                                    : "Show password"
-                            );
-
-
-                            passwordToggle.setAttribute(
-                                "aria-pressed",
-                                isPassword
-                                    ? "true"
-                                    : "false"
-                            );
-
+                    if (window.IntranetAuth && typeof window.IntranetAuth.login === "function") {
+                        const result = await window.IntranetAuth.login(email, password, portalType);
+                        
+                        if (rememberMe && rememberMe.checked) {
+                            localStorage.setItem("jachins_login_email", email);
+                        } else {
+                            localStorage.removeItem("jachins_login_email");
                         }
-                    );
-                }
 
+                        showSuccess("Authentication successful! Redirecting to your workspace...");
 
-                /* =================================================
-                   REMEMBER EMAIL
-                   ================================================= */
+                        // Strict Role-Based Redirection Target
+                        const role = result.profile ? result.profile.role : 'employee';
+                        let targetPage = "dashboard.html"; // Default for general staff
 
-                const rememberedEmail =
-                    localStorage.getItem(
-                        "jachins_login_email"
-                    );
+                        if (portalType === 'ceo' || role === 'ceo') {
+                            targetPage = "executive-dashboard.html";
+                        } else if (portalType === 'admin' || role === 'admin') {
+                            targetPage = "admin-dashboard.html";
+                        } else if (portalType === 'hr' || role === 'hr') {
+                            targetPage = "hr-dashboard.html";
+                        }
 
-
-                if (
-                    rememberedEmail &&
-                    emailInput
-                ) {
-
-                    emailInput.value =
-                        rememberedEmail;
-
-                    if (rememberMe) {
-                        rememberMe.checked =
-                            true;
-                    }
-                }
-
-
-                /* =================================================
-                   ERROR
-                   ================================================= */
-
-                function showError(message) {
-
-                    if (
-                        !loginError ||
-                        !loginErrorMessage
-                    ) {
-                        return;
-                    }
-
-                    loginErrorMessage.textContent =
-                        message;
-
-                    loginError.classList.add(
-                        "show"
-                    );
-                }
-
-
-                function hideError() {
-
-                    if (loginError) {
-
-                        loginError.classList.remove(
-                            "show"
-                        );
-                    }
-
-                    if (loginErrorMessage) {
-
-                        loginErrorMessage.textContent =
-                            "";
-                    }
-                }
-
-
-                /* =================================================
-                   SUCCESS
-                   ================================================= */
-
-                function showSuccess(message) {
-
-                    if (
-                        !loginSuccess ||
-                        !loginSuccessMessage
-                    ) {
-                        return;
-                    }
-
-                    loginSuccessMessage.textContent =
-                        message;
-
-                    loginSuccess.classList.add(
-                        "show"
-                    );
-                }
-
-
-                /* =================================================
-                   LOADING
-                   ================================================= */
-
-                function setLoading(loading) {
-
-                    if (!loginButton) {
-                        return;
-                    }
-
-                    loginButton.disabled =
-                        loading;
-
-
-                    if (loading) {
-
-                        loginButton.classList.add(
-                            "loading"
-                        );
+                        setTimeout(() => {
+                            window.location.href = targetPage;
+                        }, 800);
 
                     } else {
-
-                        loginButton.classList.remove(
-                            "loading"
-                        );
+                        throw new Error("Intranet authentication module not loaded properly.");
                     }
+
+                } catch (err) {
+                    console.error("Login submission error:", err);
+                    showError(err.message || "Invalid credentials or unauthorized portal access.");
+                    setLoading(false);
                 }
-
-
-                /* =================================================
-                   LOGIN
-                   ================================================= */
-
-                loginForm.addEventListener(
-                    "submit",
-                    async function (event) {
-
-                        event.preventDefault();
-
-                        hideError();
-
-                        if (loginSuccess) {
-
-                            loginSuccess.classList.remove(
-                                "show"
-                            );
-                        }
-
-
-                        const email =
-                            emailInput
-                                ? emailInput.value
-                                    .trim()
-                                    .toLowerCase()
-                                : "";
-
-
-                        const password =
-                            passwordInput
-                                ? passwordInput.value
-                                : "";
-
-
-                        /* -----------------------------------------
-                           VALIDATION
-                           ----------------------------------------- */
-
-                        if (!email) {
-
-                            showError(
-                                "Please enter your email address."
-                            );
-
-                            if (emailInput) {
-                                emailInput.focus();
-                            }
-
-                            return;
-                        }
-
-
-                        if (!password) {
-
-                            showError(
-                                "Please enter your password."
-                            );
-
-                            if (passwordInput) {
-                                passwordInput.focus();
-                            }
-
-                            return;
-                        }
-
-
-                        /* -----------------------------------------
-                           SUPABASE CHECK
-                           ----------------------------------------- */
-
-                        if (!window.supabaseClient) {
-
-                            console.error(
-                                "Supabase client is not initialized."
-                            );
-
-                            showError(
-                                "The authentication system is not available. Please refresh the page or contact IT Support."
-                            );
-
-                            return;
-                        }
-
-
-                        if (
-                            !window.IntranetAuth ||
-                            typeof window.IntranetAuth.login !==
-                            "function"
-                        ) {
-
-                            console.error(
-                                "IntranetAuth.login is not available."
-                            );
-
-                            showError(
-                                "The login system is not available. Please refresh the page."
-                            );
-
-                            return;
-                        }
-
-
-                        setLoading(true);
-
-
-                        try {
-
-                            /* -------------------------------------
-                               AUTHENTICATE
-                               ------------------------------------- */
-
-                            const result =
-                                await window.IntranetAuth.login(
-                                    email,
-                                    password
-                                );
-
-
-                            console.log(
-                                "JACHINS login successful:",
-                                result
-                            );
-
-
-                            /* -------------------------------------
-                               REMEMBER EMAIL
-                               ------------------------------------- */
-
-                            if (
-                                rememberMe &&
-                                rememberMe.checked
-                            ) {
-
-                                localStorage.setItem(
-                                    "jachins_login_email",
-                                    email
-                                );
-
-                            } else {
-
-                                localStorage.removeItem(
-                                    "jachins_login_email"
-                                );
-                            }
-
-
-                            /* -------------------------------------
-                               REDIRECT
-                               ------------------------------------- */
-
-                            showSuccess(
-                                "Login successful. Opening your employee portal..."
-                            );
-
-
-                            window.setTimeout(
-                                function () {
-
-                                    window.location.replace(
-                                        "dashboard.html"
-                                    );
-
-                                },
-                                250
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                "JACHINS Login error:",
-                                error
-                            );
-
-
-                            let message =
-                                "Invalid email or password. Please try again.";
-
-
-                            if (
-                                error &&
-                                error.code ===
-                                "EMPLOYEE_PROFILE_NOT_FOUND"
-                            ) {
-
-                                message =
-                                    "Your login was successful, but your employee profile could not be loaded. Please contact IT Support.";
-
-                            } else if (
-                                error &&
-                                error.code ===
-                                "EMPLOYEE_PROFILE_QUERY_ERROR"
-                            ) {
-
-                                message =
-                                    "Your account is authenticated, but the employee database could not be accessed. Please contact IT Support.";
-
-                            } else if (
-                                error &&
-                                error.message
-                            ) {
-
-                                const errorText =
-                                    error.message.toLowerCase();
-
-
-                                if (
-                                    errorText.includes(
-                                        "email not confirmed"
-                                    )
-                                ) {
-
-                                    message =
-                                        "Your email address has not been confirmed. Please contact IT Support.";
-
-                                } else if (
-                                    errorText.includes(
-                                        "failed to fetch"
-                                    ) ||
-                                    errorText.includes(
-                                        "network"
-                                    )
-                                ) {
-
-                                    message =
-                                        "Unable to connect to the authentication service. Please check your internet connection.";
-
-                                } else if (
-                                    errorText.includes(
-                                        "invalid login credentials"
-                                    )
-                                ) {
-
-                                    message =
-                                        "Invalid email or password. Please try again.";
-                                }
-                            }
-
-
-                            showError(
-                                message
-                            );
-
-
-                            setLoading(false);
-                        }
-
-                    }
-                );
-
-            }
-        );
-
+            });
+        });
     </script>
-
 </body>
 
 </html>

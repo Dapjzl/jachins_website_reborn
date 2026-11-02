@@ -7,192 +7,218 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="robots" content="noindex, nofollow">
    <title>HR | JACHINS Intranet</title>
-   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
-   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
    <link rel="preconnect" href="https://fonts.googleapis.com/">
    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-   <link href="../css/custom.css" rel="stylesheet" media="screen">
-   <link href="intranet.css" rel="stylesheet" media="screen">
-
-   <!-- Supabase JS Client & Auth Check -->
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   <script src="supabase-config.js"></script>
-   <script src="auth.js"></script>
-   <script>
-      // Auth Guard: Protect page client-side via Supabase
-      (async function guard() {
-         const user = await checkAuth();
-         if (!user) {
-            window.location.href = "index.html";
-         }
-      })();
-   </script>
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+   <style>
+      :root {
+         --hr-primary: #334155;     /* Sophisticated Slate/Navy */
+         --hr-primary-hover: #1e293b;
+         --hr-accent: #0284c7;       /* Refined Professional Blue */
+         --hr-border: #e2e8f0;
+      }
+      .hr-card {
+         transition: all 0.2s ease-in-out;
+         border: 1px solid var(--hr-border);
+      }
+      .hr-card:hover {
+         border-color: rgba(2, 132, 199, 0.4);
+         box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04);
+      }
+      .hr-search-wrapper {
+         position: relative;
+         background: #ffffff;
+         border: 1px solid #cbd5e1;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         padding: 0 4px 0 14px;
+         transition: all 0.2s ease;
+      }
+      .hr-search-wrapper:focus-within {
+         border-color: var(--hr-accent);
+         box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+      }
+      .hr-search-wrapper > i {
+         color: #94a3b8;
+         margin-right: 10px;
+      }
+      .hr-search-input {
+         border: none !important;
+         background: transparent !important;
+         box-shadow: none !important;
+         padding: 10px 0 !important;
+         color: #1e293b !important;
+         width: 100%;
+      }
+      .hr-search-input:focus {
+         outline: none !important;
+      }
+      .btn-search-action {
+         background: var(--hr-primary);
+         color: #fff;
+         border: none;
+         border-radius: 6px;
+         padding: 8px 18px;
+         font-weight: 500;
+         transition: background 0.2s;
+      }
+      .btn-search-action:hover {
+         background: var(--hr-primary-hover);
+         color: #fff;
+      }
+      .hr-stat-hover {
+         transition: transform 0.2s;
+      }
+      .hr-stat-hover:hover {
+         transform: translateY(-2px);
+      }
+   </style>
 </head>
 
-<body class="sisf-comman-bg-light">
+<body class="sisf-comman-bg-light" data-protected="true" data-page="hr">
 
-   <!-- Header Container Placeholder -->
    <div id="header-placeholder"></div>
 
    <div class="sis-intranet-body sis-comman-background">
 
-      <!-- Sidebar Container Placeholder -->
       <div id="sidebar-placeholder"></div>
 
       <main class="sis-intranet-main">
 
          <div class="sisf-sis-section-title sis-section-title mb-4">
             <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
-            <h2 class="sisf-m-title" style="font-size: 28px;">Human <span class="sisf-e-colored">Resources</span>
-            </h2>
-            <p class="mb-0">Policies, leave, benefits, forms, and your HR contacts — all in one place.</p>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Human <span class="sisf-e-colored">Resources</span></h2>
+            <p class="mb-0 text-muted">Policies, leave, benefits, forms, and your HR contacts — all in one place.</p>
          </div>
 
-         <div class="row g-4">
+         <!-- FUNCTIONAL SEARCH BAR ROW -->
+         <div class="row mb-4">
+            <div class="col-12">
+               <div class="d-flex gap-2">
+                  <div class="hr-search-wrapper flex-grow-1">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                     <input type="text" id="hrSearchInput" class="form-control hr-search-input" placeholder="Search HR policies, leave info, benefits, or contacts...">
+                  </div>
+                  <button id="hrSearchBtn" type="button" class="btn-search-action d-flex align-items-center gap-2">
+                     <i class="fa-solid fa-magnifying-glass"></i> Search
+                  </button>
+               </div>
+            </div>
+         </div>
 
-            <!-- Leave Info -->
-            <div class="col-lg-6">
-               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+         <div class="row g-4" id="hrContentGrid">
+
+            <!-- Leave Information Card -->
+            <div class="col-lg-6 hr-searchable-item" data-keywords="leave vacation annual days remaining request">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100 hr-card">
                   <div class="d-flex align-items-center gap-3 mb-3">
                      <i class="fa-solid fa-umbrella-beach fs-3 sisf-e-main-color"></i>
-                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Leave Information</h3>
+                     <h3 class="sisf-e-title sis-comman-title2 mb-0">Leave Information</h3>
                   </div>
                   <div class="row g-3 mb-3">
                      <div class="col-6">
-                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius hr-stat-hover">
                            <div class="sis-stat-number" style="font-size:24px;">14</div>
                            <p class="mb-0" style="font-size:13px;">Annual Leave Days Remaining</p>
                         </div>
                      </div>
                      <div class="col-6">
-                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius hr-stat-hover">
                            <div class="sis-stat-number" style="font-size:24px;">3</div>
                            <p class="mb-0" style="font-size:13px;">Pending Requests</p>
                         </div>
                      </div>
                   </div>
-                  <p class="mb-2">JACHINS employees are entitled to 21 working days of annual leave, plus statutory
-                     public holidays, sick leave, and maternity/paternity leave as outlined in the Employee Handbook.
-                  </p>
-                  <a href="documents.html" class="sisf-e-main-color" style="font-size:14px;">Submit a Leave Request
-                     Form <i class="fa-solid fa-arrow-right"></i></a>
+                  <p class="mb-3 text-secondary" style="font-size:14px;">JACHINS employees are entitled to 21 working days of annual leave, plus statutory public holidays, sick leave, and maternity/paternity leave as outlined in the Employee Handbook.</p>
+                  <a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:14px;">Submit a Leave Request Form <i class="fa-solid fa-arrow-right ms-1"></i></a>
                </div>
             </div>
 
-            <!-- Benefits -->
-            <div class="col-lg-6">
-               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+            <!-- Benefits Overview Card -->
+            <div class="col-lg-6 hr-searchable-item" data-keywords="benefits hmo health insurance pension life bonus training">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100 hr-card">
                   <div class="d-flex align-items-center gap-3 mb-3">
                      <i class="fa-solid fa-heart-pulse fs-3 sisf-e-main-color"></i>
-                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Benefits Overview</h3>
+                     <h3 class="sisf-e-title sis-comman-title2 mb-0">Benefits Overview</h3>
                   </div>
-                  <ul class="list-unstyled m-0 d-flex flex-column gap-2">
-                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>HMO health insurance for employee and
-                        dependents</li>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-2 text-secondary" style="font-size:14px;">
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>HMO health insurance for employee and dependents</li>
                      <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Group life insurance</li>
-                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Pension contributions (employer +
-                        employee, per PENCOM guidelines)</li>
-                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>JETS training &amp; professional
-                        development sponsorship</li>
-                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Annual performance bonus (eligibility
-                        per appraisal policy)</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Pension contributions (employer + employee, per PENCOM guidelines)</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>JETS training &amp; professional development sponsorship</li>
+                     <li><i class="fa-solid fa-check sisf-e-main-color pe-2"></i>Annual performance bonus (eligibility per appraisal policy)</li>
                   </ul>
                </div>
             </div>
 
-            <!-- Policies & Handbook -->
-            <div class="col-lg-6">
-               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+            <!-- Policies & Handbook Card -->
+            <div class="col-lg-6 hr-searchable-item" data-keywords="policies handbook code of conduct hse anti-harassment pdf">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100 hr-card">
                   <div class="d-flex align-items-center gap-3 mb-3">
                      <i class="fa-solid fa-book fs-3 sisf-e-main-color"></i>
-                     <h3 class="sisf-e-title1 sis-comman-title mb-0">Policies &amp; Handbook</h3>
+                     <h3 class="sisf-e-title sis-comman-title2 mb-0">Policies &amp; Handbook</h3>
                   </div>
-                  <ul class="list-unstyled m-0 d-flex flex-column gap-3">
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-pdf sisf-e-main-color pe-2"></i>Employee Handbook
-                           2026</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
-                     </li>
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Code of Conduct</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
-                     </li>
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>HSE Policy v3</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
-                     </li>
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Anti-Harassment
-                           Policy</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">View</a>
-                     </li>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-3" style="font-size:14px;">
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-pdf sisf-e-main-color pe-2"></i>Employee Handbook 2026</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">View</a></li>
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Code of Conduct</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">View</a></li>
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>HSE Policy v3</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">View</a></li>
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Anti-Harassment Policy</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">View</a></li>
                   </ul>
                </div>
             </div>
 
-            <!-- HR Forms -->
-            <div class="col-lg-6">
-               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100">
+            <!-- HR Forms Card -->
+            <div class="col-lg-6 hr-searchable-item" data-keywords="forms download leave reimbursement bank next of kin">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 h-100 hr-card">
                   <div class="d-flex align-items-center gap-3 mb-3">
                      <i class="fa-solid fa-file-signature fs-3 sisf-e-main-color"></i>
-                     <h3 class="sisf-e-title1 sis-comman-title mb-0">HR Forms</h3>
+                     <h3 class="sisf-e-title sis-comman-title2 mb-0">HR Forms</h3>
                   </div>
-                  <ul class="list-unstyled m-0 d-flex flex-column gap-3">
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Leave Request Form</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
-                     </li>
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Expense Reimbursement
-                           Form</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
-                     </li>
-                     <li class="d-flex justify-content-between align-items-center">
-                        <span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Change of Bank/Next of Kin
-                           Form</span>
-                        <a href="documents.html" class="sisf-e-main-color" style="font-size:13px;">Download</a>
-                     </li>
+                  <ul class="list-unstyled m-0 d-flex flex-column gap-3" style="font-size:14px;">
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Leave Request Form</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">Download</a></li>
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Expense Reimbursement Form</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">Download</a></li>
+                     <li class="d-flex justify-content-between align-items-center"><span><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Change of Bank/Next of Kin Form</span><a href="documents.html" class="sisf-e-main-color fw-medium" style="font-size:13px;">Download</a></li>
                   </ul>
                </div>
             </div>
 
-            <!-- HR Contacts -->
-            <div class="col-12">
-               <div class="sisf-sis-comman-drop-bg sis-radius p-4">
+            <!-- HR Contacts Card -->
+            <div class="col-12 hr-searchable-item" data-keywords="contacts ngozi eze ifeoma nwachukwu email hr desk">
+               <div class="sisf-sis-comman-drop-bg sis-radius p-4 hr-card">
                   <div class="d-flex align-items-center gap-3 mb-3">
                      <i class="fa-solid fa-address-book fs-3 sisf-e-main-color"></i>
-                     <h3 class="sisf-e-title1 sis-comman-title mb-0">HR Contacts</h3>
+                     <h3 class="sisf-e-title sis-comman-title mb-0">HR Contacts</h3>
                   </div>
                   <div class="row g-3">
                      <div class="col-md-4">
-                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius h-150 p-3 hr-stat-hover">
                            <span class="sis-avatar-sm mb-2 d-inline-flex">NE</span>
                            <h4 class="text-white mb-0" style="font-size:15px;">Ngozi Eze</h4>
                            <p class="sisf-e-main-color mb-1" style="font-size:12px;">HR Business Partner</p>
-                           <a href="mailto:n.eze@jachinsgroup.com" class="text-white"
-                              style="font-size:13px;">n.eze@jachinsgroup.com</a>
+                           <a href="mailto:n.eze@jachinsgroup.com" class="text-white text-decoration-underline" style="font-size:13px;">n.eze@jachinsgroup.com</a>
                         </div>
                      </div>
                      <div class="col-md-4">
-                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius h-150 p-3 hr-stat-hover">
                            <span class="sis-avatar-sm mb-2 d-inline-flex">IN</span>
                            <h4 class="text-white mb-0" style="font-size:15px;">Ifeoma Nwachukwu</h4>
-                           <p class="sisf-e-main-color mb-1" style="font-size:12px;">Training &amp; Development
-                              Officer</p>
-                           <a href="mailto:i.nwachukwu@jachinsgroup.com" class="text-white"
-                              style="font-size:13px;">i.nwachukwu@jachinsgroup.com</a>
+                           <p class="sisf-e-main-color mb-1" style="font-size:12px;">Training &amp; Development Officer</p>
+                           <a href="mailto:i.nwachukwu@jachinsgroup.com" class="text-white text-decoration-underline" style="font-size:13px;">i.nwachukwu@jachinsgroup.com</a>
                         </div>
                      </div>
                      <div class="col-md-4">
-                        <div class="sis-stat-tile sis-comman-bg sis-radius">
+                        <div class="sis-stat-tile sis-comman-bg sis-radius h-150 p-3 hr-stat-hover">
                            <span class="sis-avatar-sm mb-2 d-inline-flex">HR</span>
                            <h4 class="text-white mb-0" style="font-size:15px;">General HR Desk</h4>
                            <p class="sisf-e-main-color mb-1" style="font-size:12px;">All HR Enquiries</p>
-                           <a href="mailto:hr@jachinsgroup.com" class="text-white"
-                              style="font-size:13px;">hr@jachinsgroup.com</a>
+                           <a href="mailto:hr@jachinsgroup.com" class="text-white text-decoration-underline" style="font-size:13px;">hr@jachinsgroup.com</a>
                         </div>
                      </div>
                   </div>
@@ -201,16 +227,61 @@
 
          </div>
 
-      </main>
+         <!-- NO SEARCH RESULTS FALLBACK -->
+         <p id="hrNoResults" class="text-center mt-4 d-none py-5" style="color: #64748b;">
+            <i class="fa-regular fa-folder-open fs-2 mb-2 d-block"></i>
+            No HR sections or documents match your search query.
+         </p>
 
+      </main>
    </div>
 
-   <!-- Footer Container Placeholder -->
    <div id="footer-placeholder"></div>
 
-   <script src="../js/jquery-3.7.1.min.js"></script>
-   <script src="../js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
    <script src="intranet.js"></script>
+   <script>
+      document.addEventListener("DOMContentLoaded", function () {
+         const searchInput = document.getElementById("hrSearchInput");
+         const searchBtn = document.getElementById("hrSearchBtn");
+         const items = document.querySelectorAll(".hr-searchable-item");
+         const noResults = document.getElementById("hrNoResults");
+
+         function performHRSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            items.forEach(function (item) {
+               const textContent = item.textContent.toLowerCase();
+               const keywords = item.getAttribute("data-keywords") || "";
+
+               if (query === "" || textContent.includes(query) || keywords.includes(query)) {
+                  item.style.display = "";
+                  visibleCount++;
+               } else {
+                  item.style.display = "none";
+               }
+            });
+
+            if (visibleCount === 0) {
+               noResults.classList.remove("d-none");
+            } else {
+               noResults.classList.add("d-none");
+            }
+         }
+
+         searchBtn.addEventListener("click", performHRSearch);
+         searchInput.addEventListener("keyup", function (e) {
+            performHRSearch();
+            if (e.key === "Enter") {
+               e.preventDefault();
+            }
+         });
+      });
+   </script>
 </body>
 
 </html>

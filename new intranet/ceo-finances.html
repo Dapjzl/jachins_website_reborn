@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>Executive Finances & Approvals | JACHINS Intranet</title>
+
+    <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../css/all.min.css" rel="stylesheet" media="screen">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+    <!-- Project Styles -->
+    <link href="../css/custom.css" rel="stylesheet" media="screen">
+    <link href="intranet.css" rel="stylesheet" media="screen">
+
+    <style>
+        .executive-stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .executive-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+        }
+        .stat-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .bg-pending-soft { background: rgba(255, 193, 7, 0.15); color: #b78103; }
+        .bg-approved-soft { background: rgba(25, 135, 84, 0.15); color: #198754; }
+        .bg-rejected-soft { background: rgba(220, 53, 69, 0.15); color: #dc3545; }
+        .bg-primary-soft { background: rgba(13, 110, 253, 0.15); color: #0d6efd; }
+
+        .approval-table th {
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .filter-btn.active {
+            background-color: #212529 !important;
+            color: #ffffff !important;
+            border-color: #212529 !important;
+        }
+    </style>
+</head>
+
+<body data-protected="true">
+
+    <!-- Header Placeholder -->
+    <div id="header-placeholder"></div>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Sidebar Placeholder -->
+            <div class="col-lg-3 col-xl-2 px-0">
+                <div id="sidebar-placeholder"></div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-lg-9 col-xl-10 px-4">
+                
+                <!-- Title Header -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h2 class="fw-bold mb-1"><i class="fa-solid fa-wallet text-warning me-2"></i> Executive Financial Desk</h2>
+                        <p class="text-muted mb-0">Authorize, monitor, edit, and comment on department disbursements and expenditure requests.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-dark btn-sm rounded-pill px-3" onclick="loadRequisitions()">
+                            <i class="fa-solid fa-rotate-right me-1"></i> Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alert Feedback Box -->
+                <div id="actionAlert" class="alert alert-dismissible fade show d-none" role="alert">
+                    <span id="alertText"></span>
+                    <button type="button" class="btn-close" onclick="this.parentElement.classList.add('d-none')"></button>
+                </div>
+
+                <!-- Executive Summary Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="executive-stat-card shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-muted fw-semibold small">Pending Volume</span>
+                                <div class="stat-icon-wrapper bg-pending-soft">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                            </div>
+                            <h3 class="fw-bold mb-0 text-dark" id="statPendingAmount">₦0</h3>
+                            <small class="text-muted" id="statPendingCount">0 requests awaiting review</small>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="executive-stat-card shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-muted fw-semibold small">Approved Total</span>
+                                <div class="stat-icon-wrapper bg-approved-soft">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                            </div>
+                            <h3 class="fw-bold mb-0 text-success" id="statApprovedAmount">₦0</h3>
+                            <small class="text-muted" id="statApprovedCount">0 requests authorized</small>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="executive-stat-card shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-muted fw-semibold small">Declined Requests</span>
+                                <div class="stat-icon-wrapper bg-rejected-soft">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </div>
+                            </div>
+                            <h3 class="fw-bold mb-0 text-danger" id="statRejectedCount">0</h3>
+                            <small class="text-muted">Requires resubmission</small>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-3">
+                        <div class="executive-stat-card shadow-sm">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-muted fw-semibold small">Total Submitted</span>
+                                <div class="stat-icon-wrapper bg-primary-soft">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                </div>
+                            </div>
+                            <h3 class="fw-bold mb-0 text-dark" id="statTotalCount">0</h3>
+                            <small class="text-muted">All-time disbursements</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters & Search Toolbar -->
+                <div class="card border-0 shadow-sm mb-4 sis-radius">
+                    <div class="card-body p-3">
+                        <div class="row g-3 align-items-center justify-content-between">
+                            <div class="col-md-6 col-lg-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                    <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Search employee, ID, title, or purpose..." onkeyup="filterRequisitions()">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 text-md-end">
+                                <div class="btn-group w-100 w-md-auto" role="group">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn active" data-filter="All" onclick="setFilter('All', this)">All Requests</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="Pending" onclick="setFilter('Pending', this)">Pending</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="Approved" onclick="setFilter('Approved', this)">Approved</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm filter-btn" data-filter="Rejected" onclick="setFilter('Rejected', this)">Rejected</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Requisitions Table Container -->
+                <div class="card sis-radius border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle approval-table mb-0" id="requisitionTable">
+                                <thead class="bg-light text-secondary">
+                                    <tr>
+                                        <th class="ps-4">Request Ref</th>
+                                        <th>Requester Name</th>
+                                        <th>Title / Purpose</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th>Submitted Date</th>
+                                        <th class="text-end pe-4">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="requisitionTableBody">
+                                    <tr>
+                                        <td colspan="8" class="text-center py-5 text-muted">
+                                            <i class="fa-solid fa-spinner fa-spin fa-2x mb-3 text-warning"></i>
+                                            <div>Loading financial requisitions...</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Requisition Detail & Edit Modal -->
+    <div class="modal fade" id="requisitionDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-file-invoice me-2 text-warning"></i> Executive Requisition Review & Edit</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <input type="hidden" id="modalReqId">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold">REQUEST ID</label>
+                            <div class="fw-bold fs-5 text-dark" id="modalRef">-</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold">STATUS</label>
+                            <div id="modalStatus">-</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold">REQUESTED BY</label>
+                            <div class="fw-semibold text-dark" id="modalEmployee">-</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">REQUEST TITLE / PROJECT</label>
+                        <input type="text" id="modalReqTitle" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">PURPOSE & BREAKDOWN</label>
+                        <textarea id="modalPurpose" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">AMOUNT REQUIRED (₦)</label>
+                        <input type="number" id="modalAmount" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label text-muted small fw-bold">EXECUTIVE COMMENTS / SIGN-OFF REMARKS</label>
+                        <textarea id="modalRemarks" class="form-control" rows="3" placeholder="Add feedback, conditions, or remarks for the employee..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light px-4 py-3 justify-content-between">
+                    <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm px-3 me-1 shadow-sm" onclick="saveModalEdits()"><i class="fa-solid fa-save me-1"></i> Save Changes</button>
+                        <button type="button" class="btn btn-danger btn-sm px-3 me-1 shadow-sm" onclick="modalAction('rejected')"><i class="fa-solid fa-xmark me-1"></i> Reject</button>
+                        <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" onclick="modalAction('approved')"><i class="fa-solid fa-check me-1"></i> Authorize Approval</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="intranet.js"></script>
+
+    <script>
+        let allRequisitions = [];
+        let currentFilter = 'All';
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            if (window.IntranetAuth && typeof window.IntranetAuth.protectPage === 'function') {
+                const auth = await window.IntranetAuth.protectPage();
+                if (auth && auth.profile) {
+                    const role = String(auth.profile.role || '').toLowerCase();
+                    if (role !== 'ceo' && role !== 'executive' && role !== 'admin') {
+                        window.location.replace("finances.html");
+                        return;
+                    }
+                }
+            }
+
+            loadRequisitions();
+        });
+
+        async function loadRequisitions() {
+            const client = window.supabaseClient;
+            const tbody = document.getElementById("requisitionTableBody");
+            if (!client) return;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-spinner fa-spin fa-2x mb-3 text-warning"></i>
+                        <div>Loading financial requisitions...</div>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const { data, error } = await client
+                    .from('disbursements')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.warn("Disbursements query notice:", error.message);
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No financial records found or table pending setup.</td></tr>`;
+                    updateStats([]);
+                    return;
+                }
+
+                allRequisitions = data || [];
+                updateStats(allRequisitions);
+                renderTable();
+
+            } catch (err) {
+                console.error("Error loading disbursements:", err);
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load disbursements. Please refresh.</td></tr>`;
+            }
+        }
+
+        function updateStats(data) {
+            let pendingSum = 0, pendingCnt = 0;
+            let approvedSum = 0, approvedCnt = 0;
+            let rejectedCnt = 0;
+
+            data.forEach(req => {
+                const amt = Number(req.amount || 0);
+                const status = String(req.status || 'pending').toLowerCase();
+
+                if (status === 'approved') {
+                    approvedSum += amt;
+                    approvedCnt++;
+                } else if (status === 'rejected') {
+                    rejectedCnt++;
+                } else {
+                    pendingSum += amt;
+                    pendingCnt++;
+                }
+            });
+
+            document.getElementById('statPendingAmount').textContent = '₦' + pendingSum.toLocaleString();
+            document.getElementById('statPendingCount').textContent = `${pendingCnt} request${pendingCnt === 1 ? '' : 's'} awaiting review`;
+            
+            document.getElementById('statApprovedAmount').textContent = '₦' + approvedSum.toLocaleString();
+            document.getElementById('statApprovedCount').textContent = `${approvedCnt} request${approvedCnt === 1 ? '' : 's'} authorized`;
+
+            document.getElementById('statRejectedCount').textContent = rejectedCnt;
+            document.getElementById('statTotalCount').textContent = data.length;
+        }
+
+        function setFilter(filter, element) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            renderTable();
+        }
+
+        function filterRequisitions() {
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById("requisitionTableBody");
+            const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
+
+            let filtered = allRequisitions.filter(req => {
+                const status = String(req.status || 'pending').toLowerCase();
+                const statusMatches = (currentFilter === 'All') || (status === currentFilter.toLowerCase());
+                
+                const empName = String(req.requester_name || '').toLowerCase();
+                const title = String(req.title || '').toLowerCase();
+                const purpose = String(req.purpose || '').toLowerCase();
+                const ref = String(req.id || '').toLowerCase();
+
+                const searchMatches = !searchQuery || empName.includes(searchQuery) || title.includes(searchQuery) || purpose.includes(searchQuery) || ref.includes(searchQuery);
+
+                return statusMatches && searchMatches;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted">No disbursement requests found for this criteria.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = "";
+            filtered.forEach(req => {
+                const status = String(req.status || 'pending').toLowerCase();
+                let badgeClass = 'bg-warning text-dark';
+                if (status === 'approved') badgeClass = 'bg-success';
+                if (status === 'rejected') badgeClass = 'bg-danger';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="ps-4 fw-bold text-dark font-monospace" style="font-size: 11px;">#${String(req.id).slice(0, 8)}</td>
+                    <td>
+                        <div class="fw-bold text-dark">${escapeHtml(req.requester_name || 'Staff Member')}</div>
+                    </td>
+                    <td>
+                        <div class="fw-semibold text-dark">${escapeHtml(req.title || 'Disbursement Request')}</div>
+                        <small class="text-muted text-truncate d-inline-block" style="max-width: 200px;">${escapeHtml(req.purpose || '')}</small>
+                    </td>
+                    <td class="fw-bold text-success fs-6">₦${Number(req.amount || 0).toLocaleString()}</td>
+                    <td><span class="badge ${badgeClass} px-2 py-1 text-capitalize">${status}</span></td>
+                    <td><small class="text-muted text-truncate d-inline-block" style="max-width: 140px;">${escapeHtml(req.remarks || '-')}</small></td>
+                    <td>${new Date(req.created_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                    <td class="text-end pe-4">
+                        <button class="btn btn-light btn-sm me-1 border" onclick="viewDetails('${req.id}')" title="Review">
+                            <i class="fa-solid fa-pen-to-square text-secondary"></i> Review
+                        </button>
+                        ${status === 'pending' ? `
+                            <button class="btn btn-sm btn-success me-1" onclick="updateStatus('${req.id}', 'approved')" title="Approve">
+                                <i class="fa-solid fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="updateStatus('${req.id}', 'rejected')" title="Reject">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function viewDetails(id) {
+            const req = allRequisitions.find(r => r.id == id);
+            if (!req) return;
+
+            document.getElementById('modalReqId').value = req.id;
+            document.getElementById('modalRef').textContent = `#${String(req.id).slice(0, 8)}`;
+            document.getElementById('modalEmployee').textContent = req.requester_name || 'Staff Member';
+            document.getElementById('modalReqTitle').value = req.title || '';
+            document.getElementById('modalPurpose').value = req.purpose || '';
+            document.getElementById('modalAmount').value = req.amount || 0;
+            document.getElementById('modalRemarks').value = req.remarks || '';
+
+            const status = String(req.status || 'pending').toLowerCase();
+            let badgeClass = 'bg-warning text-dark';
+            if (status === 'approved') badgeClass = 'bg-success';
+            if (status === 'rejected') badgeClass = 'bg-danger';
+            document.getElementById('modalStatus').innerHTML = `<span class="badge ${badgeClass} fs-6 text-capitalize">${status}</span>`;
+
+            const modal = new bootstrap.Modal(document.getElementById('requisitionDetailModal'));
+            modal.show();
+        }
+
+        async function modalAction(newStatus) {
+            const id = document.getElementById('modalReqId').value;
+            const title = document.getElementById('modalReqTitle').value.trim();
+            const purpose = document.getElementById('modalPurpose').value.trim();
+            const amount = parseFloat(document.getElementById('modalAmount').value);
+            const remarks = document.getElementById('modalRemarks').value.trim();
+
+            bootstrap.Modal.getInstance(document.getElementById('requisitionDetailModal')).hide();
+
+            const client = window.supabaseClient;
+            const alertBox = document.getElementById("actionAlert");
+            const alertText = document.getElementById("alertText");
+
+            try {
+                const { error } = await client
+                    .from('disbursements')
+                    .update({ 
+                        title,
+                        purpose,
+                        amount,
+                        remarks,
+                        status: newStatus,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alertBox.className = `alert alert-${newStatus === 'approved' ? 'success' : 'danger'} alert-dismissible fade show mb-4`;
+                alertText.innerHTML = `<i class="fa-solid fa-circle-check me-2"></i> Requisition has been updated and set to <strong>${newStatus}</strong>.`;
+
+                loadRequisitions();
+            } catch (err) {
+                alert("Action failed: " + err.message);
+            }
+        }
+
+        async function saveModalEdits() {
+            const id = document.getElementById('modalReqId').value;
+            const title = document.getElementById('modalReqTitle').value.trim();
+            const purpose = document.getElementById('modalPurpose').value.trim();
+            const amount = parseFloat(document.getElementById('modalAmount').value);
+            const remarks = document.getElementById('modalRemarks').value.trim();
+
+            bootstrap.Modal.getInstance(document.getElementById('requisitionDetailModal')).hide();
+
+            const client = window.supabaseClient;
+            const alertBox = document.getElementById("actionAlert");
+            const alertText = document.getElementById("alertText");
+
+            try {
+                const { error } = await client
+                    .from('disbursements')
+                    .update({ 
+                        title,
+                        purpose,
+                        amount,
+                        remarks,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alertBox.className = `alert alert-primary alert-dismissible fade show mb-4`;
+                alertText.innerHTML = `<i class="fa-solid fa-circle-check me-2"></i> Requisition edits and comments were saved successfully.`;
+
+                loadRequisitions();
+            } catch (err) {
+                alert("Save failed: " + err.message);
+            }
+        }
+
+        async function updateStatus(id, newStatus) {
+            const client = window.supabaseClient;
+            const alertBox = document.getElementById("actionAlert");
+            const alertText = document.getElementById("alertText");
+
+            try {
+                const { error } = await client
+                    .from('disbursements')
+                    .update({ 
+                        status: newStatus,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alertBox.className = `alert alert-${newStatus === 'approved' ? 'success' : 'danger'} alert-dismissible fade show mb-4`;
+                alertText.innerHTML = `<i class="fa-solid fa-circle-check me-2"></i> Requisition status has been set to <strong>${newStatus}</strong>.`;
+
+                loadRequisitions();
+
+            } catch (err) {
+                alert("Action failed: " + err.message);
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+
+</body>
+</html>

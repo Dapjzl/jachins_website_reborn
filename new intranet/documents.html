@@ -7,232 +7,335 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="robots" content="noindex, nofollow">
    <title>Documents | JACHINS Intranet</title>
-   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
-   <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-   <link href="../css/all.min.css" rel="stylesheet" media="screen">
+   <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
    <link rel="preconnect" href="https://fonts.googleapis.com/">
    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-   <link href="../css/custom.css" rel="stylesheet" media="screen">
-   <link href="intranet.css" rel="stylesheet" media="screen">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
 </head>
 
-<body class="sisf-comman-bg-light">
+<body class="sisf-comman-bg-light" data-protected="true" data-page="documents">
 
-   <!-- Header Container Placeholder -->
    <div id="header-placeholder"></div>
 
    <div class="sis-intranet-body sis-comman-background">
 
-      <!-- Sidebar Container Placeholder -->
       <div id="sidebar-placeholder"></div>
 
       <main class="sis-intranet-main">
 
          <div class="sisf-sis-section-title sis-section-title mb-4">
-            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
-            <h2 class="sisf-m-title" style="font-size: 28px;">Document <span class="sisf-e-colored">Library</span></h2>
-            <p class="mb-0">Company policies, HR forms, and department reports organized by category.</p>
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal Library</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Document <span class="sisf-e-colored">Center</span></h2>
+            <p class="mb-0">Official company policies, HSE procedures, and HR manuals available for direct download.</p>
          </div>
 
          <!-- Search Bar -->
-         <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius">
+         <div class="sis-filter-bar sisf-sis-comman-drop-bg sis-radius mb-4">
             <div class="row g-2 align-items-center">
                <div class="col-md-8">
-                  <input type="text" id="docSearch" class="form-control" placeholder="Search documents...">
+                  <input type="text" id="docSearch" class="form-control" placeholder="Search documents by title or keyword...">
                </div>
-               <div class="col-md-4">
-                  <span class="text-white" style="font-size:13px;"><span id="docCount">11</span> documents</span>
+               <div class="col-md-4 text-md-end">
+                  <span class="text-white" style="font-size:14px;"><span id="docCount" class="fw-bold text-warning">14</span> documents available</span>
                </div>
             </div>
          </div>
 
-         <!-- Policies -->
-         <div class="mb-2">
-            <h3 class="sisf-e-title1 sis-comman-title mb-3" style="font-size:17px;">
-               <i class="fa-solid fa-scale-balanced sisf-e-main-color pe-2"></i>Policies
-            </h3>
-         </div>
-         <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
-            <table class="sis-data-table">
-               <thead>
-                  <tr>
-                     <th>Document</th>
-                     <th>Category</th>
-                     <th>Updated</th>
-                     <th></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr class="doc-row" data-title="HSE Policy v3">
-                     <td><i class="fa-regular fa-file-pdf sisf-e-main-color pe-2"></i>HSE Policy v3</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
-                     <td>15 Aug 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Code of Conduct">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Code of Conduct</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
-                     <td>02 Jun 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Anti-Harassment Policy">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Anti-Harassment Policy</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
-                     <td>02 Jun 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Data Protection & IT Usage Policy">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Data Protection &amp; IT Usage Policy</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
-                     <td>10 Mar 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Forms -->
-         <div class="mb-2">
-            <h3 class="sisf-e-title1 sis-comman-title mb-3" style="font-size:17px;">
-               <i class="fa-solid fa-file-signature sisf-e-main-color pe-2"></i>Forms
-            </h3>
-         </div>
-         <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
-            <table class="sis-data-table">
-               <thead>
-                  <tr>
-                     <th>Document</th>
-                     <th>Category</th>
-                     <th>Updated</th>
-                     <th></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr class="doc-row" data-title="Leave Request Form">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Leave Request Form</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Forms</span></td>
-                     <td>20 Jul 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Expense Reimbursement Form">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Expense Reimbursement Form</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Forms</span></td>
-                     <td>05 Jan 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Change of Bank / Next of Kin Form">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Change of Bank / Next of Kin Form</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Forms</span></td>
-                     <td>05 Jan 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-               </tbody>
-            </table>
+         <!-- CATEGORY 1: POLICIES -->
+         <div class="category-block mb-4">
+            <div class="mb-2">
+               <h3 class="sisf-e-title sis-comman-title2 mb-3" style="font-size:17px;">
+                  <i class="fa-solid fa-scale-balanced sisf-e-main-color pe-2"></i>Company Policies
+               </h3>
+            </div>
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <table class="sis-data-table w-100">
+                  <thead>
+                     <tr>
+                        <th style="width: 45%;">Document Title</th>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 20%;">Updated</th>
+                        <th style="width: 15%; text-align:center;">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr class="doc-row" data-title="code of ethics and business conduct">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Code of Ethics & Business Conduct</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('Code_of_Ethics_and_Business_Conduct_ENG_FIN.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="community affairs policy statement">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Community Affairs Policy Statement (Rev 2)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('COMMUNITY AFFAIRS POLICY STATEMENT rev_2.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="jachins nigerian content policy statement">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Nigerian Content Policy Statement</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('JACHINS NIGERIAN CONTENT POLICY STATEMENT.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="alcohol drugs and search policy">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Alcohol, Drugs and Search Policy (Rev 2)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('ALCOHOL_DRUGS AND SEARCH POLICY rev_2(1).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="quality policy statement">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Quality Policy Statement (Rev 3)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Policies</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('QUALITY POLICY STATEMENT rev_3.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
          </div>
 
-         <!-- HR Documents -->
-         <div class="mb-2">
-            <h3 class="sisf-e-title1 sis-comman-title mb-3" style="font-size:17px;">
-               <i class="fa-solid fa-user-tie sisf-e-main-color pe-2"></i>HR Documents
-            </h3>
-         </div>
-         <div class="sisf-sis-comman-drop-bg sis-radius p-3 mb-4" style="overflow-x:auto;">
-            <table class="sis-data-table">
-               <thead>
-                  <tr>
-                     <th>Document</th>
-                     <th>Category</th>
-                     <th>Updated</th>
-                     <th></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr class="doc-row" data-title="Employee Handbook 2026">
-                     <td><i class="fa-regular fa-file-pdf sisf-e-main-color pe-2"></i>Employee Handbook 2026</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">HR Documents</span></td>
-                     <td>01 Jan 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Benefits Guide">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Benefits Guide</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">HR Documents</span></td>
-                     <td>01 Jan 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-               </tbody>
-            </table>
-         </div>
-
-         <!-- Company / Department Documents -->
-         <div class="mb-2">
-            <h3 class="sisf-e-title1 sis-comman-title mb-3" style="font-size:17px;">
-               <i class="fa-solid fa-building sisf-e-main-color pe-2"></i>Company &amp; Department Documents
-            </h3>
-         </div>
-         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
-            <table class="sis-data-table">
-               <thead>
-                  <tr>
-                     <th>Document</th>
-                     <th>Category</th>
-                     <th>Updated</th>
-                     <th></th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr class="doc-row" data-title="Organizational Chart">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Organizational Chart</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Company</span></td>
-                     <td>10 Feb 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-                  <tr class="doc-row" data-title="Q2 2026 Operations Report">
-                     <td><i class="fa-regular fa-file-lines sisf-e-main-color pe-2"></i>Q2 2026 Operations Report</td>
-                     <td><span class="sis-badge-pill sis-badge-dept">Internal Reports</span></td>
-                     <td>15 Jul 2026</td>
-                     <td><a href="#" class="sisf-e-main-color">Download</a></td>
-                  </tr>
-               </tbody>
-            </table>
+         <!-- CATEGORY 2: HSE & SAFETY PROCEDURES -->
+         <div class="category-block mb-4">
+            <div class="mb-2">
+               <h3 class="sisf-e-title sis-comman-title2 mb-3" style="font-size:17px;">
+                  <i class="fa-solid fa-shield-halved sisf-e-main-color pe-2"></i>HSE & Safety Procedures
+               </h3>
+            </div>
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <table class="sis-data-table w-100">
+                  <thead>
+                     <tr>
+                        <th style="width: 45%;">Document Title</th>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 20%;">Updated</th>
+                        <th style="width: 15%; text-align:center;">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr class="doc-row" data-title="hse manual rev 1">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>HSE Manual (Rev 1)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">HSE</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('HSE MANUAL Rev_1.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="hses policy statement">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>HSES Policy Statement (Rev 2)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">HSE</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('HSES POLICY STATEMENT rev_2 (1).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="incident report procedure">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Incident Report Procedure</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">HSE</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('Incident Report Procedure.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="ppe procedure">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>PPE Procedure</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">HSE</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('PPE_Procedure.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
          </div>
 
-         <p id="docNoResults" class="text-center mt-4 d-none" style="color: rgba(255,255,255,0.6);">
-            No documents match your search.
-         </p>
+         <!-- CATEGORY 3: OPERATIONS & PROCUREMENT -->
+         <div class="category-block mb-4">
+            <div class="mb-2">
+               <h3 class="sisf-e-title sis-comman-title2 mb-3" style="font-size:17px;">
+                  <i class="fa-solid fa-gears sisf-e-main-color pe-2"></i>Operations & Continuity
+               </h3>
+            </div>
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <table class="sis-data-table w-100">
+                  <thead>
+                     <tr>
+                        <th style="width: 45%;">Document Title</th>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 20%;">Updated</th>
+                        <th style="width: 15%; text-align:center;">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr class="doc-row" data-title="business continuity plan bcp">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Business Continuity Plan (BCP)</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Operations</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('BUSINESS CONTINUITY PLAN (BCP).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="business continuity policy">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Business Continuity Policy</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Operations</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('BUSINESS CONTINUITY POLICY (1)(1).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="procurement plan jdl">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Procurement Plan JDL</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Procurement</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('PROCUREMENT PLAN JDL (1).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                     <tr class="doc-row" data-title="procurement procedure">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>Procurement Procedure</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">Procurement</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('PROCUREMENT _PROCEDURE_1 (1).docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <!-- CATEGORY 4: HR DOCUMENTS -->
+         <div class="category-block mb-4">
+            <div class="mb-2">
+               <h3 class="sisf-e-title sis-comman-title2 mb-3" style="font-size:17px;">
+                  <i class="fa-solid fa-user-tie sisf-e-main-color pe-2"></i>HR Documents & Handbooks
+               </h3>
+            </div>
+            <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+               <table class="sis-data-table w-100">
+                  <thead>
+                     <tr>
+                        <th style="width: 45%;">Document Title</th>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 20%;">Updated</th>
+                        <th style="width: 15%; text-align:center;">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr class="doc-row" data-title="jachins employee handbook 2026">
+                        <td><i class="fa-regular fa-file-word text-primary pe-2 fs-6"></i>JACHINS Employee Handbook 2026</td>
+                        <td><span class="sis-badge-pill sis-badge-dept">HR Documents</span></td>
+                        <td>14 Sep 2026</td>
+                        <td class="text-center">
+                           <a href="javascript:void(0)" onclick="downloadDocument('JACHINS Employee Handbook_2026.docx')" class="sisf-e-main-color fw-bold">
+                              <i class="fa-solid fa-download me-1"></i>Download
+                           </a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <p id="docNoResults" class="text-center mt-4 d-none" style="color: rgba(255,255,255,0.6);">No documents match your search.</p>
 
       </main>
-
    </div>
 
-   <!-- Footer Container Placeholder -->
    <div id="footer-placeholder"></div>
 
-   <script src="../js/jquery-3.7.1.min.js"></script>
-   <script src="../js/bootstrap.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
    <script src="intranet.js"></script>
+
    <script>
-      (function () {
-         "use strict";
+      // Force direct download from the /documents/ subfolder
+      function downloadDocument(fileName) {
+         var filePath = 'documents/' + fileName; // Points to the documents subfolder
+         var link = document.createElement('a');
+         link.href = filePath;
+         link.setAttribute('download', fileName);
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+      }
+
+      window.onIntranetReady = function () {
          var searchInput = document.getElementById("docSearch");
          var rows = Array.prototype.slice.call(document.querySelectorAll(".doc-row"));
          var countEl = document.getElementById("docCount");
          var noResults = document.getElementById("docNoResults");
+         var categoryBlocks = Array.prototype.slice.call(document.querySelectorAll(".category-block"));
 
          searchInput.addEventListener("input", function () {
-            var query = searchInput.value.trim().toLowerCase();
-            var visible = 0;
-            rows.forEach(function (row) {
-               var title = (row.getAttribute("data-title") || "").toLowerCase();
-               var show = title.indexOf(query) !== -1;
-               row.classList.toggle("d-none", !show);
-               if (show) visible++;
+            var q = searchInput.value.trim().toLowerCase();
+            var totalVisible = 0;
+
+            categoryBlocks.forEach(function (block) {
+               var blockRows = Array.prototype.slice.call(block.querySelectorAll(".doc-row"));
+               var blockVisibleCount = 0;
+
+               blockRows.forEach(function (row) {
+                  var title = row.getAttribute("data-title") || "";
+                  var match = title.indexOf(q) !== -1;
+                  row.classList.toggle("d-none", !match);
+                  if (match) {
+                     blockVisibleCount++;
+                  }
+               });
+
+               // Hide entire category block if no matching files in that category
+               block.classList.toggle("d-none", blockVisibleCount === 0);
+               totalVisible += blockVisibleCount;
             });
-            countEl.textContent = visible;
-            noResults.classList.toggle("d-none", visible !== 0);
+
+            countEl.textContent = totalVisible;
+            noResults.classList.toggle("d-none", totalVisible !== 0);
          });
-      })();
+      };
    </script>
 </body>
 

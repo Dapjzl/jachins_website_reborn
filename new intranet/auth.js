@@ -2,12 +2,14 @@
  * JACHINS Intranet Authentication Manager
  *
  * Login page:
- *     index.html
+ *    index.html
  *
  * Protected pages:
- *     dashboard.html
- *     employees.html
- *     etc.
+ *    dashboard.html
+ *    executive-dashboard.html
+ *    admin-dashboard.html
+ *    hr-dashboard.html
+ *    etc.
  */
 
 (function () {
@@ -22,6 +24,28 @@
 
     const INACTIVITY_LIMIT_MS = 30 * 60 * 1000;
     const AWAY_LIMIT_MS = 15 * 60 * 1000;
+
+
+    /* =========================================================
+       ROLE-BASED DASHBOARD MAPPING & GUARD CONFIG
+       ========================================================= */
+    function normalizeRole(role) {
+        return String(role || "").trim().toLowerCase() || "employee";
+    }
+
+    function getDashboardForRole(role) {
+        const cleanRole = normalizeRole(role);
+        if (cleanRole === 'ceo' || cleanRole === 'executive') {
+            return 'executive-dashboard.html';
+        }
+        if (cleanRole === 'admin') {
+            return 'admin-dashboard.html';
+        }
+        if (cleanRole === 'hr' || cleanRole === 'human resources') {
+            return 'hr-dashboard.html';
+        }
+        return 'dashboard.html';
+    }
 
 
     /* =========================================================
@@ -171,17 +195,20 @@
             return null;
         }
 
-        /*
-         * Use cached profile only when the auth_user_id matches.
-         */
+        if (!authUserId) {
+            cachedProfile = null;
+            console.error("Cannot validate an employee profile without the authenticated user ID.");
+            return null;
+        }
 
         if (
             cachedProfile &&
-            authUserId &&
             cachedProfile.auth_user_id === authUserId
         ) {
+            cachedProfile.role = normalizeRole(cachedProfile.role);
             return cachedProfile;
         }
+        cachedProfile = null;
 
         const sb = getClient();
 
@@ -204,11 +231,6 @@
 
             try {
 
-                console.log(
-                    "Looking for employee using auth_user_id:",
-                    authUserId
-                );
-
                 const result = await sb
                     .from("employees")
                     .select(
@@ -226,13 +248,15 @@
 
                 } else if (result.data) {
 
+                    if (result.data.auth_user_id !== authUserId) {
+                        console.error(
+                            "Auth user lookup returned an employee profile with a mismatched auth user ID."
+                        );
+                        return null;
+                    }
+
+                    result.data.role = normalizeRole(result.data.role);
                     cachedProfile = result.data;
-
-                    console.log(
-                        "Employee profile FOUND by auth_user_id:",
-                        cachedProfile
-                    );
-
                     return cachedProfile;
                 }
 
@@ -260,11 +284,6 @@
                         .trim()
                         .toLowerCase();
 
-                console.log(
-                    "Looking for employee using email:",
-                    cleanEmail
-                );
-
                 const result = await sb
                     .from("employees")
                     .select(
@@ -282,58 +301,42 @@
 
                 } else if (result.data) {
 
-                    cachedProfile = result.data;
-
-                    console.log(
-                        "Employee profile FOUND by email:",
-                        cachedProfile
-                    );
-
-                    /*
-                     * If the employee row has no auth_user_id,
-                     * attempt to connect it.
-                     */
-
                     if (
-                        authUserId &&
-                        !result.data.auth_user_id
+                        result.data.auth_user_id &&
+                        result.data.auth_user_id !== authUserId
                     ) {
-
-                        try {
-
-                            const updateResult = await sb
-                                .from("employees")
-                                .update({
-                                    auth_user_id: authUserId
-                                })
-                                .eq("id", result.data.id);
-
-                            if (updateResult.error) {
-
-                                console.warn(
-                                    "Employee found, but auth_user_id could not be linked:",
-                                    updateResult.error
-                                );
-
-                            } else {
-
-                                cachedProfile.auth_user_id =
-                                    authUserId;
-
-                                console.log(
-                                    "Employee auth_user_id successfully linked."
-                                );
-                            }
-
-                        } catch (linkError) {
-
-                            console.warn(
-                                "Error linking auth_user_id:",
-                                linkError
-                            );
-                        }
+                        console.error(
+                            "Email lookup returned an employee profile linked to a different auth user."
+                        );
+                        return null;
                     }
 
+                    if (!result.data.auth_user_id) {
+                        const updateResult = await sb
+                            .from("employees")
+                            .update({ auth_user_id: authUserId })
+                            .eq("id", result.data.id)
+                            .is("auth_user_id", null)
+                            .select("id, auth_user_id")
+                            .maybeSingle();
+
+                        if (
+                            updateResult.error ||
+                            !updateResult.data ||
+                            updateResult.data.auth_user_id !== authUserId
+                        ) {
+                            console.error(
+                                "Employee profile could not be securely linked to the authenticated user:",
+                                updateResult.error || "No employee row was updated."
+                            );
+                            return null;
+                        }
+
+                        result.data.auth_user_id = updateResult.data.auth_user_id;
+                    }
+
+                    result.data.role = normalizeRole(result.data.role);
+                    cachedProfile = result.data;
                     return cachedProfile;
                 }
 
@@ -345,11 +348,6 @@
                 );
             }
         }
-
-
-        /* =====================================================
-           NOTHING FOUND
-           ===================================================== */
 
         console.error(
             "NO EMPLOYEE PROFILE FOUND.",
@@ -367,12 +365,11 @@
        LOGIN
        ========================================================= */
 
-    async function login(email, password) {
+    async function login(email, password, isCeoAttempt = false) {
 
         const sb = getClient();
 
         if (!sb || !sb.auth) {
-
             throw new Error(
                 "Supabase authentication is not available."
             );
@@ -384,21 +381,10 @@
                 .toLowerCase();
 
         if (!cleanEmail || !password) {
-
             throw new Error(
                 "Please enter your email and password."
             );
         }
-
-        console.log(
-            "Attempting Supabase login:",
-            cleanEmail
-        );
-
-
-        /* =====================================================
-           SUPABASE AUTHENTICATION
-           ===================================================== */
 
         const {
             data: authData,
@@ -409,154 +395,154 @@
         });
 
         if (authError) {
-
-            console.error(
-                "Supabase authentication failed:",
-                authError
-            );
-
+            console.error("Supabase authentication failed:", authError);
             throw authError;
         }
 
-        if (
-            !authData ||
-            !authData.user
-        ) {
-
+        if (!authData || !authData.user) {
             throw new Error(
                 "Authentication succeeded but Supabase did not return a user."
             );
         }
 
         const user = authData.user;
-
-        console.log(
-            "AUTHENTICATED USER:",
-            {
-                id: user.id,
-                email: user.email
-            }
-        );
-
-
-        /* =====================================================
-           EMPLOYEE PROFILE
-           ===================================================== */
+        cachedProfile = null;
 
         const profile = await loadProfile(
             user.id,
             user.email
         );
 
-
         if (!profile) {
-
-            /*
-             * IMPORTANT:
-             *
-             * Authentication itself succeeded.
-             *
-             * This is now a genuine employee-table lookup
-             * failure, not an "invalid password" error.
-             */
-
             const profileError = new Error(
                 "Your account is authenticated, but the employee profile could not be loaded."
             );
-
-            profileError.code =
-                "EMPLOYEE_PROFILE_NOT_FOUND";
-
-            /*
-             * Do NOT immediately sign out here.
-             *
-             * Keeping the session temporarily makes debugging
-             * much easier and prevents the login page from
-             * hiding the actual database/RLS problem.
-             */
-
+            profileError.code = "EMPLOYEE_PROFILE_NOT_FOUND";
             throw profileError;
         }
 
+        const userRole = normalizeRole(profile.role);
 
-        /* =====================================================
-           VERIFY PROFILE BELONGS TO AUTH USER
-           ===================================================== */
+        if (isCeoAttempt) {
+            const allowedRoles = ["ceo", "executive"];
+            
+            if (!allowedRoles.includes(userRole)) {
+                await sb.auth.signOut();
+                
+                const unauthorizedError = new Error(
+                    `Access Denied: Your database role is "${profile.role || 'Unknown'}". Only the Chief Executive Officer or Executives are authorized to sign into the Executive Portal.`
+                );
+                unauthorizedError.code = "CEO_PORTAL_UNAUTHORIZED";
+                throw unauthorizedError;
+            }
+        }
 
-        if (
-            profile.auth_user_id &&
-            profile.auth_user_id !== user.id
-        ) {
-
-            console.error(
-                "Employee profile belongs to a different auth user.",
-                {
-                    profileAuthUserId:
-                        profile.auth_user_id,
-
-                    authenticatedUserId:
-                        user.id
-                }
-            );
-
+        if (profile.auth_user_id !== user.id) {
             const mismatchError = new Error(
                 "Your employee profile is linked to a different authentication account."
             );
-
-            mismatchError.code =
-                "EMPLOYEE_AUTH_USER_MISMATCH";
-
+            mismatchError.code = "EMPLOYEE_AUTH_USER_MISMATCH";
             throw mismatchError;
         }
 
-
-        /* =====================================================
-           CREATE SESSION PAYLOAD
-           ===================================================== */
-
         const sessionPayload = {
-
             user: user,
-
             session: authData.session,
-
             profile: profile
-
         };
 
-
-        /* =====================================================
-           SAVE SESSION
-           ===================================================== */
-
         try {
-
             window.sessionStorage.setItem(
                 "intranet_session",
                 JSON.stringify(sessionPayload)
             );
-
         } catch (error) {
-
-            console.warn(
-                "Could not save intranet session:",
-                error
-            );
+            console.warn("Could not save intranet session:", error);
         }
 
-
-        console.log(
-            "LOGIN COMPLETED SUCCESSFULLY:",
-            {
-                authUserId: user.id,
-                employeeRowId: profile.id,
-                employeeId: profile.employee_id,
-                name: profile.name,
-                role: profile.role
-            }
-        );
-
         return sessionPayload;
+    }
+
+
+    /* =========================================================
+       SIGN UP (NEW EMPLOYEE REGISTRATION)
+       ========================================================= */
+
+    async function signUp(email, password, fullName, department) {
+        const sb = getClient();
+        if (!sb || !sb.auth) {
+            throw new Error("Supabase client is not available.");
+        }
+
+        const cleanEmail = String(email || "").trim().toLowerCase();
+
+        const { data, error } = await sb.auth.signUp({
+            email: cleanEmail,
+            password: password,
+            options: {
+                data: {
+                    full_name: fullName,
+                    department: department || "General",
+                    role: "employee"
+                }
+            }
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        return data;
+    }
+
+
+    /* =========================================================
+       FORGOT PASSWORD (SEND RECOVERY EMAIL)
+       ========================================================= */
+
+    async function resetPasswordForEmail(email) {
+        const sb = getClient();
+        if (!sb || !sb.auth) {
+            throw new Error("Supabase client is not available.");
+        }
+
+        const cleanEmail = String(email || "").trim().toLowerCase();
+
+        const { data, error } = await sb.auth.resetPasswordForEmail(cleanEmail, {
+            redirectTo: window.location.origin + "/reset-password.html"
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        return data;
+    }
+
+
+    /* =========================================================
+       UPDATE PASSWORD (FOR LOGGED-IN USERS & RECOVERY)
+       ========================================================= */
+
+    async function updatePassword(newPassword) {
+        const sb = getClient();
+        if (!sb || !sb.auth) {
+            throw new Error("Supabase client is not available.");
+        }
+
+        if (!newPassword || newPassword.length < 6) {
+            throw new Error("Password must be at least 6 characters long.");
+        }
+
+        const { data, error } = await sb.auth.updateUser({
+            password: newPassword
+        });
+
+        if (error) {
+            throw error;
+        }
+
+        return data;
     }
 
 
@@ -601,10 +587,7 @@
             (profile && profile.email) ||
             "";
 
-        const role =
-            (profile && profile.role) ||
-            metadata.role ||
-            "Staff Member";
+        const role = normalizeRole(profile && profile.role);
 
         const department =
             (profile && profile.department) ||
@@ -626,13 +609,11 @@
                 element.textContent = fullName;
             });
 
-
         document
             .querySelectorAll("[data-user-first-name]")
             .forEach(function (element) {
                 element.textContent = firstName;
             });
-
 
         document
             .querySelectorAll("[data-user-email]")
@@ -640,20 +621,17 @@
                 element.textContent = email;
             });
 
-
         document
             .querySelectorAll("[data-user-avatar]")
             .forEach(function (element) {
                 element.textContent = initials;
             });
 
-
         document
             .querySelectorAll("[data-user-role]")
             .forEach(function (element) {
-                element.textContent = role;
+                element.textContent = role.toUpperCase();
             });
-
 
         document
             .querySelectorAll("[data-user-department]")
@@ -661,40 +639,28 @@
                 element.textContent = department;
             });
 
-
         document
             .querySelectorAll("[data-user-id]")
             .forEach(function (element) {
                 element.textContent = employeeId;
             });
 
-
-        const isAdmin =
-            String(role)
-                .trim()
-                .toLowerCase() === "admin";
-
+        const isAdmin = role === "admin";
 
         document
             .querySelectorAll(".sis-admin-only-hidden")
             .forEach(function (element) {
-
                 if (isAdmin) {
-                    element.classList.remove(
-                        "sis-admin-only-hidden"
-                    );
+                    element.classList.remove("sis-admin-only-hidden");
                 } else {
-                    element.classList.add(
-                        "sis-admin-only-hidden"
-                    );
+                    element.classList.add("sis-admin-only-hidden");
                 }
-
             });
     }
 
 
     /* =========================================================
-       PROTECTED PAGE
+       PROTECTED PAGE & STRICT ROLE GUARD
        ========================================================= */
 
     async function protectPage() {
@@ -710,74 +676,52 @@
 
         try {
 
-            const session =
-                await getSession();
+            const session = await getSession();
 
-
-            if (
-                !session ||
-                !session.user
-            ) {
-
-                console.warn(
-                    "No authenticated session. Redirecting to index.html."
-                );
-
-                window.location.replace(
-                    "index.html"
-                );
-
+            if (!session || !session.user) {
+                window.location.replace("index.html");
                 return null;
             }
 
-
-            const profile =
-                await loadProfile(
-                    session.user.id,
-                    session.user.email
-                );
-
+            const profile = await loadProfile(
+                session.user.id,
+                session.user.email
+            );
 
             if (!profile) {
-
-                console.error(
-                    "Authenticated user has no employee profile."
-                );
-
-                window.location.replace(
-                    "index.html?reason=profile"
-                );
-
+                window.location.replace("index.html?reason=profile");
                 return null;
             }
 
+            const userRole = normalizeRole(profile.role);
+            const currentPage = body.getAttribute("data-page") || "";
 
-            if (
-                body.getAttribute("data-admin") === "true"
-            ) {
-
-                const isAdmin =
-                    String(profile.role || "")
-                        .toLowerCase() === "admin";
-
-                if (!isAdmin) {
-
-                    window.location.replace(
-                        "dashboard.html"
-                    );
-
+            // 1. Executive Portal Guard
+            if (currentPage === "executive-dashboard") {
+                if (!["ceo", "executive"].includes(userRole)) {
+                    window.location.replace(getDashboardForRole(userRole));
                     return null;
                 }
             }
 
+            // 2. Admin Dashboard Guard
+            if (currentPage === "admin-dashboard" || body.getAttribute("data-admin") === "true") {
+                if (userRole !== "admin") {
+                    window.location.replace(getDashboardForRole(userRole));
+                    return null;
+                }
+            }
 
-            populateUserUI(
-                profile,
-                session.user
-            );
+            // 3. HR Dashboard Guard
+            if (currentPage === "hr-dashboard") {
+                if (userRole !== "hr" && userRole !== "admin") {
+                    window.location.replace(getDashboardForRole(userRole));
+                    return null;
+                }
+            }
 
+            populateUserUI(profile, session.user);
             startAutoLogoutTimers();
-
 
             return {
                 session: session,
@@ -786,16 +730,8 @@
             };
 
         } catch (error) {
-
-            console.error(
-                "protectPage error:",
-                error
-            );
-
-            window.location.replace(
-                "index.html"
-            );
-
+            console.error("protectPage error:", error);
+            window.location.replace("index.html");
             return null;
         }
     }
@@ -814,49 +750,24 @@
         logoutInProgress = true;
 
         try {
-
             const sb = getClient();
-
             if (sb && sb.auth) {
                 await sb.auth.signOut();
             }
-
         } catch (error) {
-
-            console.error(
-                "Supabase logout error:",
-                error
-            );
-
+            console.error("Supabase logout error:", error);
         } finally {
-
             cachedProfile = null;
 
             try {
-
                 window.sessionStorage.clear();
-
-                window.localStorage.removeItem(
-                    "intranet_session"
-                );
-
+                window.localStorage.removeItem("intranet_session");
             } catch (error) {
-
-                console.warn(
-                    "Could not clear browser storage:",
-                    error
-                );
+                console.warn("Could not clear browser storage:", error);
             }
 
-            const query =
-                reason
-                    ? "?reason=" +
-                      encodeURIComponent(reason)
-                    : "";
-
-            window.location.replace(
-                "index.html" + query
-            );
+            const query = reason ? "?reason=" + encodeURIComponent(reason) : "";
+            window.location.replace("index.html" + query);
         }
     }
 
@@ -866,30 +777,17 @@
        ========================================================= */
 
     function wireLogout() {
-
         document
             .querySelectorAll("[data-logout]")
             .forEach(function (element) {
-
-                if (
-                    element.dataset.authLogoutWired === "true"
-                ) {
+                if (element.dataset.authLogoutWired === "true") {
                     return;
                 }
-
-                element.dataset.authLogoutWired =
-                    "true";
-
-                element.addEventListener(
-                    "click",
-                    function (event) {
-
-                        event.preventDefault();
-
-                        logout();
-
-                    }
-                );
+                element.dataset.authLogoutWired = "true";
+                element.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    logout();
+                });
             });
     }
 
@@ -913,7 +811,6 @@
             "scroll",
             "touchstart"
         ].forEach(function (eventName) {
-
             document.addEventListener(
                 eventName,
                 function () {
@@ -923,51 +820,29 @@
                     passive: true
                 }
             );
-
         });
-
 
         window.setInterval(
             function () {
-
-                if (
-                    Date.now() -
-                    lastActivity >
-                    INACTIVITY_LIMIT_MS
-                ) {
-
+                if (Date.now() - lastActivity > INACTIVITY_LIMIT_MS) {
                     logout("timeout");
                 }
-
             },
             30 * 1000
         );
 
-
         document.addEventListener(
             "visibilitychange",
             function () {
-
                 if (document.hidden) {
-
                     hiddenAt = Date.now();
-
                 } else {
-
-                    if (
-                        hiddenAt &&
-                        Date.now() - hiddenAt >
-                        AWAY_LIMIT_MS
-                    ) {
-
+                    if (hiddenAt && Date.now() - hiddenAt > AWAY_LIMIT_MS) {
                         logout("timeout");
-
                         return;
                     }
-
                     hiddenAt = null;
                 }
-
             }
         );
     }
@@ -994,58 +869,37 @@
                         "data-protected"
                     ) === "true";
 
-
                 if (event === "SIGNED_OUT") {
-
                     if (isProtected) {
-
-                        window.location.replace(
-                            "index.html"
-                        );
+                        window.location.replace("index.html");
                     }
-
                     return;
                 }
-
 
                 if (
                     event === "SIGNED_IN" ||
                     event === "TOKEN_REFRESHED" ||
                     event === "USER_UPDATED"
                 ) {
-
                     if (
                         session &&
                         session.user &&
                         isProtected
                     ) {
-
                         try {
-
-                            const profile =
-                                await loadProfile(
-                                    session.user.id,
-                                    session.user.email
-                                );
+                            const profile = await loadProfile(
+                                session.user.id,
+                                session.user.email
+                            );
 
                             if (profile) {
-
-                                populateUserUI(
-                                    profile,
-                                    session.user
-                                );
+                                populateUserUI(profile, session.user);
                             }
-
                         } catch (error) {
-
-                            console.error(
-                                "Auth state profile update error:",
-                                error
-                            );
+                            console.error("Auth state profile update error:", error);
                         }
                     }
                 }
-
             }
         );
     }
@@ -1056,26 +910,19 @@
        ========================================================= */
 
     window.IntranetAuth = {
-
         login: login,
-
+        signUp: signUp,
+        resetPasswordForEmail: resetPasswordForEmail,
+        updatePassword: updatePassword,
         getSession: getSession,
-
         loadProfile: loadProfile,
-
         populateUserUI: populateUserUI,
-
         protectPage: protectPage,
-
         wireLogout: wireLogout,
-
         logout: logout,
-
         doLogout: logout,
-
-        startAutoLogoutTimers:
-            startAutoLogoutTimers
-
+        startAutoLogoutTimers: startAutoLogoutTimers,
+        getDashboardForRole: getDashboardForRole
     };
 
 })();

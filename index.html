@@ -98,19 +98,23 @@
    </script>
 </head>
 
-<body>
+<body class="home-page">
    <!-- Preloader Start -->
-   <div class="sis-preloader sis-preloader-video">
-      <div class="sis-loading-container sis-preloader-logo">
+   <!-- <div class="sis-preloader">
+      <div class="sis-loading-container">
          <div class="sis-loading"></div>
          <div class="sis-loading-icon">
-            <figure>
+            <figure class="sis-reveal">
                <img src="images/jachins_logo.png" alt="JACHINS Development Ltd">
             </figure>
          </div>
       </div>
-      <figure class="sis-preloader-video-media">
-         <video id="sisPreloaderVideo" muted loop playsinline preload="none" data-src="images/jachins_desktop.mp4"></video>
+      </div> -->
+   <div class="sis-preloader sis-preloader-video">
+      <figure class="sis-reveal">
+         <video autoplay muted loop playsinline>
+            <source src="images/jachins_desktop.mp4" type="video/mp4">
+         </video>
       </figure>
    </div>
    <!-- Preloader End -->
@@ -206,7 +210,7 @@
                               <li class="nav-item"><a class="nav-link" href="csr.html">CSR</a></li>
                               <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
                               <li class="nav-item"><a class="nav-link" href="new intranet/index.html"><i
-                                       class="fa-solid fa-user-tie" aria-hidden="true"></i></a></li>
+                                       class="fa-solid fa-users pe-1" aria-hidden="true"></i></a></li>
                            </ul>
                         </div>
                      </div>
@@ -365,12 +369,12 @@
                                  </h2>
                               </div>
                               <div class="sis-m-text">
-                                 <h3 class="text-white mb-0">Nigerian-Owned &amp;<br>Global QHSE</h3>
+                                 <h3 class="text-white mb-0" >Nigerian-Owned <br> &amp; Global QHSE</h3>
                               </div>
                            </div>
                            <div class="sis-e-abou-bottom-img text-end">
-                              <figure>
-                                 <img src="images/hr.png" alt="">
+                              <figure class="sis-image-anime" style="padding: 40px 0 0 60px;">
+                                 <img src="images/hr.png" alt="Human Resources">
                               </figure>
                            </div>
                         </div>
@@ -706,7 +710,7 @@
             </div>
             <div class="col-lg-5">
                <div class="sis-benefit-image-center position-relative">
-                  <figure class="sis-reveal">
+                  <figure class="sis-reveal sis-image-anime">
                      <img src="images/istockphoto@.png" class="w-100 sis-radius"
                         alt="JACHINS team at work on an oil and gas facility in Nigeria" loading="lazy" decoding="async">
                   </figure>
@@ -1090,73 +1094,59 @@
                <div class="swiper-wrapper align-items-center">
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/ce.png" alt="ChampionX Energy partner" loading="lazy"
-                        style="max-height:90px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:90px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/co.png" alt="CO partner logo" loading="lazy"
-                        style="max-height:90px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:90px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/em.png" alt="EM partner logo" loading="lazy"
-                        style="max-height:150px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:150px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/nnpc.png" alt="NNPC partner logo" loading="lazy"
-                        style="max-height:70px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:70px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/npl.png" alt="NPL partner logo" loading="lazy"
-                        style="max-height:120px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:120px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/po.png" alt="PO partner logo" loading="lazy"
-                        style="max-height:70px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:70px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/seplat.png" alt="Seplat Energy partner logo" loading="lazy"
-                        style="max-height:100px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:100px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/ws.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:70px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:70px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/boaz.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:30px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:30px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/shell.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:70px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:70px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/fhn.jpg" alt="WS partner logo" loading="lazy"
-                        style="max-height:100px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:100px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/ne.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:35px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:35px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/bele.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:150px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:150px;">
                   </div>
                   <div class="swiper-slide d-flex justify-content-center align-items-center">
                      <img src="images/partners/total.png" alt="WS partner logo" loading="lazy"
-                        style="max-height:90px;filter:grayscale(40%);transition:filter .3s;"
-                        onmouseover="this.style.filter='grayscale(0)'" onmouseout="this.style.filter='grayscale(40%)'">
+                        style="max-height:90px;">
                   </div>
                </div>
             </div>
@@ -1194,7 +1184,7 @@
                         <div class="d-flex align-items-center gap-3">
                            <div>
                               <strong class="text-white d-block">Operations Lead</strong>
-                              <span class="sisf-e-main-color" style="font-size:13px;">NNPC - Ghana</span>
+                              <span class="sisf-e-main-color" style="font-size:13px;">Tomreik Hotel - Ghana</span>
                            </div>
                         </div>
                      </div>
@@ -1208,7 +1198,7 @@
                         <div class="d-flex align-items-center gap-3">
                            <div>
                               <strong class="text-white d-block">Project Manager</strong>
-                              <span class="sisf-e-main-color" style="font-size:13px;">BOAZ —
+                              <span class="sisf-e-main-color" style="font-size:13px;">Upstream O&amp;G Company —
                                  Nigeria</span>
                            </div>
                         </div>
@@ -1223,7 +1213,8 @@
                         <div class="d-flex align-items-center gap-3">
                            <div>
                               <strong class="text-white d-block">Training Manager</strong>
-                              <span class="sisf-e-main-color" style="font-size:13px;">SEPLAT — Nigeria</span>
+                              <span class="sisf-e-main-color" style="font-size:13px;">FPSO Operator — Offshore
+                                 Nigeria</span>
                            </div>
                         </div>
                      </div>
@@ -1402,6 +1393,7 @@
                                     <li><a href="project.html" class="text-white">Projects</a></li>
                                     <li><a href="csr.html" class="text-white">CSR</a></li>
                                     <li><a href="contact.html" class="text-white">Contact Us</a></li>
+                                    <li><a href="./new intranet/index.html" class="text-white"> Employee Intranet</a></li>
                                  </ul>
                               </div>
                            </div>

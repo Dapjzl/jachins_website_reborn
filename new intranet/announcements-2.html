@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Announcements (Page 2) | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com/">
+   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+   <style>
+      .ann-card {
+         transition: all 0.2s ease-in-out;
+         border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ann-card:hover {
+         border-color: rgba(220, 53, 69, 0.4);
+         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+      .ann-search-wrapper {
+         position: relative;
+         background: #ffffff;
+         border: 1px solid #cbd5e1;
+         border-radius: 8px;
+         display: flex;
+         align-items: center;
+         padding: 0 4px 0 14px;
+         transition: all 0.2s ease;
+      }
+      .ann-search-wrapper:focus-within {
+         border-color: #dc3545;
+         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+      }
+      .ann-search-wrapper > i {
+         color: #94a3b8;
+         margin-right: 10px;
+      }
+      .ann-search-input {
+         border: none !important;
+         background: transparent !important;
+         box-shadow: none !important;
+         padding: 10px 0 !important;
+         color: #1e293b !important;
+         width: 100%;
+      }
+      .ann-search-input:focus {
+         outline: none !important;
+      }
+      .btn-search-action {
+         background: #dc3545;
+         color: #fff;
+         border: none;
+         border-radius: 6px;
+         padding: 8px 16px;
+         font-weight: 500;
+         transition: background 0.2s;
+      }
+      .btn-search-action:hover {
+         background: #bb2d3b;
+      }
+      .ann-filter-select {
+         background-color: #ffffff !important;
+         border: 1px solid #cbd5e1 !important;
+         color: #1e293b !important;
+         border-radius: 8px;
+         padding: 10px 14px;
+         font-weight: 500;
+         transition: all 0.2s ease;
+      }
+      .ann-filter-select:focus {
+         border-color: #dc3545 !important;
+         box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+      }
+      .ann-details-box {
+         background: rgba(0, 0, 0, 0.02);
+         border-left: 3px solid #dc3545;
+         border-radius: 0 6px 6px 0;
+         padding: 10px 14px;
+         margin-top: 10px;
+      }
+      .ann-details-box summary {
+         font-weight: 600;
+      }
+      .btn-action-tool {
+         background: transparent;
+         border: 1px solid #cbd5e1;
+         color: #475569;
+         font-size: 12px;
+         padding: 4px 10px;
+         border-radius: 6px;
+         transition: all 0.2s;
+      }
+      .btn-action-tool:hover, .btn-action-tool.active {
+         background: #dc3545;
+         color: #fff;
+         border-color: #dc3545;
+      }
+   </style>
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-page="announcements">
+
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Internal</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Company <span class="sisf-e-colored">Announcements</span></h2>
+            <p class="mb-0">Company-wide news, policy updates, and events (Page 2 of archive).</p>
+         </div>
+
+         <!-- FILTERS & FUNCTIONAL SEARCH BAR ROW -->
+         <div class="row g-3 mb-4 align-items-center">
+            <div class="col-12 col-md-4">
+               <select id="annDeptFilter" class="form-select ann-filter-select">
+                  <option value="all">All Departments</option>
+                  <option value="Finance">Finance</option>
+                  <option value="IT">IT</option>
+                  <option value="Operations">Operations</option>
+                  <option value="Human Resources">Human Resources</option>
+               </select>
+            </div>
+            <div class="col-12 col-md-8">
+               <div class="d-flex gap-2">
+                  <div class="ann-search-wrapper flex-grow-1">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                     <input type="text" id="annSearchInput" class="form-control ann-search-input" placeholder="Search page 2 announcements...">
+                  </div>
+                  <button id="annSearchBtn" type="button" class="btn-search-action d-flex align-items-center gap-2">
+                     <i class="fa-solid fa-magnifying-glass"></i> Search
+                  </button>
+               </div>
+            </div>
+         </div>
+
+         <!-- ANNOUNCEMENTS LIST CONTAINER (5 ITEMS FOR PAGE 2) -->
+         <div class="d-flex flex-column gap-3" id="annList">
+
+            <!-- Item 6 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Finance">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-file-invoice-dollar me-1"></i>Finance</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 22 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Q2 Expense Report Submission Deadline</h3>
+               <p class="mb-2">All field and office staff must submit their outstanding Q2 project travel and operational expense reports to the finance portal by Friday.</p>
+               
+               <details class="ann-details-box mb-3">
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0 text-secondary small">Late submissions will roll over into the Q3 financial processing cycle. Reach out to the accounts desk if you face receipt reconciliation issues.</p>
+               </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-triangle-exclamation me-1 text-warning"></i> Financial Notice</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-6')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Item 7 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="IT">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-shield-cat me-1"></i>IT</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 18 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Mandatory Multi-Factor Authentication (MFA) Upgrade</h3>
+               <p class="mb-2">As part of corporate security enhancements, all employee accounts will transition to hardware-token or authenticator-app MFA starting next week.</p>
+               
+               <details class="ann-details-box mb-3">
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0 text-secondary small">IT security will send an individual setup link to your corporate email. Please configure your devices before Wednesday to avoid service interruption.</p>
+               </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-lock me-1 text-danger"></i> Security Directive</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-7')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Item 8 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Operations">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-truck-fast me-1"></i>Operations</span></div>
+               <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 14 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Fleet Vehicle Safety Inspection Schedule</h3>
+               <p class="mb-2">Quarterly safety and maintenance checks for all operational pool cars and site logistics trucks are scheduled throughout next week.</p>
+               
+               <details class="ann-details-box mb-3">
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0 text-secondary small">Drivers assigned to specific vehicles must check the transport matrix board for their designated inspection time slot at the logistics yard.</p>
+               </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-car me-1 text-success"></i> Logistics Update</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-8')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Item 9 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="Human Resources">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-notes-medical me-1"></i>Human Resources</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 10 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Annual Health &amp; Wellness Screening Drive</h3>
+               <p class="mb-2">The annual medical checkup drive begins next month. Staff can choose from accredited diagnostic centers listed on the HR portal.</p>
+               
+               <details class="ann-details-box mb-3">
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0 text-secondary small">Comprehensive screenings cover baseline vitals, eye tests, and cardiac checks. Time off for the screening is fully approved by management.</p>
+               </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-heart-pulse me-1 text-info"></i> Employee Wellbeing</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-9')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
+            </div>
+
+            <!-- Item 10 -->
+            <div class="sisf-sis-comman-drop-bg sis-radius p-4 ann-item ann-card" data-dept="IT">
+               <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+                  <div><span class="sis-badge-pill sis-badge-dept"><i class="fa-solid fa-cloud me-1"></i>IT</span></div>
+                  <span style="font-size:12px; color: #64748b;"><i class="fa-regular fa-calendar me-1"></i> 05 Jul 2026</span>
+               </div>
+               <h3 class="sisf-e-title sis-comman-title2 mb-2">Cloud Storage Migration &amp; Shared Drive Cleanup</h3>
+               <p class="mb-2">IT is rolling out expanded cloud storage tiers. All legacy local archive folders should be migrated to the new enterprise structure by month-end.</p>
+               
+               <details class="ann-details-box mb-3">
+                  <summary class="sisf-e-main-color" style="cursor:pointer; font-size:14px;">Read full announcement</summary>
+                  <p class="mt-2 mb-0 text-secondary small">Department leads should review shared folders and purge redundant temporary files to optimize system sync bandwidth.</p>
+               </details>
+
+               <div class="d-flex align-items-center justify-content-between pt-2 border-top border-secondary border-opacity-10">
+                  <span class="text-muted" style="font-size: 11px;"><i class="fa-solid fa-cloud-arrow-up me-1 text-primary"></i> Infrastructure Update</span>
+                  <div class="d-flex gap-2">
+                     <button class="btn-action-tool" onclick="toggleBookmark(this, 'ann-10')"><i class="fa-regular fa-bookmark me-1"></i> Save</button>
+                     <button class="btn-action-tool" onclick="markAsRead(this)"><i class="fa-solid fa-check me-1"></i> Acknowledged</button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+         <!-- NO RESULTS FALLBACK -->
+         <p id="annNoResults" class="text-center mt-4 d-none py-5" style="color: #64748b;">
+            <i class="fa-regular fa-folder-open fs-2 mb-2 d-block"></i>
+            No announcements on page 2 match your filter or search criteria.
+         </p>
+
+         <!-- PAGINATION FOOTER (PAGE 2 ACTIVE) -->
+         <nav aria-label="Announcements Pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements.html">Previous</a>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements.html">1</a>
+               </li>
+               <li class="page-item active" aria-current="page">
+                  <span class="page-link bg-danger border-danger text-white">2</span>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements-3.html">3</a>
+               </li>
+               <li class="page-item">
+                  <a class="page-link text-dark" href="announcements-3.html">Next</a>
+               </li>
+            </ul>
+         </nav>
+
+      </main>
+   </div>
+
+   <div id="footer-placeholder"></div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      function initAnnouncementsSearch() {
+         var deptFilter = document.getElementById("annDeptFilter");
+         var searchInput = document.getElementById("annSearchInput");
+         var searchBtn = document.getElementById("annSearchBtn");
+         var items = document.querySelectorAll(".ann-item");
+         var noResults = document.getElementById("annNoResults");
+
+         if (!deptFilter || !searchInput || !items.length) return;
+
+         function performSearch() {
+            var selectedDept = deptFilter.value;
+            var query = searchInput.value.toLowerCase().trim();
+            var visibleCount = 0;
+
+            items.forEach(function (item) {
+               var itemDept = item.getAttribute("data-dept");
+               var textContent = item.textContent.toLowerCase();
+
+               var matchesDept = (selectedDept === "all" || itemDept === selectedDept);
+               var matchesQuery = (query === "" || textContent.includes(query));
+
+               if (matchesDept && matchesQuery) {
+                  item.style.display = "";
+                  visibleCount++;
+               } else {
+                  item.style.display = "none";
+               }
+            });
+
+            if (visibleCount === 0) {
+               noResults.classList.remove("d-none");
+            } else {
+               noResults.classList.add("d-none");
+            }
+         }
+
+         deptFilter.addEventListener("change", performSearch);
+         searchBtn.addEventListener("click", performSearch);
+         searchInput.addEventListener("keyup", function (e) {
+            performSearch();
+            if (e.key === "Enter") {
+               e.preventDefault();
+            }
+         });
+      }
+
+      document.addEventListener("DOMContentLoaded", initAnnouncementsSearch);
+      if (window.onIntranetReady) {
+         var oldReady = window.onIntranetReady;
+         window.onIntranetReady = function () {
+            oldReady();
+            initAnnouncementsSearch();
+         };
+      }
+
+      function toggleBookmark(btn, id) {
+         btn.classList.toggle("active");
+         var isSaved = btn.classList.contains("active");
+         btn.innerHTML = isSaved ? '<i class="fa-solid fa-bookmark me-1"></i> Saved' : '<i class="fa-regular fa-bookmark me-1"></i> Save';
+      }
+
+      function markAsRead(btn) {
+         btn.classList.add("active", "bg-success", "border-success");
+         btn.style.borderColor = "#198754";
+         btn.style.backgroundColor = "#198754";
+         btn.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> Acknowledged';
+         btn.disabled = true;
+      }
+   </script>
+</body>
+
+</html>

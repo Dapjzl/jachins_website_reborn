@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="robots" content="noindex, nofollow">
+   <title>Executive Asset Management | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="../images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-ceo-only="true" data-page="ceo-assets">
+
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main">
+         <!-- Section Title -->
+         <div class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle white sis-m-subtitle-dark">Executive Oversight</span>
+            <h2 class="sisf-m-title" style="font-size: 28px;">Asset <span class="sisf-e-colored">Management</span></h2>
+            <p class="mb-0 text-secondary">Track company assets, equipment inventory, and employee assignments across the organization.</p>
+         </div>
+
+         <!-- Register New Asset Card -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-4 mb-4">
+            <h4 class="fw-bold mb-3 text-dark" style="font-size: 18px;">Register New Company Asset</h4>
+            <form id="assetForm">
+               <div class="row g-3">
+                  <div class="col-md-4">
+                     <label for="assetName" class="form-label fw-bold text-dark" style="font-size: 13px;">Asset Name *</label>
+                     <input type="text" id="assetName" class="form-control" placeholder="e.g. MacBook Pro M3" required>
+                  </div>
+                  <div class="col-md-4">
+                     <label for="assetCategory" class="form-label fw-bold text-dark" style="font-size: 13px;">Category *</label>
+                     <select id="assetCategory" class="form-select" required>
+                        <option value="" selected disabled>Select category...</option>
+                        <option value="Laptop / Computer">Laptop / Computer</option>
+                        <option value="Office Furniture">Office Furniture</option>
+                        <option value="Safety Equipment">Safety Equipment</option>
+                        <option value="Tools & Machinery">Tools & Machinery</option>
+                        <option value="Other">Other</option>
+                     </select>
+                  </div>
+                  <div class="col-md-4">
+                     <label for="serialNumber" class="form-label fw-bold text-dark" style="font-size: 13px;">Serial Number / Tag</label>
+                     <input type="text" id="serialNumber" class="form-control" placeholder="e.g. SN-98234-JC">
+                  </div>
+                  <div class="col-md-4">
+                     <label for="assignedTo" class="form-label fw-bold text-dark" style="font-size: 13px;">Assigned To (Staff Name)</label>
+                     <input type="text" id="assignedTo" class="form-control" placeholder="e.g. John Doe">
+                  </div>
+                  <div class="col-md-4">
+                     <label for="assetCondition" class="form-label fw-bold text-dark" style="font-size: 13px;">Condition</label>
+                     <select id="assetCondition" class="form-select">
+                        <option value="Brand New">Brand New</option>
+                        <option value="Good" selected>Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Needs Maintenance">Needs Maintenance</option>
+                     </select>
+                  </div>
+                  <div class="col-md-4 d-flex align-items-end">
+                     <button type="submit" id="registerBtn" class="btn btn-dark w-100 fw-bold">Register Asset</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+
+         <!-- Asset Inventory Table -->
+         <div class="sisf-sis-comman-drop-bg sis-radius p-3" style="overflow-x:auto;">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-2 pt-1">
+               <h3 class="sisf-e-title sis-comman-title2 mb-0" style="font-size:20px;">Company Asset Inventory</h3>
+               <button class="btn btn-sm btn-outline-dark" onclick="loadAssets()"><i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+            </div>
+            
+            <table class="sis-data-table">
+               <thead>
+                  <tr>
+                     <th>Asset ID</th>
+                     <th>Asset Name</th>
+                     <th>Category</th>
+                     <th>Serial No</th>
+                     <th>Assigned To</th>
+                     <th>Condition</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody id="assetsTableBody">
+                  <tr><td colspan="7" class="text-center py-4 text-muted">Loading asset inventory...</td></tr>
+               </tbody>
+            </table>
+         </div>
+      </main>
+   </div>
+
+   <div id="footer-placeholder"></div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script src="intranet.js"></script>
+   <script>
+      async function loadAssets() {
+         const tbody = document.getElementById("assetsTableBody");
+         const sb = window.supabaseClient;
+         if (!sb || !tbody) return;
+
+         try {
+            const { data, error } = await sb.from("assets").select("*").order("asset_name", { ascending: true });
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+               tbody.innerHTML = data.map(asset => `
+                  <tr>
+                     <td>${asset.id}</td>
+                     <td><strong>${asset.asset_name}</strong></td>
+                     <td>${asset.category}</td>
+                     <td>${asset.serial_number || 'N/A'}</td>
+                     <td>${asset.assigned_to || '<span class="text-muted">Unassigned</span>'}</td>
+                     <td>${asset.condition}</td>
+                     <td><span class="badge bg-success">${asset.status}</span></td>
+                  </tr>
+               `).join("");
+            } else {
+               tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-4">No assets registered in the system yet.</td></tr>';
+            }
+         } catch (e) {
+            console.error("Error loading assets:", e);
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Error loading asset inventory.</td></tr>';
+         }
+      }
+
+      document.getElementById("assetForm").addEventListener("submit", async function(e) {
+         e.preventDefault();
+         const sb = window.supabaseClient;
+         if (!sb) { alert("Database connection unavailable."); return; }
+
+         try {
+            const assetId = "AST-" + Math.floor(1000 + Math.random() * 9000);
+            const newAsset = {
+               id: assetId,
+               asset_name: document.getElementById("assetName").value,
+               category: document.getElementById("assetCategory").value,
+               serial_number: document.getElementById("serialNumber").value,
+               assigned_to: document.getElementById("assignedTo").value,
+               condition: document.getElementById("assetCondition").value,
+               status: "Active"
+            };
+
+            const { error } = await sb.from("assets").insert([newAsset]);
+            if (error) throw error;
+
+            alert("Asset registered successfully!");
+            this.reset();
+            loadAssets();
+         } catch (err) {
+            console.error("Asset registration error:", err);
+            alert("Failed to register asset.");
+         }
+      });
+
+      document.addEventListener("DOMContentLoaded", loadAssets);
+      window.onIntranetReady = loadAssets;
+   </script>
+</body>
+</html>

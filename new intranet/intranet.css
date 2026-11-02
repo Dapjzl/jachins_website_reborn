@@ -402,10 +402,10 @@
    color: rgba(0, 0, 0, 0.55);
 }
 
-.sisf-main-header .text-white,
+/* .sisf-main-header .text-white,
 .sisf-main-header .btn.text-white {
    color: #000 !important;
-}
+} */
 
 /* Keep the intranet content alive without making it distracting. */
 .sis-intranet-main > * {

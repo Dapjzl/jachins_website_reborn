@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Company Blog & Stories | JACHINS Intranet</title>
+   <link rel="shortcut icon" type="image/png" href="images/jachins_logo.png">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+   <link href="../css/custom.css" rel="stylesheet">
+   <link href="intranet.css" rel="stylesheet">
+   <style>
+      .blog-card {
+         background: #ffffff;
+         border: 1px solid #e2e8f0;
+         border-radius: 12px;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+         transition: all 0.25s ease;
+         overflow: hidden;
+      }
+      .blog-card:hover {
+         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+         border-color: #cbd5e1;
+      }
+      .blog-badge {
+         font-size: 11px;
+         padding: 6px 14px;
+         border-radius: 50px;
+         font-weight: 700;
+         text-transform: uppercase;
+      }
+      .blog-badge.birthday { background: #ffe2e5; color: #dc3545; }
+      .blog-badge.weekly { background: #e0f2fe; color: #0284c7; }
+      .blog-badge.review { background: #fef3c7; color: #d97706; }
+      .blog-badge.spotlight { background: #f3e8ff; color: #7e22ce; }
+
+      .btn-brand {
+         background-color: #dc3545;
+         color: #ffffff;
+         border: none;
+         font-weight: 600;
+      }
+      .btn-brand:hover {
+         background-color: #bb2d3b;
+         color: #ffffff;
+      }
+
+      .blog-nav-btn {
+         background: transparent;
+         border: 1px solid #cbd5e1;
+         color: #475569;
+         border-radius: 30px;
+         padding: 6px 18px;
+         font-size: 13px;
+         font-weight: 600;
+         transition: all 0.2s ease;
+      }
+      .blog-nav-btn.active, .blog-nav-btn:hover {
+         background: #dc3545 !important;
+         color: #ffffff !important;
+         border-color: #dc3545 !important;
+      }
+
+      .avatar-circle {
+         width: 44px;
+         height: 44px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-weight: 700;
+         font-size: 14px;
+      }
+
+      .btn-like {
+         color: #64748b;
+         font-weight: 600;
+         transition: color 0.2s ease;
+      }
+      .btn-like.liked {
+         color: #dc3545 !important;
+      }
+
+      .comment-box-wrapper {
+         background: #f8fafc;
+         border-radius: 12px;
+         border: 1px solid #e2e8f0;
+         padding: 18px !important;
+      }
+      .comment-bubble {
+         background: #ffffff;
+         border: 1px solid #e2e8f0;
+         border-radius: 10px;
+         padding: 12px 16px !important;
+         margin-bottom: 10px;
+         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      }
+      .btn-delete-comment {
+         color: #94a3b8;
+         cursor: pointer;
+         font-size: 13px;
+         transition: color 0.2s;
+      }
+      .btn-delete-comment:hover {
+         color: #dc3545;
+      }
+
+      .blog-post-img {
+         width: 100%;
+         max-height: 380px;
+         object-fit: cover;
+         border-radius: 8px;
+         margin-bottom: 16px;
+      }
+   </style>
+</head>
+
+<body class="sisf-comman-bg-light" data-protected="true" data-page="blog">
+
+   <div id="header-placeholder"></div>
+
+   <div class="sis-intranet-body sis-comman-background">
+      <div id="sidebar-placeholder"></div>
+
+      <main class="sis-intranet-main w-100 p-4">
+         
+         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+               <span class="text-uppercase fw-bold text-danger fs-7 tracking-wider">Internal 
+                  <span class="sisf-e-colored">Publications</span>
+               </span>
+               <h2 class="fw-bold text-dark mb-1">Company <span class="text-danger">Blog & Insights</span></h2>
+               <p class="text-muted mb-0">Weekly updates, birthday celebrations, employee highlights, and reviews.</p>
+            </div>
+            <div class="d-none d-md-block">
+               <span class="badge bg-light text-dark border px-3 py-2">
+                  <i class="fa-solid fa-user-shield text-danger me-1"></i> Interactive Feed
+               </span>
+            </div>
+         </div>
+
+         <div class="row g-4">
+            <!-- MAIN FEED -->
+            <div class="col-lg-8">
+               
+               <div class="d-flex gap-2 mb-4 overflow-auto pb-1" id="blogFilter">
+                  <button class="blog-nav-btn active" onclick="filterBlog('all', this)">All Stories</button>
+                  <button class="blog-nav-btn" onclick="filterBlog('spotlight', this)"><i class="fa-solid fa-trophy me-1"></i> Employee Spotlight</button>
+                  <button class="blog-nav-btn" onclick="filterBlog('birthday', this)"><i class="fa-solid fa-cake-candles me-1"></i> Birthdays</button>
+                  <button class="blog-nav-btn" onclick="filterBlog('weekly', this)"><i class="fa-solid fa-newspaper me-1"></i> Weekly Posts</button>
+                  <button class="blog-nav-btn" onclick="filterBlog('review', this)"><i class="fa-solid fa-chart-line me-1"></i> Reviews</button>
+               </div>
+
+               <div id="blogPostsContainer">
+                  <div class="text-center py-5">
+                     <div class="spinner-border text-danger" role="status"></div>
+                     <p class="text-muted small mt-2">Loading blog feed...</p>
+                  </div>
+               </div>
+            </div>
+
+            <!-- SIDEBAR WIDGETS -->
+            <div class="col-lg-4">
+               
+               <div class="blog-card p-3 mb-4">
+                  <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                     <i class="fa-solid fa-cake-candles text-danger me-2"></i>Upcoming Birthdays
+                  </h6>
+                  
+                  <div class="d-flex align-items-center justify-content-between p-2 rounded mb-2" style="background: #fff5f5;">
+                     <div class="d-flex align-items-center gap-2">
+                        <div class="avatar-circle bg-danger text-white" style="width:34px; height:34px; font-size:12px;">FK</div>
+                        <div>
+                           <div class="text-dark small fw-bold">Favour Komolafe</div>
+                           <div class="text-danger fw-semibold" style="font-size:11px;">Today 🎉</div>
+                        </div>
+                     </div>
+                     <span class="badge bg-danger">Today</span>
+                  </div>
+
+                  <div class="d-flex align-items-center justify-content-between p-2 rounded">
+                     <div class="d-flex align-items-center gap-2">
+                        <div class="avatar-circle bg-secondary text-white" style="width:34px; height:34px; font-size:12px;">AO</div>
+                        <div>
+                           <div class="text-dark small fw-bold">Amaka Okoro</div>
+                           <div class="text-muted" style="font-size:11px;">Sept 28</div>
+                        </div>
+                     </div>
+                     <span class="badge bg-light text-dark border">In 6 days</span>
+                  </div>
+               </div>
+
+               <div class="blog-card p-3">
+                  <h6 class="fw-bold text-dark border-bottom pb-2 mb-2">
+                     <i class="fa-solid fa-circle-info text-primary me-2"></i>About Intranet Blog
+                  </h6>
+                  <p class="text-muted small mb-3">
+                     This space highlights culture, employee birthdays, weekly reviews, and non-policy team updates.
+                  </p>
+               </div>
+
+            </div>
+         </div>
+      </main>
+   </div>
+
+   <div id="footer-placeholder"></div>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="supabase-config.js"></script>
+   <script src="auth.js"></script>
+   <script src="intranet.js"></script>
+
+   <script>
+      const STORAGE_KEY = 'jachins_blog_feed_ultimate_v3';
+      const blogChannel = new BroadcastChannel('jachins_blog_sync_channel');
+      let cachedUser = { id: 'usr_test_boy', name: 'Test Boy' };
+      let lastSerializedData = '';
+
+      const defaultPosts = [
+         {
+            id: 'post-0',
+            author_role: 'HR',
+            author_name: 'HR & Culture Team',
+            created_at: '2026-09-22T09:00:00Z',
+            category: 'spotlight',
+            title: '🌟 Employee of the Week: Congratulations to Amaka Okoro! 🏆',
+            content: 'We are thrilled to announce that the Employee of the Week goes to Amaka Okoro from our Operations department! Amaka went above and beyond this week in streamlining project turnarounds and supporting cross-team initiatives.',
+            image_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+            extra_banner: '⭐ 🏅 Employee of the Week 🏅 ⭐',
+            likes: [],
+            comments: []
+         },
+         {
+            id: 'post-1',
+            author_role: 'HR',
+            author_name: 'HR & Culture Team',
+            created_at: '2026-09-22T08:00:00Z',
+            category: 'birthday',
+            title: 'Happy Birthday to Favour Komolafe! 🎉',
+            content: 'Join us in wishing Favour Komolafe a fantastic birthday today! Thank you for your continued dedication, energy, and leadership within the team.',
+            image_url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=80',
+            extra_banner: '🎂 🎈 🥳',
+            likes: [],
+            comments: []
+         },
+         {
+            id: 'post-2',
+            author_role: 'MGT',
+            author_name: 'Management & Strategy',
+            created_at: '2026-09-20T10:30:00Z',
+            category: 'weekly',
+            title: '📈 Q3 Corporate Town Hall & Strategic Roadmap Update',
+            content: 'Thank you to everyone who joined our quarterly town hall session last Friday. We covered our major operational milestones, upcoming regional expansion goals, and key milestone bonuses for Q4. Presentation slides are now available in the document repository.',
+            image_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',
+            extra_banner: '',
+            likes: [],
+            comments: []
+         },
+         {
+            id: 'post-3',
+            author_role: 'TECH',
+            author_name: 'Engineering Team',
+            created_at: '2026-09-18T14:15:00Z',
+            category: 'weekly',
+            title: '🚀 Intranet V2 System Upgrade & New Feature Rollout',
+            content: 'Our engineering unit successfully pushed major performance enhancements to the internal intranet platform this weekend. You will notice faster navigation speeds, improved profile syncing, and smoother interactive comment feeds across all modules.',
+            image_url: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
+            extra_banner: '',
+            likes: [],
+            comments: []
+         },
+         {
+            id: 'post-4',
+            author_role: 'FIN',
+            author_name: 'Finance & Audit',
+            created_at: '2026-09-15T11:00:00Z',
+            category: 'review',
+            title: '📊 Mid-Month Expense Review and Travel Policy Reminder',
+            content: 'As we approach the final stretch of the month, this is a quick reminder to all traveling and field personnel to submit expense receipts and travel logs promptly through the portal to ensure seamless processing before payroll closing.',
+            image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+            extra_banner: '💡 Financial Audit Advisory',
+            likes: [],
+            comments: []
+         }
+      ];
+
+      function getActiveUser() {
+         // 1. Force explicit recognition if logged in as Favour Komolafe
+         try {
+            for (let i = 0; i < localStorage.length; i++) {
+               const k = localStorage.key(i);
+               if (k.includes('user') || k.includes('auth') || k.includes('session')) {
+                  const val = localStorage.getItem(k);
+                  if (val && val.includes('{')) {
+                     const parsed = JSON.parse(val);
+                     const n = parsed.name || parsed.full_name || parsed.username || (parsed.user && parsed.user.name);
+                     if (n && n !== 'Employee' && !n.includes('|')) {
+                        let clean = n.trim();
+                        if (clean.toLowerCase() === 'test-boy') clean = 'Test Boy';
+                        if (clean.toLowerCase().includes('favour')) clean = 'Favour Komolafe';
+                        return { id: 'usr_' + clean.toLowerCase().replace(/[^a-z0-9]/g, '_'), name: clean };
+                     }
+                  }
+               }
+            }
+         } catch (e) {}
+
+         // 2. Scan header elements
+         const allHeaderSpans = document.querySelectorAll('header *, nav *, .sis-header *');
+         for (let el of allHeaderSpans) {
+            if (el.children.length === 0) {
+               let txt = el.innerText ? el.innerText.trim() : '';
+               if (txt && txt.length < 25 && !txt.includes('|') && !txt.includes(',') && !txt.includes(':') && !txt.toUpperCase().includes('INTRANET')) {
+                  if (txt.toLowerCase() === 'test-boy') return { id: 'usr_test_boy', name: 'Test Boy' };
+                  if (txt.toLowerCase().includes('favour')) return { id: 'usr_favour_komolafe', name: 'Favour Komolafe' };
+               }
+            }
+         }
+
+         return cachedUser;
+      }
+
+      function getBlogPosts() {
+         const saved = localStorage.getItem(STORAGE_KEY);
+         if (!saved) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultPosts));
+            return defaultPosts;
+         }
+         return JSON.parse(saved);
+      }
+
+      function saveBlogPosts(posts) {
+         localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+         blogChannel.postMessage({ type: 'UPDATE_FEED' });
+      }
+
+      function renderBlog(force = false) {
+         cachedUser = getActiveUser();
+         const posts = getBlogPosts();
+         
+         const serialized = JSON.stringify(posts);
+         if (!force && serialized === lastSerializedData) return;
+         lastSerializedData = serialized;
+
+         const container = document.getElementById('blogPostsContainer');
+         if (!container) return;
+
+         const openComments = {};
+         document.querySelectorAll('.comment-box-wrapper').forEach(box => {
+            if (box.style.display === 'block') {
+               openComments[box.id] = true;
+            }
+         });
+
+         container.innerHTML = posts.map(post => {
+            const isLiked = post.likes.includes(cachedUser.id);
+            const likeCount = post.likes.length;
+            const comments = post.comments || [];
+
+            const likeLabel = likeCount === 1 ? '1 Like' : `${likeCount} Likes`;
+            const commentLabel = comments.length === 1 ? '1 Comment' : `${comments.length} Comments`;
+
+            const imageHtml = post.image_url ? `<img src="${post.image_url}" alt="${post.title}" class="blog-post-img img-fluid">` : '';
+            const bannerHtml = post.extra_banner ? `
+               <div class="p-3 text-center rounded mb-3" style="background: #fff5f5; border: 1px dashed #fecdd3;">
+                  <span class="fs-4 fw-bold text-danger">${post.extra_banner}</span>
+               </div>
+            ` : '';
+
+            const isCommentBoxOpen = openComments[`comments-${post.id}`] ? 'block' : 'none';
+
+            return `
+               <article class="blog-card p-4 mb-4" data-category="${post.category}">
+                  <div class="d-flex align-items-center justify-content-between mb-3">
+                     <div class="d-flex align-items-center gap-3">
+                        <div class="avatar-circle bg-danger text-white">${post.author_role}</div>
+                        <div>
+                           <h6 class="mb-0 fw-bold text-dark">${post.author_name}</h6>
+                           <small class="text-muted" style="font-size: 12px;">${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</small>
+                        </div>
+                     </div>
+                     <span class="blog-badge ${post.category}">${post.category}</span>
+                  </div>
+
+                  <h4 class="fw-bold text-dark mb-2">${post.title}</h4>
+                  <p class="text-secondary lh-base mb-3">${post.content}</p>
+                  
+                  ${imageHtml}
+                  ${bannerHtml}
+
+                  <div class="d-flex align-items-center justify-content-between border-top border-bottom py-2 my-3">
+                     <button class="btn btn-link text-decoration-none p-0 btn-like ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                        <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-thumbs-up me-1"></i> <span>${likeLabel}</span>
+                     </button>
+                     <button class="btn btn-link text-decoration-none p-0 text-muted" onclick="toggleComments('comments-${post.id}')">
+                        <i class="fa-regular fa-comment me-1"></i> <span>${commentLabel}</span>
+                     </button>
+                  </div>
+
+                  <div id="comments-${post.id}" class="comment-box-wrapper" style="display: ${isCommentBoxOpen};">
+                     <div class="comment-list mb-3">
+                        ${comments.length === 0 ? '<p class="text-muted small mb-2 fst-italic">No comments yet. Be the first to comment!</p>' : ''}
+                        ${comments.map(c => `
+                           <div class="comment-bubble d-flex justify-content-between align-items-start">
+                              <div>
+                                 <div class="fw-bold text-dark small">${c.author_name}</div>
+                                 <div class="text-muted mb-1" style="font-size: 11px;">${c.coded_time}</div>
+                                 <div class="text-secondary small lh-sm">${c.content}</div>
+                              </div>
+                              ${c.user_id === cachedUser.id ? `
+                                 <i class="fa-solid fa-trash-can btn-delete-comment mt-1" title="Delete your comment" onclick="deleteComment('${post.id}', '${c.id}')"></i>
+                              ` : ''}
+                           </div>
+                        `).join('')}
+                     </div>
+                     <div class="input-group input-group-sm">
+                        <input type="text" id="input-${post.id}" class="form-control bg-white" placeholder="Write a comment as ${cachedUser.name}..." onkeypress="if(event.key==='Enter') addComment('${post.id}')">
+                        <button class="btn btn-brand" onclick="addComment('${post.id}')">Post</button>
+                     </div>
+                  </div>
+               </article>
+            `;
+         }).join('');
+      }
+
+      function toggleLike(postId) {
+         cachedUser = getActiveUser();
+         const posts = getBlogPosts();
+         const post = posts.find(p => p.id === postId);
+
+         if (post) {
+            const index = post.likes.indexOf(cachedUser.id);
+            if (index > -1) {
+               post.likes.splice(index, 1);
+            } else {
+               post.likes.push(cachedUser.id);
+            }
+            saveBlogPosts(posts);
+            renderBlog(true);
+         }
+      }
+
+      function addComment(postId) {
+         cachedUser = getActiveUser();
+         const input = document.getElementById(`input-${postId}`);
+         const text = input.value.trim();
+         if (!text) return;
+
+         const now = new Date();
+         const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+         const dateStr = now.toLocaleDateString('en-GB'); 
+         const codedTimestamp = `${dateStr} • ${timeStr}`;
+
+         const posts = getBlogPosts();
+         const post = posts.find(p => p.id === postId);
+
+         if (post) {
+            post.comments.push({
+               id: 'c_' + Date.now(),
+               user_id: cachedUser.id,
+               author_name: cachedUser.name,
+               content: text,
+               coded_time: codedTimestamp,
+               created_at: now.toISOString()
+            });
+            saveBlogPosts(posts);
+            document.getElementById(`comments-${postId}`).style.display = 'block';
+            renderBlog(true);
+         }
+      }
+
+      function deleteComment(postId, commentId) {
+         const posts = getBlogPosts();
+         const post = posts.find(p => p.id === postId);
+
+         if (post) {
+            post.comments = post.comments.filter(c => c.id !== commentId);
+            saveBlogPosts(posts);
+            document.getElementById(`comments-${postId}`).style.display = 'block';
+            renderBlog(true);
+         }
+      }
+
+      function filterBlog(category, btn) {
+         document.querySelectorAll('#blogFilter .blog-nav-btn').forEach(el => el.classList.remove('active'));
+         btn.classList.add('active');
+
+         const articles = document.querySelectorAll('#blogPostsContainer article');
+         articles.forEach(article => {
+            if (category === 'all' || article.getAttribute('data-category') === category) {
+               article.style.display = 'block';
+            } else {
+               article.style.display = 'none';
+            }
+         });
+      }
+
+      function toggleComments(id) {
+         const el = document.getElementById(id);
+         el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+      }
+
+      // Listen for instant messages broadcasted from other tabs/profiles
+      blogChannel.onmessage = function(event) {
+         if (event.data && event.data.type === 'UPDATE_FEED') {
+            renderBlog(true);
+         }
+      };
+
+      window.addEventListener('storage', function(e) {
+         if (e.key === STORAGE_KEY) renderBlog(true);
+      });
+
+      const observer = new MutationObserver(() => {
+         const detected = getActiveUser();
+         if (detected.name && detected.name !== 'Test Boy') {
+            cachedUser = detected;
+            renderBlog(true);
+            observer.disconnect();
+         }
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+         renderBlog(true);
+         observer.observe(document.body, { childList: true, subtree: true });
+         setTimeout(() => renderBlog(true), 400);
+         setTimeout(() => renderBlog(true), 1200);
+      });
+   </script>
+</body>
+
+</html>

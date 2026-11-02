@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Disbursements | JACHINS Intranet</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <link href="intranet.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .finance-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .btn-crimson { background-color: #b91c1c; border-color: #b91c1c; color: #ffffff; }
+        .btn-crimson:hover { background-color: #991b1b; border-color: #991b1b; color: #ffffff; }
+        .text-crimson { color: #b91c1c !important; }
+        .border-crimson { border-left: 5px solid #b91c1c !important; }
+        .executive-stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .executive-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+        .stat-icon-wrapper {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        .bg-pending-soft { background: rgba(255, 193, 7, 0.15); color: #b78103; }
+        .bg-approved-soft { background: rgba(25, 135, 84, 0.15); color: #198754; }
+        .bg-rejected-soft { background: rgba(220, 53, 69, 0.15); color: #dc3545; }
+        .filter-btn.active {
+            background-color: #212529 !important;
+            color: #ffffff !important;
+            border-color: #212529 !important;
+        }
+    </style>
+</head>
+<body data-protected="true" data-page="finances">
+
+<div id="header-placeholder"></div>
+
+<div class="sis-intranet-body sis-comman-background">
+    <div id="sidebar-placeholder"></div>
+
+    <main class="sis-intranet-main">
+        
+        <!-- HEADER FOR GENERAL EMPLOYEES -->
+        <div id="employeeHeaderSection" class="sisf-sis-section-title sis-section-title mb-4">
+            <span class="sisf-m-subtitle sis-m-subtitle-dark">Financial Operations</span>
+            <h2 class="sisf-m-title" style="font-size: 24px; font-weight: 700;">
+                Disbursement <span class="text-crimson">Portal</span>
+            </h2>
+            <p class="text-muted mb-0" style="font-size: 13px;">Submit official fund requests for executive CEO review and approval.</p>
+        </div>
+
+        <!-- HEADER FOR CEO / EXECUTIVE -->
+        <div id="ceoHeaderSection" class="sisf-sis-section-title sis-section-title mb-4" style="display: none;">
+            <span class="sisf-m-subtitle text-warning">Executive Authority</span>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h2 class="sisf-m-title" style="font-size: 24px; font-weight: 700;">
+                    Executive Financial <span class="text-crimson">Approvals Desk</span>
+                </h2>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" onclick="exportRequisitionsCSV()">
+                        <i class="fa-solid fa-download me-1"></i> Export CSV
+                    </button>
+                    <button class="btn btn-dark btn-sm rounded-pill px-3 shadow-sm" onclick="location.reload()">
+                        <i class="fa-solid fa-rotate-right me-1"></i> Refresh Workspace
+                    </button>
+                </div>
+            </div>
+            <p class="text-muted mb-0" style="font-size: 13px;">Authorize, audit, edit, and comment on expenditure disbursements across all company departments.</p>
+        </div>
+
+        <!-- CEO STATS METRICS (Hidden by default, shown for CEO) -->
+        <div id="ceoStatsRow" class="row g-3 mb-4" style="display: none;">
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">Pending Volume</span>
+                        <div class="stat-icon-wrapper bg-pending-soft"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-dark" id="statPendingAmount">₦0</h3>
+                    <small class="text-muted" id="statPendingCount">0 requests awaiting review</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">Authorized Total</span>
+                        <div class="stat-icon-wrapper bg-approved-soft"><i class="fa-solid fa-circle-check"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-success" id="statApprovedAmount">₦0</h3>
+                    <small class="text-muted" id="statApprovedCount">0 requests authorized</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">Declined Requests</span>
+                        <div class="stat-icon-wrapper bg-rejected-soft"><i class="fa-solid fa-circle-xmark"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-danger" id="statRejectedCount">0</h3>
+                    <small class="text-muted">Requires employee revision</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMPLOYEE METRICS & STATS SECTION -->
+        <div id="employeeStatsRow" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">My Total Requests Logged</span>
+                        <div class="stat-icon-wrapper bg-pending-soft"><i class="fa-solid fa-file-invoice"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-dark" id="empStatTotalCount">0</h3>
+                    <small class="text-muted">Total submissions made</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">Pending CEO Review</span>
+                        <div class="stat-icon-wrapper bg-pending-soft"><i class="fa-solid fa-clock"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-warning" id="empStatPendingCount">0</h3>
+                    <small class="text-muted">Awaiting executive sign-off</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="executive-stat-card">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-semibold small">Approved Total Value</span>
+                        <div class="stat-icon-wrapper bg-approved-soft"><i class="fa-solid fa-check-circle"></i></div>
+                    </div>
+                    <h3 class="fw-bold mb-0 text-success" id="empStatApprovedAmount">₦0</h3>
+                    <small class="text-muted">Funds authorized for you</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- REGULAR EMPLOYEE VIEW (Submission Form & Tracker) -->
+        <div id="employeeWorkflowSection" class="row g-4">
+            <!-- Submission Form -->
+            <div class="col-lg-5">
+                <div class="finance-card p-4">
+                    <h5 class="fw-bold mb-3" style="font-size: 16px;"><i class="fa-solid fa-file-invoice-dollar text-crimson me-2"></i>New Disbursement Request</h5>
+                    
+                    <form id="disbursementForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size: 12px;">Request Title / Project</label>
+                            <input type="text" id="reqTitle" class="form-control" placeholder="e.g., Office Equipment Restock" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size: 12px;">Amount Required (₦)</label>
+                            <input type="number" id="reqAmount" class="form-control" placeholder="0.00" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" style="font-size: 12px;">Detailed Purpose & Breakdown</label>
+                            <textarea id="reqPurpose" class="form-control" rows="4" placeholder="Provide context on why these funds are needed..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-crimson w-100 fw-semibold py-2">
+                            <i class="fa-solid fa-paper-plane me-1"></i> Submit to CEO for Approval
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Request History / Status Tracker -->
+            <div class="col-lg-7">
+                <div class="finance-card p-4">
+                    <h5 class="fw-bold mb-3" style="font-size: 16px;"><i class="fa-solid fa-clock-rotate-left text-secondary me-2"></i>My Request Status & Actions</h5>
+                    <div id="myRequestsList" class="table-responsive">
+                        <table class="table table-hover align-middle" style="font-size: 13px;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>CEO Feedback</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTableBody">
+                                <tr><td colspan="5" class="text-center text-muted py-3">Loading your requests...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CEO EXCLUSIVE APPROVAL WORKSPACE (Hidden by default, shown for CEO) -->
+        <div id="ceoApprovalSection" class="finance-card p-4 border-crimson shadow-sm" style="display: none;">
+            
+            <!-- Filter & Search Toolbar -->
+            <div class="row g-3 align-items-center justify-content-between mb-4">
+                <div class="col-md-5">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Search requester, title, or purpose..." onkeyup="filterCeoTable()">
+                    </div>
+                </div>
+                <div class="col-md-7 text-md-end">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-secondary filter-btn active" data-filter="all" onclick="setCeoFilter('all', this)">All</button>
+                        <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="pending" onclick="setCeoFilter('pending', this)">Pending</button>
+                        <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="approved" onclick="setCeoFilter('approved', this)">Approved</button>
+                        <button type="button" class="btn btn-outline-secondary filter-btn" data-filter="rejected" onclick="setCeoFilter('rejected', this)">Rejected</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle bg-white" style="font-size: 13px;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Requester</th>
+                            <th>Title / Project</th>
+                            <th>Amount</th>
+                            <th>Purpose & Details</th>
+                            <th>CEO Remarks</th>
+                            <th>Date</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ceoPendingTableBody">
+                        <tr><td colspan="7" class="text-center text-muted py-4">Checking for pending executive approvals...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Requisition Executive Audit & Edit Modal (CEO) -->
+<div class="modal fade" id="auditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-file-invoice-dollar me-2 text-warning"></i> Executive Requisition Review & Edit</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <input type="hidden" id="modalReqId">
+                <div class="mb-3">
+                    <label class="text-muted small fw-bold">REQUESTED BY</label>
+                    <div class="fw-bold text-dark fs-6" id="modalRequester">-</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">PROJECT TITLE</label>
+                    <input type="text" id="modalTitle" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">AMOUNT REQUIRED (₦)</label>
+                    <input type="number" id="modalAmount" class="form-control" step="0.01" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">PURPOSE & BREAKDOWN</label>
+                    <textarea id="modalPurpose" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label text-muted small fw-bold">EXECUTIVE COMMENTS / SIGN-OFF REMARKS</label>
+                    <textarea id="modalRemarks" class="form-control" rows="3" placeholder="Add feedback, conditions, or commentary..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer bg-light px-4 py-3 justify-content-between">
+                <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm px-3 me-1 shadow-sm" onclick="modalSaveEdits()"><i class="fa-solid fa-save me-1"></i> Save Changes</button>
+                    <button type="button" class="btn btn-danger btn-sm px-3 me-1 shadow-sm" onclick="modalAction('rejected')"><i class="fa-solid fa-xmark me-1"></i> Reject</button>
+                    <button type="button" class="btn btn-success btn-sm px-3 shadow-sm" onclick="modalAction('approved')"><i class="fa-solid fa-check me-1"></i> Authorize Approval</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Request View / Edit Modal -->
+<div class="modal fade" id="employeeReqModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold" id="empModalHeaderTitle"><i class="fa-solid fa-file-lines me-2 text-warning"></i> Request Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <input type="hidden" id="empModalReqId">
+                <form id="empEditForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Request Title / Project</label>
+                        <input type="text" id="empModalTitle" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Amount Required (₦)</label>
+                        <input type="number" id="empModalAmount" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Detailed Purpose & Breakdown</label>
+                        <textarea id="empModalPurpose" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">CEO Feedback / Remarks</label>
+                        <div id="empModalFeedback" class="p-2 bg-light rounded text-muted small border">No feedback yet.</div>
+                    </div>
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="empModalSaveBtn" class="btn btn-crimson btn-sm px-3">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="intranet.js"></script>
+
+<script>
+let globalDisbursements = [];
+let activeCeoFilter = 'all';
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const client = window.supabaseClient || (window.supabase && window.SUPABASE_CONFIG ? supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey) : null);
+    if (!client) return;
+
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) return;
+
+    const user = session.user;
+    
+    // Fetch profile and role from employees table
+    const { data: profile } = await client
+        .from('employees')
+        .select('*')
+        .eq('auth_user_id', user.id)
+        .maybeSingle();
+
+    const userRole = String(profile?.role || '').toLowerCase();
+    const isExecutive = (userRole === 'ceo' || userRole === 'executive' || userRole === 'admin' || user.email.includes('ceo'));
+    const userName = profile?.name || profile?.full_name || user.email.split('@')[0];
+
+    if (isExecutive) {
+        // Switch layout to CEO Executive View
+        document.getElementById('employeeHeaderSection').style.display = 'none';
+        document.getElementById('employeeWorkflowSection').style.display = 'none';
+        document.getElementById('employeeStatsRow').style.display = 'none';
+        document.getElementById('ceoHeaderSection').style.display = 'block';
+        document.getElementById('ceoStatsRow').style.display = 'flex';
+        document.getElementById('ceoApprovalSection').style.display = 'block';
+        
+        loadCeoWorkspaceData();
+    } else {
+        // Standard employee workflow
+        loadMyRequests(user.id);
+
+        const form = document.getElementById('disbursementForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('reqTitle').value;
+            const amount = parseFloat(document.getElementById('reqAmount').value);
+            const purpose = document.getElementById('reqPurpose').value;
+
+            const { error } = await client.from('disbursements').insert({
+                requester_id: user.id,
+                requester_name: userName,
+                title,
+                amount,
+                purpose,
+                status: 'pending'
+            });
+
+            if (!error) {
+                alert('Disbursement request successfully submitted to the CEO!');
+                form.reset();
+                loadMyRequests(user.id);
+            } else {
+                alert('Error submitting request: ' + error.message);
+            }
+        });
+
+        // Handle employee edit form submission
+        document.getElementById('empEditForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('empModalReqId').value;
+            const title = document.getElementById('empModalTitle').value;
+            const amount = parseFloat(document.getElementById('empModalAmount').value);
+            const purpose = document.getElementById('empModalPurpose').value;
+
+            const { error } = await client
+                .from('disbursements')
+                .update({ title, amount, purpose })
+                .eq('id', id);
+
+            if (!error) {
+                alert('Request updated successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('employeeReqModal')).hide();
+                loadMyRequests(user.id);
+            } else {
+                alert('Failed to update request: ' + error.message);
+            }
+        });
+    }
+
+    async function loadMyRequests(userId) {
+        const { data, error } = await client
+            .from('disbursements')
+            .select('*')
+            .eq('requester_id', userId)
+            .order('created_at', { ascending: false });
+
+        const tbody = document.getElementById('requestsTableBody');
+        if (error || !data || data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-3">No disbursement requests found.</td></tr>`;
+            document.getElementById('empStatTotalCount').textContent = '0';
+            document.getElementById('empStatPendingCount').textContent = '0';
+            document.getElementById('empStatApprovedAmount').textContent = '₦0';
+            return;
+        }
+
+        window.myDisbursementsCache = data;
+
+        let totalCount = data.length;
+        let pendingCount = 0;
+        let approvedTotal = 0;
+
+        data.forEach(req => {
+            const st = String(req.status || 'pending').toLowerCase();
+            if (st === 'pending') pendingCount++;
+            if (st === 'approved') approvedTotal += Number(req.amount || 0);
+        });
+
+        document.getElementById('empStatTotalCount').textContent = totalCount;
+        document.getElementById('empStatPendingCount').textContent = pendingCount;
+        document.getElementById('empStatApprovedAmount').textContent = '₦' + approvedTotal.toLocaleString();
+
+        tbody.innerHTML = data.map(req => {
+            const st = String(req.status || 'pending').toLowerCase();
+            return `
+                <tr>
+                    <td class="fw-semibold">${req.title}</td>
+                    <td>₦${Number(req.amount).toLocaleString()}</td>
+                    <td>
+                        <span class="badge ${st === 'approved' ? 'bg-success' : st === 'rejected' ? 'bg-danger' : 'bg-warning text-dark'} text-capitalize">
+                            ${req.status}
+                        </span>
+                    </td>
+                    <td><small class="text-muted">${req.remarks || '<em class="text-secondary">No comments</em>'}</small></td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-light border me-1" onclick="openEmployeeModal('${req.id}', 'view')" title="See Details"><i class="fa-solid fa-eye text-secondary"></i> See</button>
+                        ${st === 'pending' ? `
+                            <button class="btn btn-sm btn-outline-primary border me-1" onclick="openEmployeeModal('${req.id}', 'edit')" title="Edit Request"><i class="fa-solid fa-pen"></i></button>
+                        ` : ''}
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteMyRequest('${req.id}')" title="Delete Request"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+});
+
+window.openEmployeeModal = function(id, mode) {
+    const req = (window.myDisbursementsCache || []).find(r => r.id == id);
+    if (!req) return;
+
+    document.getElementById('empModalReqId').value = req.id;
+    document.getElementById('empModalTitle').value = req.title;
+    document.getElementById('empModalAmount').value = req.amount;
+    document.getElementById('empModalPurpose').value = req.purpose;
+    document.getElementById('empModalFeedback').textContent = req.remarks || 'No remarks provided by CEO yet.';
+
+    const titleEl = document.getElementById('empModalHeaderTitle');
+    const saveBtn = document.getElementById('empModalSaveBtn');
+    const titleInput = document.getElementById('empModalTitle');
+    const amountInput = document.getElementById('empModalAmount');
+    const purposeInput = document.getElementById('empModalPurpose');
+
+    if (mode === 'view') {
+        titleEl.innerHTML = `<i class="fa-solid fa-eye me-2 text-warning"></i> View Request Details`;
+        titleInput.setAttribute('readonly', true);
+        amountInput.setAttribute('readonly', true);
+        purposeInput.setAttribute('readonly', true);
+        saveBtn.style.display = 'none';
+    } else {
+        titleEl.innerHTML = `<i class="fa-solid fa-pen me-2 text-warning"></i> Edit Request`;
+        titleInput.removeAttribute('readonly');
+        amountInput.removeAttribute('readonly');
+        purposeInput.removeAttribute('readonly');
+        saveBtn.style.display = 'inline-block';
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('employeeReqModal'));
+    modal.show();
+};
+
+window.deleteMyRequest = async function(id) {
+    if (!confirm("Are you sure you want to delete this disbursement request?")) return;
+    const client = window.supabaseClient;
+    const { error } = await client.from('disbursements').delete().eq('id', id);
+    if (!error) {
+        alert("Request deleted successfully.");
+        location.reload();
+    } else {
+        alert("Failed to delete request: " + error.message);
+    }
+};
+
+async function loadCeoWorkspaceData() {
+    const client = window.supabaseClient;
+    if (!client) return;
+
+    const { data, error } = await client
+        .from('disbursements')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error || !data) {
+        document.getElementById('ceoPendingTableBody').innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No disbursement records found.</td></tr>`;
+        return;
+    }
+
+    globalDisbursements = data;
+    renderCeoTable();
+}
+
+function renderCeoTable() {
+    const tbody = document.getElementById('ceoPendingTableBody');
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    let filtered = globalDisbursements.filter(req => {
+        const status = String(req.status || 'pending').toLowerCase();
+        const matchesFilter = (activeCeoFilter === 'all') || (status === activeCeoFilter);
+
+        const reqName = String(req.requester_name || '').toLowerCase();
+        const reqTitle = String(req.title || '').toLowerCase();
+        const reqPurpose = String(req.purpose || '').toLowerCase();
+
+        const matchesSearch = !searchQuery || reqName.includes(searchQuery) || reqTitle.includes(searchQuery) || reqPurpose.includes(searchQuery);
+
+        return matchesFilter && matchesSearch;
+    });
+
+    let pendingSum = 0, pendingCnt = 0;
+    let approvedSum = 0, approvedCnt = 0;
+    let rejectedCnt = 0;
+
+    globalDisbursements.forEach(req => {
+        const amt = Number(req.amount || 0);
+        const status = String(req.status || 'pending').toLowerCase();
+        if (status === 'approved') {
+            approvedSum += amt;
+            approvedCnt++;
+        } else if (status === 'rejected') {
+            rejectedCnt++;
+        } else {
+            pendingSum += amt;
+            pendingCnt++;
+        }
+    });
+
+    document.getElementById('statPendingAmount').textContent = '₦' + pendingSum.toLocaleString();
+    document.getElementById('statPendingCount').textContent = `${pendingCnt} request${pendingCnt === 1 ? '' : 's'} awaiting review`;
+    document.getElementById('statApprovedAmount').textContent = '₦' + approvedSum.toLocaleString();
+    document.getElementById('statApprovedCount').textContent = `${approvedCnt} request${approvedCnt === 1 ? '' : 's'} authorized`;
+    document.getElementById('statRejectedCount').textContent = rejectedCnt;
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No matching requisitions found.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(req => {
+        const status = String(req.status || 'pending').toLowerCase();
+        let badgeClass = 'bg-warning text-dark';
+        if (status === 'approved') badgeClass = 'bg-success';
+        if (status === 'rejected') badgeClass = 'bg-danger';
+
+        return `
+            <tr>
+                <td class="fw-bold">${req.requester_name || 'Staff Member'}</td>
+                <td>${req.title}</td>
+                <td class="text-crimson fw-bold">₦${Number(req.amount).toLocaleString()}</td>
+                <td><small class="text-muted text-truncate d-inline-block" style="max-width: 180px;">${req.purpose || 'No details'}</small></td>
+                <td><small class="text-muted text-truncate d-inline-block" style="max-width: 150px;">${req.remarks || '-'}</small></td>
+                <td><small class="text-muted">${new Date(req.created_at).toLocaleDateString()}</small></td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-light border me-1" onclick="openAuditModal('${req.id}')" title="Review, Edit & Comment"><i class="fa-solid fa-pen-to-square text-secondary"></i> Review</button>
+                    ${status === 'pending' ? `
+                        <button class="btn btn-sm btn-success me-1" onclick="updateDisbursement('${req.id}', 'approved')" title="Approve"><i class="fa-solid fa-check"></i></button>
+                        <button class="btn btn-sm btn-danger" onclick="updateDisbursement('${req.id}', 'rejected')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
+                    ` : `
+                        <span class="badge ${badgeClass} text-capitalize">${status}</span>
+                    `}
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function setCeoFilter(filter, el) {
+    activeCeoFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    el.classList.add('active');
+    renderCeoTable();
+}
+
+function filterCeoTable() {
+    renderCeoTable();
+}
+
+function openAuditModal(id) {
+    const req = globalDisbursements.find(r => r.id == id);
+    if (!req) return;
+
+    document.getElementById('modalReqId').value = req.id;
+    document.getElementById('modalRequester').textContent = req.requester_name || 'Staff Member';
+    document.getElementById('modalTitle').value = req.title;
+    document.getElementById('modalAmount').value = req.amount;
+    document.getElementById('modalPurpose').value = req.purpose || '';
+    document.getElementById('modalRemarks').value = req.remarks || '';
+
+    const modal = new bootstrap.Modal(document.getElementById('auditModal'));
+    modal.show();
+}
+
+async function modalAction(status) {
+    const id = document.getElementById('modalReqId').value;
+    const title = document.getElementById('modalTitle').value.trim();
+    const amount = parseFloat(document.getElementById('modalAmount').value);
+    const purpose = document.getElementById('modalPurpose').value.trim();
+    const remarks = document.getElementById('modalRemarks').value.trim();
+
+    bootstrap.Modal.getInstance(document.getElementById('auditModal')).hide();
+
+    const client = window.supabaseClient;
+    const { error } = await client
+        .from('disbursements')
+        .update({ title, amount, purpose, status, remarks })
+        .eq('id', id);
+
+    if (!error) {
+        alert(`Request successfully updated and ${status}.`);
+        loadCeoWorkspaceData();
+    } else {
+        alert('Failed to update request: ' + error.message);
+    }
+}
+
+async function modalSaveEdits() {
+    const id = document.getElementById('modalReqId').value;
+    const title = document.getElementById('modalTitle').value.trim();
+    const amount = parseFloat(document.getElementById('modalAmount').value);
+    const purpose = document.getElementById('modalPurpose').value.trim();
+    const remarks = document.getElementById('modalRemarks').value.trim();
+
+    bootstrap.Modal.getInstance(document.getElementById('auditModal')).hide();
+
+    const client = window.supabaseClient;
+    const { error } = await client
+        .from('disbursements')
+        .update({ title, amount, purpose, remarks })
+        .eq('id', id);
+
+    if (!error) {
+        alert('Requisition edits and comments saved successfully.');
+        loadCeoWorkspaceData();
+    } else {
+        alert('Failed to save edits: ' + error.message);
+    }
+}
+
+window.updateDisbursement = async function(id, status, remarks = '') {
+    const client = window.supabaseClient;
+    const updatePayload = { status };
+    if (remarks !== undefined && remarks !== '') {
+        updatePayload.remarks = remarks;
+    }
+
+    const { error } = await client
+        .from('disbursements')
+        .update(updatePayload)
+        .eq('id', id);
+
+    if (!error) {
+        alert(`Request has been successfully ${status}.`);
+        loadCeoWorkspaceData();
+    } else {
+        alert('Failed to update status: ' + error.message);
+    }
+}
+
+function exportRequisitionsCSV() {
+    if (!globalDisbursements.length) {
+        alert("No financial records to export.");
+        return;
+    }
+
+    let csv = "ID,Requester,Title,Amount,Status,Remarks,Purpose,Date\n";
+    globalDisbursements.forEach(r => {
+        csv += `"${r.id}","${r.requester_name || ''}","${r.title || ''}",${r.amount || 0},"${r.status || ''}","${(r.remarks || '').replace(/"/g, '""')}","${(r.purpose || '').replace(/"/g, '""')}","${new Date(r.created_at).toLocaleDateString()}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('download', `Jachins_Disbursements_${new Date().toISOString().slice(0,10)}.csv`);
+    a.click();
+}
+</script>
+
+</body>
+</html>
